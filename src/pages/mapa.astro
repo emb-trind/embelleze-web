@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getWhatsAppLink } from '../lib/whatsapp';
+import { getGoogleMapsLink } from '../lib/geo';
+import { INSTITUTE_ADDRESS } from '../lib/constants';
+
+const mapsLink = getGoogleMapsLink();
+const whatsappLink = getWhatsAppLink({ origin: 'mapa' });
+---
+
+<script>
+  document.querySelector('a.mapa__btn--secondary')?.addEventListener('click', () => {
+    window.fbq?.('track', 'Schedule');
+  });
+</script>
+
+<BaseLayout title="Como chegar — Instituto Embelleze Trindade">
+  <main class="mapa">
+    <!-- Fundo Atmosférico -->
+    <div class="mapa__bg"></div>
+    
+    <div class="mapa__container">
+      <div class="mapa__card">
+        <header class="mapa__header">
+          <h1 class="mapa__title">Como chegar até nós</h1>
+          <div class="mapa__address-block">
+             <svg class="mapa__address-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <p class="mapa__address">{INSTITUTE_ADDRESS}</p>
+          </div>
+        </header>
+
+        <div class="mapa__visual">
+           <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1911.2735711872722!2d-49.4956767363437!3d-16.649481962136587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x935e5d7e3ade1c5b%3A0x1f247a063bb24a0c!2sInstituto%20Embelleze%20Trindade%20-%20Cursos!5e0!3m2!1sen!2sbr!4v1777962185114!5m2!1sen!2sbr" 
+            width="100%" 
+            height="340" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            class="mapa__iframe"
+          ></iframe>
+        </div>
+
+        <div class="mapa__actions">
+          <a href={mapsLink} target="_blank" rel="noopener" class="mapa__btn mapa__btn--primary">
+            Traçar rota no Google Maps
+          </a>
+          <a href={whatsappLink} class="mapa__btn mapa__btn--secondary">
+            Falar pelo WhatsApp
+          </a>
+        </div>
+
+        <p class="mapa__back"><a href="/">← Voltar para a página principal</a></p>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .mapa {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(7rem, 14vw, 10rem) var(--spacing-sm) clamp(1rem, 5vw, 4rem);
+    background: #12071f;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mapa__bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 10% 10%, rgba(95, 48, 128, 0.15), transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(222, 88, 61, 0.1), transparent 40%);
+    z-index: 1;
+  }
+
+  .mapa__container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .mapa__card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 40px;
+    padding: clamp(1.5rem, 6vw, 3.5rem);
+    box-shadow: 0 50px 100px rgba(0,0,0,0.4);
+    animation: card-in 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .mapa__brand {
+    margin-bottom: 2rem;
+  }
+  .mapa__logo {
+    height: 28px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  .mapa__title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .mapa__address-block {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .mapa__address-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-orange);
+  }
+
+  .mapa__address {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .mapa__visual {
+    margin-bottom: 2.5rem;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .mapa__iframe {
+    display: block;
+    filter: invert(90%) hue-rotate(180deg) contrast(0.9) brightness(1.1);
+  }
+
+  .mapa__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .mapa__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 20px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .mapa__btn--primary {
+    background: var(--color-purple);
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(95, 48, 128, 0.3);
+  }
+
+  .mapa__btn--primary:hover {
+    transform: translateY(-3px);
+    background: #6f3996;
+  }
+
+  .mapa__btn--secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mapa__btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .mapa__back {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  .mapa__back a {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mapa__back a:hover {
+    color: #fff;
+  }
+
+  .mapa__floating-icon {
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .mapa__e-icon {
+    height: 50px;
+    opacity: 0.6;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @media (max-width: 600px) {
+    .mapa__actions { grid-template-columns: 1fr; }
+    .mapa__card { padding: 2rem 1.5rem; }
+  }
+</style>

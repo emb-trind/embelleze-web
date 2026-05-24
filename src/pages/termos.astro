@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { INSTITUTE_ADDRESS, WHATSAPP_DISPLAY } from '../lib/constants';
+---
+
+<BaseLayout title="Termos de Uso — Instituto Embelleze Trindade">
+  <main class="legal">
+    <div class="legal__bg"></div>
+    <div class="legal__container">
+      <article class="legal__content">
+        <h1 class="legal__title">Termos de Uso</h1>
+        <p class="legal__updated">Última atualização: maio de 2025</p>
+
+        <p>Ao acessar e utilizar o site do Instituto Embelleze Trindade, você concorda com os termos e condições descritos neste documento. Leia com atenção antes de prosseguir.</p>
+
+        <h2>1. Sobre o site</h2>
+        <p>Este site tem finalidade informacional e comercial, apresentando os cursos profissionalizantes oferecidos pelo Instituto Embelleze Trindade. As informações disponibilizadas são de responsabilidade exclusiva da instituição.</p>
+
+        <h2>2. Uso do site</h2>
+        <p>Você se compromete a utilizar este site apenas para finalidades lícitas e de acordo com estes Termos. É vedado:</p>
+        <ul>
+          <li>Reproduzir, modificar ou distribuir conteúdo do site sem autorização;</li>
+          <li>Utilizar o site para fins fraudulentos ou que causem danos a terceiros;</li>
+          <li>Tentar acessar sistemas ou dados não autorizados.</li>
+        </ul>
+
+        <h2>3. Informações de cursos</h2>
+        <p>Os dados sobre cursos, valores, datas e disponibilidade são informativos e podem ser alterados sem aviso prévio. Para informações atualizadas, entre em contato diretamente com a instituição.</p>
+
+        <h2>4. Links externos</h2>
+        <p>Este site pode conter links para sites de terceiros (como WhatsApp e Google Maps). O Instituto Embelleze Trindade não se responsabiliza pelo conteúdo ou práticas de sites externos.</p>
+
+        <h2>5. Limitação de responsabilidade</h2>
+        <p>O Instituto Embelleze Trindade não se responsabiliza por eventuais indisponibilidades do site, erros técnicos ou danos decorrentes do uso das informações aqui disponibilizadas.</p>
+
+        <h2>6. Alterações dos Termos</h2>
+        <p>Reservamo-nos o direito de alterar estes Termos a qualquer momento. A versão mais recente estará sempre disponível nesta página.</p>
+
+        <h2>7. Contato</h2>
+        <p>Em caso de dúvidas sobre estes Termos, entre em contato:</p>
+        <ul>
+          <li><strong>Endereço:</strong> {INSTITUTE_ADDRESS}</li>
+          <li><strong>Telefone/WhatsApp:</strong> {WHATSAPP_DISPLAY}</li>
+        </ul>
+
+        <p class="legal__note">
+          Estes Termos de Uso regulam o acesso e a navegação neste site. Para informações comerciais, matrículas, valores, disponibilidade de turmas e condições promocionais, consulte diretamente a equipe do Instituto Embelleze Trindade.
+        </p>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .legal {
+    min-height: 100vh;
+    background: #0d0416;
+    position: relative;
+  }
+
+  .legal__bg {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(167, 139, 250, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .legal__container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(8rem, 14vw, 11rem) 1.5rem 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .legal__content {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.8;
+  }
+
+  .legal__title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .legal__updated {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 2.5rem;
+  }
+
+  .legal__content h2 {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 2.5rem 0 0.75rem;
+  }
+
+  .legal__content p,
+  .legal__content ul {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1rem;
+  }
+
+  .legal__content ul {
+    padding-left: 1.5rem;
+  }
+
+  .legal__content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .legal__note {
+    margin-top: 3rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid rgba(167, 139, 250, 0.4);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-style: italic;
+  }
+</style>

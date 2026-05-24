@@ -1,0 +1,217 @@
+---
+import testimonials from '../content/testimonials.json';
+
+const approved = testimonials.filter(t => t.approved);
+---
+
+<section class="proof">
+  <div class="proof__bg"></div>
+  
+  <div class="proof__container">
+    <header class="proof__header">
+      <span class="proof__eyebrow">Depoimentos</span>
+      <h2 class="proof__title">Quem já passou pelo Instituto</h2>
+      <p class="proof__subtitle">Histórias reais de alunas que transformaram suas vidas e conquistaram independência.</p>
+    </header>
+
+    {approved.length > 0 ? (
+      <div class="proof__mural">
+        {approved.map((t, index) => (
+          <div class={`proof__card proof__card--${(index % 3) + 1}`}>
+            <div class="proof__quote-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V12C14.017 12.5523 13.5693 13 13.017 13H10.017C9.46472 13 9.017 12.5523 9.017 12V9C9.017 8.44772 9.46472 8 10.017 8H11.017V5H10.017C7.80786 5 6.017 6.79086 6.017 9V15C6.017 17.2091 7.80786 19 10.017 19H11.017V21H14.017Z"/>
+              </svg>
+            </div>
+            <p class="proof__text">{t.text}</p>
+            <footer class="proof__footer">
+              <div class="proof__avatar-placeholder">{t.name.charAt(0)}</div>
+              <div class="proof__meta">
+                <p class="proof__name">{t.name}</p>
+                <p class="proof__course">{t.course}</p>
+              </div>
+            </footer>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="proof__empty">
+        <p class="proof__placeholder">Depoimentos reais em breve — aguardando aprovação do cliente.</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .proof {
+    padding: clamp(6rem, 12vw, 10rem) var(--spacing-sm);
+    background: #0d0416;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .proof__bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle at center, rgba(222, 88, 61, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .proof__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .proof__header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .proof__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--color-orange);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .proof__title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.04em;
+  }
+
+  .proof__subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .proof__mural {
+    column-count: 3;
+    column-gap: 2rem;
+  }
+
+  .proof__card {
+    break-inside: avoid;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 32px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .proof__card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  }
+
+  .proof__quote-icon {
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    width: 32px;
+    height: 32px;
+    color: rgba(255, 255, 255, 0.1);
+  }
+
+  .proof__text {
+    font-size: 1.125rem;
+    color: #fff;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .proof__footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .proof__avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--color-purple), #7e4db0);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.125rem;
+  }
+
+  .proof__meta { display: flex; flex-direction: column; gap: 2px; }
+  .proof__name { font-weight: 800; color: #fff; font-size: 1rem; }
+  .proof__course { font-size: 0.75rem; font-weight: 700; color: var(--color-orange); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .proof__empty {
+    text-align: center;
+    padding: 4rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 32px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+
+  .proof__placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+  }
+
+  @media (max-width: 992px) {
+    .proof__mural { column-count: 2; }
+  }
+
+  @media (max-width: 768px) {
+    .proof__mural { column-count: 1; }
+    .proof__card { padding: 2rem; }
+  }
+
+  /* ── Efeitos de Entrada Suaves ── */
+  .proof__header, .proof__card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .proof__header.visible, .proof__card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Efeito cascata para os cards de depoimento */
+  .proof__card:nth-child(1) { transition-delay: 0.1s; }
+  .proof__card:nth-child(2) { transition-delay: 0.2s; }
+  .proof__card:nth-child(3) { transition-delay: 0.3s; }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.proof__header, .proof__card').forEach(el => observer.observe(el));
+</script>

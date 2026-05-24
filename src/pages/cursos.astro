@@ -1,0 +1,618 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CourseCard from '../components/CourseCard.astro';
+import courses from '../content/courses.json';
+import symbol from '../assets/brand/e.png';
+import { WHATSAPP_NUMBER } from '../lib/constants';
+---
+
+<BaseLayout title="Cursos Profissionalizantes — Instituto Embelleze Trindade">
+  <main class="courses-page">
+    <!-- Fundo Atmosférico -->
+    <div class="courses-page__bg"></div>
+
+    <div class="courses-page__container">
+      <header class="courses-page__header">
+        <h1 class="courses-page__title">Formações Profissionais</h1>
+        <p class="courses-page__subtitle">Daqui um ano você vai desejar ter começado hoje. Escolha sua área e comece agora.</p>
+        
+        <!-- Filtro Dropdown -->
+        <div class="filter-dropdown" id="filter-dropdown">
+          <button class="filter-dropdown__trigger" id="filter-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="filter-dropdown__label">
+              <span class="filter-dropdown__dot"></span>
+              <span id="filter-selected-label">Selecione sua área</span>
+            </span>
+            <svg class="filter-dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <ul class="filter-dropdown__menu" id="filter-menu" role="listbox">
+            <li><button class="filter-dropdown__option active" data-filter="all" role="option" aria-selected="true">
+              <span class="filter-dropdown__option-dot"></span>Todos os cursos
+            </button></li>
+            <li><button class="filter-dropdown__option" data-filter="Cabelo" role="option" aria-selected="false">
+              <span class="filter-dropdown__option-dot"></span>Cabelo
+            </button></li>
+            <li><button class="filter-dropdown__option" data-filter="Unhas" role="option" aria-selected="false">
+              <span class="filter-dropdown__option-dot"></span>Unhas
+            </button></li>
+            <li><button class="filter-dropdown__option" data-filter="Estética" role="option" aria-selected="false">
+              <span class="filter-dropdown__option-dot"></span>Estética
+            </button></li>
+          </ul>
+        </div>
+      </header>
+
+      <div class="courses-page__grid">
+        {courses.map((course, index) => (
+          <div class="courses-page__item" data-category={course.category}>
+             <CourseCard
+              id={course.id}
+              name={course.name}
+              category={course.category}
+              description={course.description}
+              ctaText="Selecionar Curso"
+              iconId={course.iconId}
+              duration={course.duration}
+              frequency={course.frequency}
+              schedule={course.schedule}
+              confirmed={course.confirmed}
+              isEcommerce={true}
+              loading={index < 4 ? "eager" : "lazy"}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Carrinho Flutuante iOS Style -->
+    <div class="cart" id="cart-drawer">
+      <div class="cart__handle"></div>
+      <div class="cart__header">
+        <div class="cart__title-group">
+          <Image src={symbol} alt="E" class="cart__icon-brand" />
+          <h3>Minha Formação <span class="cart__count-badge" id="cart-count">0</span></h3>
+        </div>
+        <button id="cart-close" class="cart__close-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="cart__body">
+        <div class="cart__items" id="cart-items">
+          <!-- Inserido via JS -->
+        </div>
+        
+        <div class="cart__empty" id="cart-empty">
+          <p>Você ainda não selecionou nenhum curso.</p>
+        </div>
+      </div>
+
+      <div class="cart__footer">
+        <div class="cart__summary">
+          <span>Início Imediato</span>
+          <span class="cart__summary-status">Certificado Incluso</span>
+        </div>
+        <button id="cart-checkout" class="cart__btn-checkout" data-wa={WHATSAPP_NUMBER}>
+          <div class="cart__btn-inner">
+            <span class="cart__btn-text">Garantir minha vaga</span>
+            <div class="cart__btn-icons">
+               <svg class="cart__btn-wa" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.41.001 12.045c0 2.12.554 4.189 1.605 6.04L0 24l6.096-1.6c1.801.982 3.82 1.5 5.867 1.5h.005c6.636 0 12.048-5.41 12.051-12.047a11.824 11.824 0 00-3.468-8.411z"/>
+              </svg>
+              <svg class="cart__btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Botão de Gatilho do Carrinho -->
+    <button class="cart-trigger" id="cart-trigger">
+      <div class="cart-trigger__icon">
+         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </div>
+      <span class="cart-trigger__count" id="cart-trigger-count">0</span>
+    </button>
+  </main>
+</BaseLayout>
+
+<script>
+  // ── Lógica do Carrinho ──
+  declare global {
+    interface Window {
+      addToCart: (id: string, name: string) => void;
+      removeFromCart: (id: string) => void;
+    }
+  }
+
+  interface CartItem {
+    id: string;
+    name: string;
+  }
+
+  let cart: CartItem[] = [];
+
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartTrigger = document.getElementById('cart-trigger');
+  const cartCount = document.getElementById('cart-count');
+  const cartTriggerCount = document.getElementById('cart-trigger-count');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartEmpty = document.getElementById('cart-empty');
+  const checkoutBtn = document.getElementById('cart-checkout');
+  const closeBtn = document.getElementById('cart-close');
+
+  function updateUI() {
+    if (cartCount) cartCount.innerText = cart.length.toString();
+    if (cartTriggerCount) cartTriggerCount.innerText = cart.length.toString();
+    
+    if (cart.length > 0) {
+      cartTrigger?.classList.add('visible');
+      cartEmpty?.style.setProperty('display', 'none');
+    } else {
+      cartTrigger?.classList.remove('visible');
+      cartDrawer?.classList.remove('open');
+      cartEmpty?.style.setProperty('display', 'block');
+    }
+
+    renderItems();
+  }
+
+  function renderItems() {
+    if (!cartItemsContainer) return;
+    cartItemsContainer.innerHTML = cart.map(item => `
+      <div class="cart__item">
+        <div class="cart__item-info">
+          <span class="cart__item-bullet"></span>
+          <span class="cart__item-name">${item.name}</span>
+        </div>
+        <button class="cart__item-remove" onclick="removeFromCart('${item.id}')" aria-label="Remover">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  window.addToCart = (id: string, name: string) => {
+    if (cart.find(i => i.id === id)) {
+      cartDrawer?.classList.add('open');
+      return;
+    }
+    cart.push({ id, name });
+    updateUI();
+    cartDrawer?.classList.add('open');
+  };
+
+  window.removeFromCart = (id: string) => {
+    cart = cart.filter(i => i.id !== id);
+    updateUI();
+  };
+
+  cartTrigger?.addEventListener('click', () => cartDrawer?.classList.toggle('open'));
+  closeBtn?.addEventListener('click', () => cartDrawer?.classList.remove('open'));
+
+  checkoutBtn?.addEventListener('click', () => {
+    const waNumber = (checkoutBtn as HTMLButtonElement).dataset.wa ?? '';
+    const message = `Olá Embelleze! Gostaria de me matricular nos seguintes cursos:\n\n${cart.map(c => `✅ ${c.name}`).join('\n')}\n\nComo posso garantir minha vaga?`;
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  });
+
+  // ── Dropdown de Filtro ──
+  const trigger      = document.getElementById('filter-trigger') as HTMLButtonElement;
+  const menu         = document.getElementById('filter-menu') as HTMLElement;
+  const dropdown     = document.getElementById('filter-dropdown') as HTMLElement;
+  const selectedLabel = document.getElementById('filter-selected-label') as HTMLElement;
+  const options      = document.querySelectorAll('.filter-dropdown__option') as NodeListOf<HTMLButtonElement>;
+  const items        = document.querySelectorAll('.courses-page__item') as NodeListOf<HTMLElement>;
+
+  const labels: Record<string, string> = {
+    all: 'Selecione sua área',
+    Cabelo: 'Cabelo',
+    Unhas: 'Unhas',
+    Estética: 'Estética',
+  };
+
+  function closeMenu() {
+    menu.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+    dropdown.classList.remove('open');
+  }
+
+  function applyFilter(filter: string) {
+    options.forEach(o => {
+      const active = o.getAttribute('data-filter') === filter;
+      o.classList.toggle('active', active);
+      o.setAttribute('aria-selected', String(active));
+    });
+    selectedLabel.textContent = labels[filter] ?? filter;
+
+    items.forEach(item => {
+      const match = filter === 'all' || item.getAttribute('data-category') === filter;
+      item.style.display = match ? 'block' : 'none';
+    });
+
+    closeMenu();
+  }
+
+  trigger.addEventListener('click', () => {
+    const isOpen = menu.classList.contains('open');
+    isOpen ? closeMenu() : (menu.classList.add('open'), trigger.setAttribute('aria-expanded', 'true'), dropdown.classList.add('open'));
+  });
+
+  options.forEach(btn => {
+    btn.addEventListener('click', () => applyFilter(btn.getAttribute('data-filter') || 'all'));
+  });
+
+  document.addEventListener('click', e => {
+    if (!dropdown.contains(e.target as Node)) closeMenu();
+  });
+
+  // Pré-selecionar pelo ?area= da URL
+  const urlArea = new URLSearchParams(window.location.search).get('area');
+  applyFilter(urlArea || 'all');
+</script>
+
+<style>
+  .courses-page {
+    min-height: 100vh;
+    background: #0d0416;
+    padding: clamp(8rem, 14vw, 11rem) var(--spacing-sm) clamp(6rem, 10vw, 8rem);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .courses-page__bg {
+    position: absolute;
+    inset: 0;
+    background: 
+    radial-gradient(circle at 10% 10%, rgba(95, 48, 128, 0.15), transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(222, 88, 61, 0.1), transparent 40%);
+    z-index: 1;
+  }
+
+  .courses-page__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .courses-page__header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .courses-page__logo { height: 28px; filter: brightness(0) invert(1); margin-bottom: 2rem; }
+  .courses-page__title { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; color: #fff; margin-bottom: 1rem; letter-spacing: -0.04em; }
+  .courses-page__subtitle { font-size: 1.125rem; color: rgba(255, 255, 255, 0.6); max-width: 600px; margin: 0 auto 3rem; }
+
+  /* ── Dropdown de Filtro ── */
+  .filter-dropdown {
+    position: relative;
+    margin: 0 auto 2rem;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .filter-dropdown__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .filter-dropdown.open .filter-dropdown__trigger {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .filter-dropdown__label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .filter-dropdown__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-orange);
+    flex-shrink: 0;
+  }
+
+  .filter-dropdown__chevron {
+    width: 18px;
+    height: 18px;
+    color: rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+
+  .filter-dropdown.open .filter-dropdown__chevron {
+    transform: rotate(180deg);
+  }
+
+  .filter-dropdown__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: rgba(22, 10, 38, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    list-style: none;
+    padding: 6px;
+    z-index: 100;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    transform: translateY(-6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .filter-dropdown__menu.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .filter-dropdown__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 14px;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .filter-dropdown__option:active,
+  .filter-dropdown__option:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+  }
+
+  .filter-dropdown__option.active {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .filter-dropdown__option-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+  }
+
+  .filter-dropdown__option.active .filter-dropdown__option-dot {
+    background: var(--color-orange);
+    box-shadow: 0 0 8px var(--color-orange);
+  }
+
+  .courses-page__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .courses-page__item {
+    min-width: 0;
+  }
+
+  /* Nome completo no mobile — sem truncar */
+  .courses-page__grid :global(.course-card__name) {
+    white-space: normal;
+  }
+
+  @media (min-width: 600px) {
+    .courses-page__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .courses-page__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  /* ── Novo Carrinho Embelleze ── */
+  .cart {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(20, 10, 35, 0.98);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+    border-radius: 32px 32px 0 0;
+    padding: 2rem;
+    z-index: 2000;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -30px 100px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart.open { transform: translate(-50%, 0); }
+
+  .cart__handle {
+    width: 36px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    margin: -1rem auto 1.5rem;
+  }
+
+  .cart__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .cart__title-group { display: flex; align-items: center; gap: 12px; }
+  .cart__icon-brand { width: 24px; height: 24px; opacity: 0.8; }
+  .cart__header h3 { font-size: 1.25rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+  .cart__count-badge { font-size: 0.875rem; color: var(--color-orange); margin-left: 4px; }
+
+  .cart__close-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .cart__close-btn svg { width: 18px; height: 18px; }
+
+  .cart__body { flex: 1; min-height: 100px; margin-bottom: 2rem; }
+  .cart__empty { text-align: center; color: rgba(255, 255, 255, 0.3); font-size: 0.875rem; padding: 2rem 0; }
+
+  .cart__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    animation: slide-in 0.4s ease-out;
+  }
+
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .cart__item-info { display: flex; align-items: center; gap: 12px; }
+  .cart__item-bullet { width: 6px; height: 6px; background: var(--color-orange); border-radius: 50%; box-shadow: 0 0 10px var(--color-orange); }
+  .cart__item-name { color: #fff; font-weight: 600; font-size: 0.9375rem; }
+
+  .cart__item-remove { background: none; border: none; color: rgba(255, 255, 255, 0.2); cursor: pointer; transition: color 0.3s; }
+  .cart__item-remove:hover { color: #ff4d4d; }
+  .cart__item-remove svg { width: 18px; height: 18px; }
+
+  .cart__footer { display: flex; flex-direction: column; gap: 1.5rem; }
+  .cart__summary { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.4); }
+  .cart__summary-status { color: #00ff7f; }
+
+  .cart__btn-checkout {
+    width: 100%;
+    padding: 24px;
+    background: linear-gradient(135deg, var(--color-purple) 0%, #7e4db0 100%);
+    border: none;
+    border-radius: 24px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(95, 48, 128, 0.4);
+  }
+
+  .cart__btn-checkout:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 60px rgba(95, 48, 128, 0.5);
+  }
+
+  .cart__btn-inner { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
+  .cart__btn-text { font-size: 1.125rem; font-weight: 800; letter-spacing: -0.01em; }
+  .cart__btn-icons { display: flex; align-items: center; gap: 12px; }
+  .cart__btn-wa { width: 20px; height: 20px; color: rgba(255, 255, 255, 0.5); }
+  .cart__btn-arrow { width: 20px; height: 20px; }
+
+  /* ── Gatilho ── */
+  .cart-trigger {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 76px;
+    height: 76px;
+    background: #fff;
+    color: #12071f;
+    border-radius: 24px;
+    border: none;
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(150%) rotate(30deg);
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  }
+
+  .cart-trigger.visible { transform: translateY(0) rotate(0); }
+  .cart-trigger__icon svg { width: 32px; height: 32px; }
+  .cart-trigger__count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--color-orange);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 0.875rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #0d0416;
+  }
+
+  @media (max-width: 600px) {
+    .courses-page { padding-top: 7rem; }
+    .cart { bottom: 0; left: 0; right: 0; transform: translateY(100%); max-width: 100%; border-radius: 32px 32px 0 0; }
+    .cart.open { transform: translateY(0); }
+    .cart-trigger { bottom: 20px; right: 20px; width: 64px; height: 64px; }
+  }
+</style>

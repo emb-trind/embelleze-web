@@ -1,0 +1,50 @@
+---
+interface Props {
+  minutes: number;
+}
+
+const { minutes } = Astro.props;
+---
+
+<div class="countdown" id="countdown" data-minutes={minutes}>
+  <span id="countdownDisplay">15:00</span>
+  <span class="countdown__label">restantes para usar seu código</span>
+</div>
+
+<script>
+  const el = document.getElementById('countdown');
+  const display = document.getElementById('countdownDisplay');
+  if (el && display) {
+    const minutes = parseInt(el.dataset.minutes ?? '15', 10);
+    let total = minutes * 60;
+
+    const tick = () => {
+      const m = String(Math.floor(total / 60)).padStart(2, '0');
+      const s = String(total % 60).padStart(2, '0');
+      display.textContent = `${m}:${s}`;
+      if (total > 0) total--;
+      else clearInterval(interval);
+    };
+
+    tick();
+    const interval = setInterval(tick, 1000);
+  }
+</script>
+
+<style>
+  .countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    color: #666;
+  }
+  #countdownDisplay {
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--color-orange);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

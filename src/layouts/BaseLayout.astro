@@ -1,0 +1,109 @@
+---
+import '../styles/global.css';
+import '../styles/animations.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import TrackingPixel from '../components/TrackingPixel.astro';
+import LocalSEO from '../components/LocalSEO.astro';
+import BellaFAB from '../components/BellaFAB.astro';
+import { CANONICAL_BASE_URL, OG_IMAGE_URL } from '../lib/constants';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Curso de beleza em Trindade | Cabeleireiro, Barbeiro e Maquiagem',
+  description = 'Transforme sua vida com os melhores cursos profissionalizantes de beleza em Trindade e região. Aprenda na prática e comece a atender agora.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="facebook-domain-verification" content="c7qyc1faydt7poezopa0vqdny9suxi" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={CANONICAL_BASE_URL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={OG_IMAGE_URL} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={CANONICAL_BASE_URL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={OG_IMAGE_URL} />
+
+    <link rel="icon" href="/favicon-32x32.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <TrackingPixel />
+    <LocalSEO />
+  </head>
+  <body>
+    <Header />
+    <slot />
+    <Footer />
+    <BellaFAB />
+
+    <script>
+      import '../scripts/events.client';
+    </script>
+
+    <script is:inline>
+      // ── UTM First-Touch Capture ─────────────────────────────────────────────
+      // Lê UTMs da URL de entrada e persiste no sessionStorage.
+      // sessionStorage dura a sessão — garante que o UTM da chegada acompanha
+      // o lead até o simulador, mesmo que ele role a página antes de converter.
+      (function captureUtms() {
+        var params = new URLSearchParams(window.location.search);
+        var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+        keys.forEach(function(k) {
+          var v = params.get(k);
+          // Só grava se ainda não há UTM na sessão (first-touch — não sobrescreve)
+          if (v && !sessionStorage.getItem(k)) {
+            sessionStorage.setItem(k, v);
+          }
+        });
+      })();
+
+      // ── Global Lead Capture Interceptor ─────────────────────────────────────
+      // Quando o lead clica em qualquer botão WA e já passou pelo simulador,
+      // atualiza o status para INTERESSADO — inclui os UTMs da sessão.
+      window.addEventListener('click', async function(e) {
+        var target = e.target.closest('a[href*="wa.me"]');
+        if (!target) return;
+
+        var phone = localStorage.getItem('sim_phone');
+        if (!phone) return;
+
+        var body = {
+          phone: phone,
+          status: 'INTERESSADO',
+          last_message: 'Conversão via clique: ' + (target.innerText || 'Botão WhatsApp'),
+          utm_source:   sessionStorage.getItem('utm_source')   || undefined,
+          utm_medium:   sessionStorage.getItem('utm_medium')   || undefined,
+          utm_campaign: sessionStorage.getItem('utm_campaign') || undefined,
+          utm_content:  sessionStorage.getItem('utm_content')  || undefined,
+          utm_term:     sessionStorage.getItem('utm_term')     || undefined,
+        };
+
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }).catch(function() {});
+      });
+    </script>
+  </body>
+</html>

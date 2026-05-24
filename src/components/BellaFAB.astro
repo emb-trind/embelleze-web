@@ -1,0 +1,347 @@
+---
+import { getWhatsAppLink } from '../lib/whatsapp';
+
+const waLink = getWhatsAppLink({ origin: 'bella-fab' });
+
+const GREETING = `Oi`;
+---
+
+<div id="bella-fab-root" data-wa={waLink} data-greeting={GREETING}>
+
+  <div id="bella-panel" class="bella-panel" aria-hidden="true" role="dialog" aria-label="Chat com a Vitória">
+    <div class="bella-panel__header">
+      <div class="bella-avatar-wrap">
+        <img class="bella-avatar" src="/brand/avatar_e-trindade.png" alt="Vitória" />
+        <span class="bella-online-dot"></span>
+      </div>
+      <div class="bella-panel__info">
+        <span class="bella-panel__name">Vitória</span>
+        <span class="bella-panel__sub">Atendimento Embelleze · online agora</span>
+      </div>
+      <button id="bella-close" class="bella-close" aria-label="Fechar chat">✕</button>
+    </div>
+
+    <div id="bella-messages" class="bella-messages" role="log" aria-live="polite"></div>
+
+    <div class="bella-panel__footer">
+      <a
+        id="bella-wa-cta"
+        href={waLink}
+        class="bella-wa-cta"
+        target="_blank"
+        rel="noopener"
+        style="display:none"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Falar com consultora no WhatsApp
+      </a>
+      <div class="bella-input-row">
+        <input
+          id="bella-input"
+          type="text"
+          placeholder="Digite sua mensagem..."
+          autocomplete="off"
+          maxlength="500"
+        />
+        <button id="bella-send" class="bella-send-btn" aria-label="Enviar mensagem">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button id="bella-fab-btn" class="bella-fab-btn" aria-label="Conversar com a Vitória" aria-expanded="false">
+    <img class="bella-fab-avatar" src="/brand/avatar_e-trindade.png" alt="Vitória" />
+    <span class="bella-fab-dot" aria-hidden="true"></span>
+  </button>
+
+</div>
+
+<style>
+  #bella-fab-root {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    font-family: 'Inter', sans-serif;
+    pointer-events: none;
+  }
+
+  /* ── FAB button ─────────────────────────────────────────────────────── */
+  .bella-fab-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #de583d;
+    pointer-events: auto;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(222, 88, 61, 0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .bella-fab-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(222, 88, 61, 0.55);
+  }
+  .bella-fab-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+  }
+  .bella-fab-label {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .bella-fab-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 10px;
+    height: 10px;
+    background: #25d366;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    animation: bella-pulse 2s infinite;
+  }
+  @keyframes bella-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.35); opacity: 0.65; }
+  }
+
+  /* ── Panel ──────────────────────────────────────────────────────────── */
+  .bella-panel {
+    width: 360px;
+    height: 520px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(16px) scale(0.97);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  .bella-panel.open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────────── */
+  .bella-panel__header {
+    background: linear-gradient(135deg, #5f3080 0%, #3d1a5c 100%);
+    color: #fff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .bella-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .bella-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+  .bella-online-dot {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
+    background: #25d366;
+    border-radius: 50%;
+    border: 2px solid #5f3080;
+  }
+  .bella-panel__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .bella-panel__name {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .bella-panel__sub {
+    font-size: 11px;
+    opacity: 0.82;
+  }
+  .bella-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 6px;
+    opacity: 0.75;
+    line-height: 1;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+  }
+  .bella-close:hover { opacity: 1; }
+
+  /* ── Messages ───────────────────────────────────────────────────────── */
+  .bella-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #faf9fc;
+    scroll-behavior: smooth;
+  }
+  :global(.bella-msg) {
+    max-width: 84%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  :global(.bella-msg--bella) {
+    background: #ede9f8;
+    color: #1a1a1a;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+  }
+  :global(.bella-msg--user) {
+    background: #5f3080;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    align-self: flex-end;
+  }
+  :global(.bella-msg a) {
+    color: #de583d;
+    text-decoration: underline;
+  }
+  :global(.bella-msg--user a) {
+    color: #f5c0b0;
+  }
+  :global(.bella-typing) {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 12px 16px;
+    background: #ede9f8;
+    border-radius: 12px;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+  }
+  :global(.bella-typing span) {
+    width: 7px;
+    height: 7px;
+    background: #5f3080;
+    border-radius: 50%;
+    animation: bella-bounce 1.2s infinite;
+  }
+  :global(.bella-typing span:nth-child(2)) { animation-delay: 0.2s; }
+  :global(.bella-typing span:nth-child(3)) { animation-delay: 0.4s; }
+  @keyframes bella-bounce {
+    0%, 60%, 100% { transform: translateY(0);   opacity: 0.45; }
+    30%            { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────────────── */
+  .bella-panel__footer {
+    border-top: 1px solid #ede9f8;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .bella-wa-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #25d366;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: opacity 0.2s;
+  }
+  .bella-wa-cta:hover { opacity: 0.88; }
+  .bella-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  #bella-input {
+    flex: 1;
+    border: 1.5px solid #e0d6ee;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    outline: none;
+    font-family: inherit;
+    color: #1a1a1a;
+    transition: border-color 0.2s;
+    background: #faf9fc;
+  }
+  #bella-input:focus { border-color: #5f3080; background: #fff; }
+  .bella-send-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: #de583d;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+  }
+  .bella-send-btn:hover   { opacity: 0.85; }
+  .bella-send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* ── Mobile ─────────────────────────────────────────────────────────── */
+  @media (max-width: 420px) {
+    #bella-fab-root { bottom: 16px; right: 16px; }
+    .bella-panel {
+      width: calc(100vw - 32px);
+      height: 72vh;
+    }
+    .bella-fab-label { display: none; }
+    .bella-fab-btn   { padding: 14px; border-radius: 50%; }
+    .bella-fab-dot   { top: 2px; right: 2px; }
+  }
+</style>
+
+<script>
+  import '../scripts/bella-fab.client';
+</script>

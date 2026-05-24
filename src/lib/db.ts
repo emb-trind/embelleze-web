@@ -1,0 +1,282 @@
+import pg from "pg";
+const { Pool } = pg;
+
+// Conexão resiliente: se não houver DATABASE_URL, o sistema não quebra
+const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+
+const pool = new Pool({
+  connectionString: dbUrl,
+  ssl: {
+    rejectUnauthorized: false, // Comum em instâncias Railway/AWS/Render
+  },
+  max: 10, // Limite de conexões simultâneas
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
+
+// CRÍTICO: sem este handler, erros em conexões ociosas matam o processo Node
+pool.on('error', (err) => {
+  console.error('[DB] Erro em cliente ocioso (silenciado):', err.message);
+});
+
+export interface LeadData {
+  phone: string;
+  name?: string;
+  email?: string;
+  origin?: string;
+  course_interest?: string;
+  objective?: string;
+  status?: "NOVO" | "QUALIFICADO" | "INTERESSADO" | "PIX_GERADO" | "PIX_PAGO";
+  last_message?: string;
+  assigned_to?: string;
+  // Atribuição de tráfego pago — first-touch, nunca sobrescreve
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+}
+
+/**
+ * Realiza o UPSERT atômico do lead baseado no telefone (ID natural).
+ * Single-statement INSERT ... ON CONFLICT elimina race condition de concorrência.
+ * Lógica de status: INTERESSADO nunca regride para QUALIFICADO.
+ */
+export async function upsertLead(data: LeadData) {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+
+  if (!dbUrl) {
+    console.warn("[DB] DATABASE_URL não configurada. Lead não registrado no Postgres.");
+    return null;
+  }
+
+  const cleanPhone = data.phone.replace(/\D/g, "");
+  if (!cleanPhone) return null;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureUtmColumns(client);
+
+    const res = await client.query(
+      `INSERT INTO leads (phone, name, email, origin, course_interest, objective, status, last_message,
+                          utm_source, utm_medium, utm_campaign, utm_content, utm_term)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+       ON CONFLICT (phone) DO UPDATE SET
+         name             = COALESCE(EXCLUDED.name,            leads.name),
+         email            = COALESCE(EXCLUDED.email,           leads.email),
+         origin           = COALESCE(EXCLUDED.origin,          leads.origin),
+         course_interest  = COALESCE(EXCLUDED.course_interest, leads.course_interest),
+         objective        = COALESCE(EXCLUDED.objective,       leads.objective),
+         status           = CASE
+                              -- Máquina de estados: nunca retrocede
+                              -- PIX_PAGO > PIX_GERADO > INTERESSADO > QUALIFICADO > NOVO
+                              WHEN leads.status = 'PIX_PAGO'   THEN 'PIX_PAGO'
+                              WHEN leads.status = 'PIX_GERADO' AND EXCLUDED.status != 'PIX_PAGO' THEN 'PIX_GERADO'
+                              WHEN leads.status = 'INTERESSADO' AND EXCLUDED.status IN ('NOVO','QUALIFICADO') THEN 'INTERESSADO'
+                              ELSE COALESCE(EXCLUDED.status, leads.status)
+                            END,
+         last_message     = COALESCE(EXCLUDED.last_message,    leads.last_message),
+         -- UTM: first-touch — canal que trouxe o lead nunca é sobrescrito
+         utm_source       = COALESCE(leads.utm_source,   EXCLUDED.utm_source),
+         utm_medium       = COALESCE(leads.utm_medium,   EXCLUDED.utm_medium),
+         utm_campaign     = COALESCE(leads.utm_campaign, EXCLUDED.utm_campaign),
+         utm_content      = COALESCE(leads.utm_content,  EXCLUDED.utm_content),
+         utm_term         = COALESCE(leads.utm_term,    EXCLUDED.utm_term),
+         updated_at       = NOW()
+       RETURNING id`,
+      [
+        cleanPhone,
+        data.name || null,
+        data.email || null,
+        data.origin || null,
+        data.course_interest || null,
+        data.objective || null,
+        data.status || "NOVO",
+        data.last_message || null,
+        data.utm_source   || null,
+        data.utm_medium   || null,
+        data.utm_campaign || null,
+        data.utm_content  || null,
+        data.utm_term     || null,
+      ],
+    );
+
+    return res.rows[0].id as string;
+  } catch (err) {
+    console.error("[DB] Erro ao salvar lead:", err);
+    return null;
+  } finally {
+    if (client) client.release();
+  }
+}
+
+// Evita DDL no hot path — executado uma única vez por processo
+let schemaReady = false;
+
+async function ensureSchema(client: pg.PoolClient): Promise<void> {
+  if (schemaReady) return;
+
+  // Tabela principal de leads — cria se não existir
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS leads (
+      id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      phone            TEXT UNIQUE NOT NULL,
+      name             TEXT,
+      email            TEXT,
+      origin           TEXT,
+      course_interest  TEXT,
+      objective        TEXT,
+      status           TEXT NOT NULL DEFAULT 'NOVO',
+      last_message     TEXT,
+      utm_source       TEXT,
+      utm_medium       TEXT,
+      utm_campaign     TEXT,
+      utm_content      TEXT,
+      utm_term         TEXT,
+      probeltec_synced_at TIMESTAMPTZ,
+      created_at       TIMESTAMPTZ DEFAULT NOW(),
+      updated_at       TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  // Colunas adicionadas em versões posteriores — idempotente
+  await client.query(`
+    ALTER TABLE leads
+      ADD COLUMN IF NOT EXISTS utm_source         TEXT,
+      ADD COLUMN IF NOT EXISTS utm_medium         TEXT,
+      ADD COLUMN IF NOT EXISTS utm_campaign       TEXT,
+      ADD COLUMN IF NOT EXISTS utm_content        TEXT,
+      ADD COLUMN IF NOT EXISTS utm_term           TEXT,
+      ADD COLUMN IF NOT EXISTS probeltec_synced_at TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS email              TEXT
+  `);
+
+  schemaReady = true;
+}
+
+// Mantido por compatibilidade — delega ao ensureSchema
+let utmColumnsReady = false;
+
+async function ensureUtmColumns(client: pg.PoolClient): Promise<void> {
+  if (utmColumnsReady) return;
+  await ensureSchema(client);
+  utmColumnsReady = true;
+}
+
+let probeltecColumnReady = false;
+
+async function ensureProbeltecColumn(client: pg.PoolClient): Promise<void> {
+  if (probeltecColumnReady) return;
+  await ensureSchema(client);
+  probeltecColumnReady = true;
+}
+
+/**
+ * Operação atômica: tenta reservar o slot de sync para o telefone dado.
+ * Retorna true se esta chamada ganhou o slot (deve criar no CRM).
+ * Retorna false se já estava sincronizado (outra instância ou chamada anterior).
+ *
+ * UPDATE ... WHERE probeltec_synced_at IS NULL é atômico no Postgres —
+ * elimina race condition entre múltiplas instâncias do app.
+ */
+export async function claimProbeltecSync(phone: string): Promise<boolean> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl) return false;
+
+  const cleanPhone = phone.replace(/\D/g, "");
+  if (!cleanPhone) return false;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureProbeltecColumn(client);
+
+    const res = await client.query(
+      `UPDATE leads
+       SET probeltec_synced_at = NOW()
+       WHERE phone = $1 AND probeltec_synced_at IS NULL
+       RETURNING phone`,
+      [cleanPhone],
+    );
+
+    // rowCount > 0 → esta chamada ganhou o slot, deve criar no CRM
+    return (res.rowCount ?? 0) > 0;
+  } catch (err) {
+    console.error("[DB] Erro ao reservar sync Probeltec:", err);
+    return false;
+  } finally {
+    if (client) client.release();
+  }
+}
+
+let leadEventsTableReady = false;
+
+async function ensureLeadEventsTable(client: pg.PoolClient): Promise<void> {
+  if (leadEventsTableReady) return;
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS lead_events (
+      id          SERIAL PRIMARY KEY,
+      phone       TEXT NOT NULL,
+      event_type  TEXT NOT NULL,
+      metadata    JSONB,
+      created_at  TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+  leadEventsTableReady = true;
+}
+
+/**
+ * Retorna os dados básicos de um lead pelo telefone.
+ * Usado no webhook de pagamento para enriquecer o email de confirmação.
+ */
+export async function getLeadByPhone(
+  phone: string,
+): Promise<{ name: string | null; email: string | null; course_interest: string | null } | null> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl) return null;
+
+  const cleanPhone = phone.replace(/\D/g, "");
+  if (!cleanPhone) return null;
+
+  let client;
+  try {
+    client = await pool.connect();
+    const res = await client.query(
+      `SELECT name, email, course_interest FROM leads WHERE phone = $1 LIMIT 1`,
+      [cleanPhone],
+    );
+    return res.rows[0] ?? null;
+  } catch (err) {
+    console.error("[DB] Erro ao buscar lead:", err);
+    return null;
+  } finally {
+    if (client) client.release();
+  }
+}
+
+export async function appendLeadEvent(
+  phone: string,
+  eventType: string,
+  metadata: any = {},
+): Promise<void> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl) return;
+
+  const cleanPhone = phone.replace(/\D/g, "");
+  if (!cleanPhone) return;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureLeadEventsTable(client);
+    await client.query(
+      `INSERT INTO lead_events (phone, event_type, metadata) VALUES ($1, $2, $3)`,
+      [cleanPhone, eventType, JSON.stringify(metadata)],
+    );
+  } catch (err) {
+    console.error(`[DB-EVENT] Erro ao registrar evento ${eventType}:`, err);
+  } finally {
+    if (client) client.release();
+  }
+}

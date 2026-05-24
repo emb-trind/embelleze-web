@@ -1,0 +1,236 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getWhatsAppLink } from '../lib/whatsapp';
+import symbol from '../assets/brand/e.png';
+
+const whatsappLink = getWhatsAppLink({ origin: 'obrigado' });
+---
+
+<BaseLayout title="Obrigado — Instituto Embelleze Trindade">
+  <main class="obrigado">
+    <!-- Fundo Atmosférico -->
+    <div class="obrigado__bg"></div>
+    
+    <div class="obrigado__container">
+      <div class="obrigado__card">
+
+        <div class="obrigado__success-icon">
+          <div class="obrigado__icon-ring"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+
+        <h1 class="obrigado__title">Recebemos seu contato!</h1>
+        
+        <p class="obrigado__text">
+          Nossa equipe já recebeu seus dados e entrará em contato em instantes pelo WhatsApp para te ajudar.
+        </p>
+
+        <div class="obrigado__actions">
+          <a href={whatsappLink} class="obrigado__btn obrigado__btn--primary">
+            Falar pelo WhatsApp agora
+          </a>
+          <a href="/" class="obrigado__btn obrigado__btn--secondary">
+            Voltar para a Home
+          </a>
+        </div>
+
+        <div class="obrigado__footer">
+          <Image src={symbol} alt="E" class="obrigado__e-icon" />
+          <p>Unidade Trindade/GO</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  // dispara evento de conversão quando disponível
+  declare global {
+    interface Window {
+      gtag?: (...args: unknown[]) => void;
+      fbq?: (...args: unknown[]) => void;
+    }
+  }
+
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'conversion', { send_to: 'AW-18004058795/SmrtCJXE7q0cEKvFgIlD' });
+  }
+  if (typeof window.fbq === 'function') {
+    window.fbq('track', 'Lead');
+  }
+</script>
+
+<style>
+  .obrigado {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(7rem, 14vw, 10rem) var(--spacing-md) var(--spacing-md);
+    background: #12071f;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .obrigado__bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 80% 20%, rgba(222, 88, 61, 0.15), transparent 40%),
+      radial-gradient(circle at 20% 80%, rgba(95, 48, 128, 0.2), transparent 40%);
+    z-index: 1;
+  }
+
+  .obrigado__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .obrigado__container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .obrigado__card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 40px;
+    padding: clamp(2rem, 8vw, 4rem);
+    text-align: center;
+    box-shadow: 0 50px 100px rgba(0,0,0,0.4);
+    animation: card-in 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .obrigado__brand {
+    margin-bottom: 2.5rem;
+  }
+  .obrigado__logo {
+    height: 32px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  .obrigado__success-icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background: var(--color-orange);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    box-shadow: 0 15px 30px rgba(222, 88, 61, 0.3);
+  }
+
+  .obrigado__success-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .obrigado__icon-ring {
+    position: absolute;
+    inset: -10px;
+    border: 1px solid rgba(222, 88, 61, 0.2);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  .obrigado__title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .obrigado__text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 3rem;
+  }
+
+  .obrigado__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .obrigado__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 32px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .obrigado__btn--primary {
+    background: #fff;
+    color: #12071f;
+  }
+
+  .obrigado__btn--primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(255,255,255,0.2);
+  }
+
+  .obrigado__btn--secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .obrigado__btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .obrigado__footer {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0.5;
+  }
+
+  .obrigado__e-icon {
+    height: 24px;
+  }
+
+  .obrigado__footer p {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fff;
+  }
+</style>

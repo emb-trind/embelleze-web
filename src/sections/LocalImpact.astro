@@ -1,0 +1,495 @@
+---
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import avatarImg from '../../public/brand/avatar_e-trindade.png';
+import formBgImg from '../assets/home/form-bg.jpg';
+import {
+  INSTITUTE_INSTAGRAM,
+  INSTITUTE_INSTAGRAM_URL,
+  buildUtmUrl,
+} from '../lib/constants';
+
+const instagramHref = buildUtmUrl(
+  INSTITUTE_INSTAGRAM_URL,
+  'social_cta',
+  'local_section_instagram_btn',
+);
+---
+
+<section class="local">
+  <div class="local__inner">
+    <div class="local__content">
+      <div class="local__avatar">
+        <Image src={avatarImg} alt="Instituto Embelleze Trindade" class="local__avatar-img" />
+      </div>
+      <h3 class="local__eyebrow">Aqui pertinho de você</h3>
+      
+      <a 
+        href="https://www.google.com/maps/search/?api=1&query=Instituto+Embelleze+Trindade+Av.+Manoel+Monteiro+1691" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="local__address-link"
+      >
+        <div class="local__address-card">
+          <Icon name="lucide:map-pin" class="local__address-icon" />
+          <div class="local__address-text">
+            <span class="local__street">Av. Manoel Monteiro, 1691</span>
+            <span class="local__city">Vila Padre Eterno, Trindade/GO</span>
+          </div>
+        </div>
+      </a>
+
+      <p class="local__desc">
+        Aprendizado presencial, prático e real. Sem aula gravada, sem teoria vaga. Você aprende fazendo, com supervisão de profissionais da área.
+      </p>
+
+      <div class="local__seals">
+        <div class="local__seal">
+          <div class="local__seal-icon-wrap">
+            <Icon name="lucide:graduation-cap" class="local__seal-icon" />
+          </div>
+          <div class="local__seal-text">
+            <span class="local__seal-title">Certificado</span>
+            <span class="local__seal-sub">Nacional Embelleze</span>
+          </div>
+        </div>
+        
+        <div class="local__seal">
+          <div class="local__seal-icon-wrap">
+            <Icon name="lucide:briefcase" class="local__seal-icon" />
+          </div>
+          <div class="local__seal-text">
+            <span class="local__seal-title">Aulas</span>
+            <span class="local__seal-sub">100% Práticas</span>
+          </div>
+        </div>
+        
+        <div class="local__seal">
+          <div class="local__seal-icon-wrap">
+            <Icon name="lucide:users" class="local__seal-icon" />
+          </div>
+          <div class="local__seal-text">
+            <span class="local__seal-title">+20 anos</span>
+            <span class="local__seal-sub">formando profissionais</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="local__media-wrapper">
+      <div class="local__image-container">
+        <Image src={formBgImg} alt="Aula VIP de Barbeiro no Instituto Embelleze" class="local__image" />
+      </div>
+      
+      <div class="local__floating-video">
+        <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F944660838368472%2F&show_text=true&width=267&t=0" width="267" height="591" style="border:none;overflow:hidden" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+
+        <a
+          href={instagramHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="local__insta-cta"
+          aria-label={`Seguir ${INSTITUTE_INSTAGRAM} no Instagram`}
+        >
+          <svg class="local__insta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          <span class="local__insta-label">
+            <span class="local__insta-action">Siga no Instagram</span>
+            <span class="local__insta-handle">{INSTITUTE_INSTAGRAM}</span>
+          </span>
+          <svg class="local__insta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .local {
+    background: var(--color-surface);
+    padding: var(--spacing-xl) var(--spacing-sm);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .local__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: center;
+    text-align: left;
+    padding: 2rem 0;
+  }
+
+  @media (max-width: 900px) {
+    .local__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 3rem;
+      max-width: 620px;
+    }
+  }
+
+  .local__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .local__content {
+      align-items: center;
+    }
+  }
+
+  .local__avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--color-orange);
+    box-shadow: 0 0 30px rgba(222, 88, 61, 0.3);
+    margin-bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: float-avatar 6s ease-in-out infinite;
+    background: #12071f;
+  }
+
+  @keyframes float-avatar {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(3deg); }
+  }
+
+  .local__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .local__badge-glass {
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
+
+  .badge-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--color-orange);
+  }
+
+  .local__badge-glass:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(222, 88, 61, 0.2);
+  }
+
+  .local__title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  @media (max-width: 600px) {
+    .local__title { font-size: 2.2rem; }
+  }
+
+  .local__address-link {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 1.5rem;
+  }
+
+  .local__address-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    border-left: 4px solid var(--color-orange);
+    transition: all 0.3s ease;
+  }
+
+  .local__address-link:hover .local__address-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .local__address-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--color-orange);
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 10px rgba(222, 88, 61, 0.5));
+  }
+
+  .local__address-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: left;
+  }
+
+  .local__street {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .local__city {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .local__desc {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+    max-width: 540px;
+  }
+
+  .local__seals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  /* Wrapper para imagem e vídeo flutuante */
+  .local__media-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Imagem VIP na direita */
+  .local__image-container {
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .local__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Vídeo Reel Flutuante */
+  .local__floating-video {
+    position: absolute;
+    bottom: -30px;
+    left: -40px;
+    z-index: 5;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+  }
+
+  @media (max-width: 900px) {
+    .local__image-container {
+      min-height: unset;
+      height: 280px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .local__floating-video {
+      position: static;
+      margin: 2rem auto 0;
+      width: fit-content;
+    }
+  }
+
+  .local__seal {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .local__seal:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  .local__seal-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--color-orange); /* Volta para a ID da marca */
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(222, 88, 61, 0.3));
+  }
+
+  .local__seal-icon {
+    width: 18px;
+    height: 18px;
+    color: #fff;
+  }
+
+  .local__seal-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    text-align: left;
+  }
+
+  .local__seal-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5); /* Cinza claro/branco translúcido */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .local__seal-sub {
+    font-size: 0.875rem;
+    font-weight: 900;
+    color: #ffffff; /* Branco puro */
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Instagram CTA ── */
+  .local__insta-cta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    border-radius: 14px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 4px 20px rgba(131, 58, 180, 0.4);
+  }
+
+  .local__insta-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(131, 58, 180, 0.55);
+    opacity: 0.93;
+  }
+
+  .local__insta-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .local__insta-label {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+  }
+
+  .local__insta-action {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .local__insta-handle {
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.85;
+    line-height: 1.2;
+  }
+
+  .local__insta-arrow {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+
+  /* ── Efeitos de Entrada Suaves ── */
+  .local__seal, .local__address-card, .local__desc, .local__image-container, .local__floating-video {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .local__seal.visible, .local__address-card.visible, .local__desc.visible, .local__image-container.visible, .local__floating-video.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Efeito cascata (stagger) para os selos */
+  .local__seal:nth-child(1) { transition-delay: 0.1s; }
+  .local__seal:nth-child(2) { transition-delay: 0.2s; }
+  .local__seal:nth-child(3) { transition-delay: 0.3s; }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.local__seal, .local__address-card, .local__desc, .local__image-container, .local__floating-video').forEach(el => observer.observe(el));
+</script>

@@ -1,0 +1,5 @@
+# embelleze-web — package-level gitignore
+dist/
+.astro/
+node_modules/
+.env

@@ -1,0 +1,31 @@
+# ABOUT
+
+Embelleze Landing
+Framework: Astro
+Deploy: Railway
+Domain: embelleze-bella.online
+
+Primary objective: Convert visitors into qualified WhatsApp conversations with Bella
+
+Core sections:
+
+- Hero
+- BellaIntro
+- LocalImpact
+- CourseOffer
+- DiscountTicket
+- CoursesGrid
+- ObjectionBreak
+- SocialProof
+- FutureSimulator
+- MapPreview
+- FinalCTA
+- WhatsAppFloat
+
+Implementation constraints:
+
+- index.astro imports sections only.
+- sections should remain focused and isolated.
+- business data belongs in src/content.
+- WhatsApp URL creation belongs in src/lib/whatsapp.ts.
+- tracking event names belong in src/lib/tracking.ts.

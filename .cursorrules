@@ -1,0 +1,18 @@
+# This is embelleze-web — Astro SSR web app (site principal)
+
+Always:
+
+- Keep src/pages/index.astro as a composition file only.
+- Put home sections in src/sections (this is the web app, not a campaign LP).
+- Put reusable UI in src/components.
+- Put editable business data in src/content.
+- Use src/lib/whatsapp.ts for WhatsApp links.
+- Use src/lib/tracking.ts for tracking events.
+- Keep mobile-first conversion design.
+
+Never:
+
+- Hardcode unverified prices.
+- Invent dates, reviews or student numbers.
+- Add large dependencies without explicit need.
+- Move business logic into visual components unnecessarily.

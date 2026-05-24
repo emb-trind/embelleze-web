@@ -1,0 +1,56 @@
+:root {
+  /* ── Cores ── */
+  --color-orange: #de583d;
+  --color-orange-dark: #c44c33;
+  --color-orange-light: #f2705a;
+  --color-purple: #5f3080;
+  --color-purple-dark: #4a2464;
+  --color-purple-light: #7b45a8;
+  --color-white: #ffffff;
+  --color-black: #171018;
+  --color-bg: #12071f;
+  --color-surface: #1b0c2e;
+  --color-surface-2: #25123d;
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.6);
+
+  /* ── Raios ── */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-xl: 36px;
+  --radius-full: 999px;
+
+  /* ── Sombras ── */
+  --shadow-soft: 0 8px 32px rgba(95, 48, 128, 0.12);
+  --shadow-md: 0 16px 48px rgba(95, 48, 128, 0.18);
+  --shadow-strong: 0 24px 64px rgba(95, 48, 128, 0.28);
+  --shadow-orange: 0 8px 32px rgba(222, 88, 61, 0.32);
+  --shadow-orange-strong: 0 16px 48px rgba(222, 88, 61, 0.48);
+  --shadow-card: 0 2px 8px rgba(95, 48, 128, 0.06), 0 8px 24px rgba(95, 48, 128, 0.1);
+  --shadow-card-hover: 0 8px 24px rgba(95, 48, 128, 0.14), 0 24px 48px rgba(95, 48, 128, 0.18);
+
+  /* ── Tipografia ── */
+  --font-base: 'Inter', system-ui, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.375rem;
+  --font-size-2xl: clamp(1.625rem, 4vw, 2rem);
+  --font-size-3xl: clamp(2rem, 5vw, 2.75rem);
+  --font-size-4xl: clamp(2.5rem, 6vw, 3.5rem);
+
+  /* ── Espaçamento ── */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2.5rem;
+  --spacing-xl: clamp(3rem, 6vw, 5rem);
+  --spacing-2xl: clamp(4rem, 8vw, 7rem);
+
+  /* ── Transições ── */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.4s ease;
+}

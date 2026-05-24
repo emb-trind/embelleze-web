@@ -1,0 +1,42 @@
+---
+interface Props {
+  message: string;
+}
+
+const { message } = Astro.props;
+---
+
+<div class="bella-bubble">
+  <div class="bella-bubble__avatar">B</div>
+  <div class="bella-bubble__text">{message}</div>
+</div>
+
+<style>
+  .bella-bubble {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 400px;
+  }
+  .bella-bubble__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-purple);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    flex-shrink: 0;
+  }
+  .bella-bubble__text {
+    background: #f0eaf8;
+    border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+    padding: 12px 16px;
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--color-black);
+  }
+</style>

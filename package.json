@@ -1,0 +1,35 @@
+{
+  "name": "embelleze-web",
+  "private": true,
+  "type": "module",
+  "version": "0.0.2",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "start": "node ./dist/server/entry.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^10.0.0",
+    "@astrojs/sitemap": "^3.7.2",
+    "@iconify-json/lucide": "^1.2.105",
+    "astro": "^6.2.2",
+    "astro-icon": "^1.1.5",
+    "ioredis": "^5.6.0",
+    "pg": "^8.13.3",
+    "resend": "^6.12.3",
+    "sharp": "^0.34.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/node": "^22.13.10",
+    "@types/pg": "^8.11.11",
+    "typescript": "^6.0.3"
+  }
+}
