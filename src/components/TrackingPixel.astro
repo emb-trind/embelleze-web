@@ -2,35 +2,36 @@
 // Preencher IDs quando o cliente liberar os acessos (GTM, GA4, Meta Pixel)
 const GTM_ID = import.meta.env.PUBLIC_GTM_ID ?? '';
 const META_PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID ?? '';
+const { cspNonce } = Astro.locals;
 ---
 
 <Fragment>
-  <!-- Google tag (gtag.js) -->
-  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-18004058795"></script>
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+<!-- Google tag (gtag.js) — src externo, coberto pelo host allowlist da CSP -->
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=AW-18004058795"></script>
+<script is:inline nonce={cspNonce}>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
 
-    gtag('config', 'AW-18004058795');
-  </script>
+gtag('config', 'AW-18004058795');
+</script>
 </Fragment>
 
 {GTM_ID && (
-  <Fragment>
-    <!-- Google Tag Manager -->
-    <script is:inline define:vars={{ GTM_ID }}>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',GTM_ID);
-    </script>
-  </Fragment>
+<Fragment>
+<!-- Google Tag Manager -->
+<script is:inline define:vars={{ GTM_ID }} nonce={cspNonce}>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',GTM_ID);
+</script>
+</Fragment>
 )}
 
 {META_PIXEL_ID && (
-  <Fragment>
-    <!-- Meta Pixel -->
-    <script is:inline define:vars={{ META_PIXEL_ID }}>
-      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f['_fbq'])f['_fbq']=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',META_PIXEL_ID);fbq('track','PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`} /></noscript>
-  </Fragment>
+<Fragment>
+<!-- Meta Pixel -->
+<script is:inline define:vars={{ META_PIXEL_ID }} nonce={cspNonce}>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f['_fbq'])f['_fbq']=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',META_PIXEL_ID);fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`} /></noscript>
+</Fragment>
 )}

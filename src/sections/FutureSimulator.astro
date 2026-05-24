@@ -5,768 +5,768 @@ const simCtaLink = getWhatsAppLink({ origin: 'simulator' });
 ---
 
 <section id="simulador" class="simulator">
-  <div class="simulator__energy" aria-hidden="true">
-    <div class="energy__orb energy__orb--1"></div>
-    <div class="energy__orb energy__orb--2"></div>
-  </div>
+<div class="simulator__energy" aria-hidden="true">
+  <div class="energy__orb energy__orb--1"></div>
+  <div class="energy__orb energy__orb--2"></div>
+</div>
 
-  <div class="simulator__inner">
-    <header class="simulator__header">
-      <div class="simulator__badge">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        Quiz Personalizado · 3 perguntas
+<div class="simulator__inner">
+  <header class="simulator__header">
+    <div class="simulator__badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Quiz Personalizado · 3 perguntas
+    </div>
+    <h2 class="simulator__title">Qual é o seu próximo passo?</h2>
+    <p class="simulator__sub">Descubra qual formação combina com você.</p>
+  </header>
+
+  <div class="simulator__card">
+    <!-- Progress -->
+    <div class="simulator__progress-wrap">
+      <div class="simulator__progress-track">
+        <div class="simulator__progress-bar" id="sim-progress"></div>
       </div>
-      <h2 class="simulator__title">Qual é o seu próximo passo?</h2>
-      <p class="simulator__sub">Descubra qual formação combina com você.</p>
-    </header>
-
-    <div class="simulator__card">
-      <!-- Progress -->
-      <div class="simulator__progress-wrap">
-        <div class="simulator__progress-track">
-          <div class="simulator__progress-bar" id="sim-progress"></div>
-        </div>
-        <div class="simulator__steps-dots">
-          <span class="sim-dot sim-dot--active" data-step="1">1</span>
-          <span class="sim-dot" data-step="2">2</span>
-          <span class="sim-dot" data-step="3">3</span>
-        </div>
-        <span class="simulator__step-indicator" id="sim-step-text">PASSO 1 DE 3</span>
+      <div class="simulator__steps-dots">
+        <span class="sim-dot sim-dot--active" data-step="1">1</span>
+        <span class="sim-dot" data-step="2">2</span>
+        <span class="sim-dot" data-step="3">3</span>
       </div>
+      <span class="simulator__step-indicator" id="sim-step-text">PASSO 1 DE 3</span>
+    </div>
 
-      <div id="sim-content">
-        <!-- Questions injected here -->
+    <div id="sim-content">
+      <!-- Questions injected here -->
+    </div>
+
+    <!-- Analytical Loading State -->
+    <div id="sim-analyzing" class="simulator__analyzing hidden">
+      <div class="analyzing__scanner"></div>
+      <div class="analyzing__text">
+        <p class="analyzing__title">Analisando seu perfil...</p>
+        <p class="analyzing__sub">Mapeando as melhores oportunidades para você.</p>
       </div>
-
-      <!-- Analytical Loading State -->
-      <div id="sim-analyzing" class="simulator__analyzing hidden">
-        <div class="analyzing__scanner"></div>
-        <div class="analyzing__text">
-          <p class="analyzing__title">Analisando seu perfil...</p>
-          <p class="analyzing__sub">Mapeando as melhores oportunidades para você.</p>
-        </div>
-        <div class="analyzing__bar-container">
-           <div class="analyzing__bar" id="analyzing-progress"></div>
-        </div>
+      <div class="analyzing__bar-container">
+          <div class="analyzing__bar" id="analyzing-progress"></div>
       </div>
+    </div>
 
-      <!-- Capture State -->
-      <div id="sim-capture" class="simulator__capture hidden">
-        <h3 class="capture__title">Análise Concluída!</h3>
-        <p class="capture__sub">Como podemos te chamar e para onde enviamos seu diagnóstico?</p>
-        <div class="capture__form">
-          <input type="text" id="sim-name" placeholder="Seu nome completo" class="capture__input" />
-          <input type="tel" id="sim-phone" placeholder="Seu WhatsApp (com DDD)" class="capture__input" />
-          <button id="sim-submit-capture" class="capture__btn">
-            Liberar meu Diagnóstico
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14m-7-7 7 7-7 7"/>
-            </svg>
-          </button>
-        </div>
-        <p class="capture__disclaimer">Seus dados estão seguros e serão usados apenas para o diagnóstico.</p>
+    <!-- Capture State -->
+    <div id="sim-capture" class="simulator__capture hidden">
+      <h3 class="capture__title">Análise Concluída!</h3>
+      <p class="capture__sub">Como podemos te chamar e para onde enviamos seu diagnóstico?</p>
+      <div class="capture__form">
+        <input type="text" id="sim-name" placeholder="Seu nome completo" class="capture__input" />
+        <input type="tel" id="sim-phone" placeholder="Seu WhatsApp (com DDD)" class="capture__input" />
+        <button id="sim-submit-capture" class="capture__btn">
+          Liberar meu Diagnóstico
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5 12h14m-7-7 7 7-7 7"/>
+          </svg>
+        </button>
       </div>
+      <p class="capture__disclaimer">Seus dados estão seguros e serão usados apenas para o diagnóstico.</p>
+    </div>
 
-      <!-- Result State -->
-      <div id="sim-result" class="simulator__result hidden">
-        <div class="result__badge">Resultado Encontrado</div>
-        <h3 class="result__title" id="res-title"></h3>
-        <p class="result__desc" id="res-desc"></p>
-        
-        <div class="result__actions">
-          <a href={simCtaLink} id="res-link" class="result__btn result__btn--primary">
-             Reservar vaga via WhatsApp
-          </a>
-          <button onclick="window.location.reload()" class="result__btn result__btn--secondary">
-            Refazer teste
-          </button>
-        </div>
+    <!-- Result State -->
+    <div id="sim-result" class="simulator__result hidden">
+      <div class="result__badge">Resultado Encontrado</div>
+      <h3 class="result__title" id="res-title"></h3>
+      <p class="result__desc" id="res-desc"></p>
+      
+      <div class="result__actions">
+        <a href={simCtaLink} id="res-link" class="result__btn result__btn--primary">
+            Reservar vaga via WhatsApp
+        </a>
+        <button onclick="window.location.reload()" class="result__btn result__btn--secondary">
+          Refazer teste
+        </button>
       </div>
     </div>
   </div>
+</div>
 </section>
 
 <script>
-  import { getWhatsAppLink } from '../lib/whatsapp';
-  import { track, Events } from '../lib/tracking';
+import { getWhatsAppLink } from '../lib/whatsapp';
+import { track, Events } from '../lib/tracking';
 
-  const steps = [
-    // ... (mesmos passos de antes)
-    {
-      question: 'Seu objetivo principal é:',
-      options: [
-        { label: 'Renda extra', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>` },
-        { label: 'Nova profissão', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>` },
-        { label: 'Os dois!', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>` }
-      ],
-    },
-    {
-      question: 'Sua experiência atual:',
-      options: [
-        { label: 'Iniciante total', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 10 4 2m-8 0 4-2V3m0 7v11m0 0-4-2m4 2 4-2"/></svg>` },
-        { label: 'Já conheço um pouco', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 20A7 7 0 0 1 11 6a7 7 0 0 1 11 6 7 7 0 0 1-7 7M11 20a7 7 0 0 0-7-7M11 20v-7M4 13a7 7 0 0 1 7-7"/></svg>` },
-        { label: 'Quase profissional', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22h10c0-1.76-.85-3.25-2.03-3.79-.5-.23-.97-.66-.97-1.21v-2.34c0-1.65 1.35-3 3-3h1V5c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v6.66c0 1.66 1.35 3 3 3h1z"/></svg>` }
-      ],
-    },
-    {
-      question: 'O que faz seu coração bater forte?',
-      options: [
-        { label: 'Transformar Cabelos', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="m20 4-11 9"/><path d="m20 20-11-9"/></svg>` },
-        { label: 'Estética & Pele', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 8l-1.33 3.33L7.33 12.66 10.66 14l1.34 3.33 1.33-3.33 3.33-1.34-3.33-1.33L12 8Z"/></svg>` },
-        { label: 'Poder da Maquiagem', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/><path d="M12 12V4"/><path d="M9 12h6"/></svg>` },
-        { label: 'Arte nas Unhas', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22a7 7 0 0 0 7-7V7a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v8a7 7 0 0 0 7 7Z"/><path d="M12 11V4"/></svg>` }
-      ],
-    },
-  ];
+const steps = [
+  // ... (mesmos passos de antes)
+  {
+    question: 'Seu objetivo principal é:',
+    options: [
+      { label: 'Renda extra', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>` },
+      { label: 'Nova profissão', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>` },
+      { label: 'Os dois!', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>` }
+    ],
+  },
+  {
+    question: 'Sua experiência atual:',
+    options: [
+      { label: 'Iniciante total', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 10 4 2m-8 0 4-2V3m0 7v11m0 0-4-2m4 2 4-2"/></svg>` },
+      { label: 'Já conheço um pouco', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 20A7 7 0 0 1 11 6a7 7 0 0 1 11 6 7 7 0 0 1-7 7M11 20a7 7 0 0 0-7-7M11 20v-7M4 13a7 7 0 0 1 7-7"/></svg>` },
+      { label: 'Quase profissional', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22h10c0-1.76-.85-3.25-2.03-3.79-.5-.23-.97-.66-.97-1.21v-2.34c0-1.65 1.35-3 3-3h1V5c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v6.66c0 1.66 1.35 3 3 3h1z"/></svg>` }
+    ],
+  },
+  {
+    question: 'O que faz seu coração bater forte?',
+    options: [
+      { label: 'Transformar Cabelos', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="m20 4-11 9"/><path d="m20 20-11-9"/></svg>` },
+      { label: 'Estética & Pele', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 8l-1.33 3.33L7.33 12.66 10.66 14l1.34 3.33 1.33-3.33 3.33-1.34-3.33-1.33L12 8Z"/></svg>` },
+      { label: 'Poder da Maquiagem', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/><path d="M12 12V4"/><path d="M9 12h6"/></svg>` },
+      { label: 'Arte nas Unhas', icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22a7 7 0 0 0 7-7V7a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v8a7 7 0 0 0 7 7Z"/><path d="M12 11V4"/></svg>` }
+    ],
+  },
+];
 
-  const areaMap: Record<string, string> = {
-    'Transformar Cabelos': 'Cabeleireiro Profissional',
-    'Estética & Pele': 'Estética Facial e Corporal',
-    'Poder da Maquiagem': 'Maquiagem Profissional',
-    'Arte nas Unhas': 'Manicure de Elite',
-  };
+const areaMap: Record<string, string> = {
+  'Transformar Cabelos': 'Cabeleireiro Profissional',
+  'Estética & Pele': 'Estética Facial e Corporal',
+  'Poder da Maquiagem': 'Maquiagem Profissional',
+  'Arte nas Unhas': 'Manicure de Elite',
+};
 
-  const answers: string[] = [];
-  let current = 0;
+const answers: string[] = [];
+let current = 0;
 
-  const stepsEl = document.getElementById('sim-content')!;
-  const analyzingEl = document.getElementById('sim-analyzing')!;
-  const captureEl = document.getElementById('sim-capture')!;
-  const resultEl = document.getElementById('sim-result')!;
-  const progressBar = document.getElementById('sim-progress')!;
-  const stepIndicator = document.getElementById('sim-step-text')!;
-  const analyzingBar = document.getElementById('analyzing-progress')!;
-  
-  const nameInput = document.getElementById('sim-name') as HTMLInputElement;
-  const phoneInput = document.getElementById('sim-phone') as HTMLInputElement;
-  const submitCapture = document.getElementById('sim-submit-capture')!;
+const stepsEl = document.getElementById('sim-content')!;
+const analyzingEl = document.getElementById('sim-analyzing')!;
+const captureEl = document.getElementById('sim-capture')!;
+const resultEl = document.getElementById('sim-result')!;
+const progressBar = document.getElementById('sim-progress')!;
+const stepIndicator = document.getElementById('sim-step-text')!;
+const analyzingBar = document.getElementById('analyzing-progress')!;
 
-  track({ event: Events.START_FUTURE_SIMULATOR });
+const nameInput = document.getElementById('sim-name') as HTMLInputElement;
+const phoneInput = document.getElementById('sim-phone') as HTMLInputElement;
+const submitCapture = document.getElementById('sim-submit-capture')!;
 
-  // Animação de contorno em onda (uma vez por user)
-  function setupGlowAnimation() {
-    const hasAnimated = localStorage.getItem('quiz_glow_animated');
-    if (!hasAnimated) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-glow');
-            localStorage.setItem('quiz_glow_animated', 'true');
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.1 }); // 10% visível já dispara
-      
-      const card = document.querySelector('.simulator__card');
-      if (card) observer.observe(card);
-    }
-  }
+track({ event: Events.START_FUTURE_SIMULATOR });
 
-  document.addEventListener('DOMContentLoaded', setupGlowAnimation);
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setupGlowAnimation();
-  }
-
-  function render() {
-    const step = steps[current];
-    progressBar.style.width = `${((current) / steps.length) * 100}%`;
-    stepIndicator.innerText = `PASSO ${current + 1} DE ${steps.length}`;
-
-    document.querySelectorAll('.sim-dot').forEach((dot, i) => {
-      dot.classList.toggle('sim-dot--active', i === current);
-      dot.classList.toggle('sim-dot--done', i < current);
-    });
-
-    stepsEl.innerHTML = `
-      <div class="sim-step animate-in">
-        <h3 class="sim-question">${step.question}</h3>
-        <div class="sim-options">
-          ${step.options.map(o => `
-            <button class="sim-option-card" data-value="${o.label}">
-              <div class="sim-option-icon">${o.icon}</div>
-              <span class="sim-option-label">${o.label}</span>
-            </button>
-          `).join('')}
-        </div>
-      </div>
-    `;
-
-    stepsEl.querySelectorAll('.sim-option-card').forEach(btn => {
-      btn.addEventListener('click', () => {
-        answers.push((btn as HTMLElement).dataset.value!);
-        stepsEl.querySelector('.sim-step')?.classList.add('fade-out');
-        
-        setTimeout(() => {
-          current++;
-          if (current < steps.length) {
-            render();
-          } else {
-            startAnalysis();
-          }
-        }, 300);
+// Animação de contorno em onda (uma vez por user)
+function setupGlowAnimation() {
+  const hasAnimated = localStorage.getItem('quiz_glow_animated');
+  if (!hasAnimated) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-glow');
+          localStorage.setItem('quiz_glow_animated', 'true');
+          observer.disconnect();
+        }
       });
-    });
-  }
-
-  function startAnalysis() {
-    stepsEl.classList.add('hidden');
-    analyzingEl.classList.remove('hidden');
-    progressBar.style.width = '100%';
+    }, { threshold: 0.1 }); // 10% visível já dispara
     
-    let p = 0;
-    const interval = setInterval(() => {
-      p += 1.5;
-      analyzingBar.style.width = `${p}%`;
-      if (p >= 100) {
-        clearInterval(interval);
-        setTimeout(() => {
-          analyzingEl.classList.add('hidden');
-          captureEl.classList.remove('hidden');
-          captureEl.classList.add('animate-in');
-        }, 600);
-      }
-    }, 30);
+    const card = document.querySelector('.simulator__card');
+    if (card) observer.observe(card);
   }
+}
 
-  // Lê UTMs gravados pelo BaseLayout no sessionStorage (first-touch)
-  function getSessionUtms(): Record<string, string> {
-    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
-    const utms: Record<string, string> = {};
-    keys.forEach(k => {
-      const v = sessionStorage.getItem(k);
-      if (v) utms[k] = v;
+document.addEventListener('DOMContentLoaded', setupGlowAnimation);
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setupGlowAnimation();
+}
+
+function render() {
+  const step = steps[current];
+  progressBar.style.width = `${((current) / steps.length) * 100}%`;
+  stepIndicator.innerText = `PASSO ${current + 1} DE ${steps.length}`;
+
+  document.querySelectorAll('.sim-dot').forEach((dot, i) => {
+    dot.classList.toggle('sim-dot--active', i === current);
+    dot.classList.toggle('sim-dot--done', i < current);
+  });
+
+  stepsEl.innerHTML = `
+    <div class="sim-step animate-in">
+      <h3 class="sim-question">${step.question}</h3>
+      <div class="sim-options">
+        ${step.options.map(o => `
+          <button class="sim-option-card" data-value="${o.label}">
+            <div class="sim-option-icon">${o.icon}</div>
+            <span class="sim-option-label">${o.label}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  stepsEl.querySelectorAll('.sim-option-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      answers.push((btn as HTMLElement).dataset.value!);
+      stepsEl.querySelector('.sim-step')?.classList.add('fade-out');
+      
+      setTimeout(() => {
+        current++;
+        if (current < steps.length) {
+          render();
+        } else {
+          startAnalysis();
+        }
+      }, 300);
     });
-    return utms;
+  });
+}
+
+function startAnalysis() {
+  stepsEl.classList.add('hidden');
+  analyzingEl.classList.remove('hidden');
+  progressBar.style.width = '100%';
+  
+  let p = 0;
+  const interval = setInterval(() => {
+    p += 1.5;
+    analyzingBar.style.width = `${p}%`;
+    if (p >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        analyzingEl.classList.add('hidden');
+        captureEl.classList.remove('hidden');
+        captureEl.classList.add('animate-in');
+      }, 600);
+    }
+  }, 30);
+}
+
+// Lê UTMs gravados pelo BaseLayout no sessionStorage (first-touch)
+function getSessionUtms(): Record<string, string> {
+  const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
+  const utms: Record<string, string> = {};
+  keys.forEach(k => {
+    const v = sessionStorage.getItem(k);
+    if (v) utms[k] = v;
+  });
+  return utms;
+}
+
+submitCapture.addEventListener('click', async () => {
+  const name = nameInput.value.trim();
+  const phone = phoneInput.value.replace(/\D/g, '');
+
+  if (!name || name.length < 3) {
+    nameInput.classList.add('error');
+    return;
   }
 
-  submitCapture.addEventListener('click', async () => {
-    const name = nameInput.value.trim();
-    const phone = phoneInput.value.replace(/\D/g, '');
+  if (phone.length < 10) {
+    phoneInput.classList.add('error');
+    return;
+  }
 
-    if (!name || name.length < 3) {
-      nameInput.classList.add('error');
-      return;
-    }
+  const courseName = areaMap[answers[2]] || 'Curso Profissional';
 
-    if (phone.length < 10) {
-      phoneInput.classList.add('error');
-      return;
-    }
+  // Salva localmente para interceptores globais
+  localStorage.setItem('sim_phone', phone);
+  localStorage.setItem('sim_name', name);
 
-    const courseName = areaMap[answers[2]] || 'Curso Profissional';
+  // Captura o lead como QUALIFICADO — inclui UTMs do canal de origem
+  await fetch('/api/leads', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      phone,
+      name,
+      origin: 'simulator',
+      course_interest: courseName,
+      objective: answers[0],
+      status: 'QUALIFICADO',
+      last_message: 'Completou simulador de futuro',
+      ...getSessionUtms(),
+    })
+  }).catch(() => {}); // Falha silenciosa
 
-    // Salva localmente para interceptores globais
-    localStorage.setItem('sim_phone', phone);
-    localStorage.setItem('sim_name', name);
+  // Meta Pixel standard event — permite otimização por conversão Lead
+  window.fbq?.('track', 'Lead', { content_name: courseName, content_category: 'education' });
 
-    // Captura o lead como QUALIFICADO — inclui UTMs do canal de origem
+  showResult(phone, name);
+});
+
+function showResult(phone: string, name: string) {
+  captureEl.classList.add('hidden');
+  resultEl.classList.remove('hidden');
+  resultEl.classList.add('animate-in');
+
+  const courseName = areaMap[answers[2]] || 'Curso Profissional';
+  
+  const resTitle = document.getElementById('res-title')!;
+  const resDesc = document.getElementById('res-desc')!;
+  const resLink = document.getElementById('res-link')! as HTMLAnchorElement;
+
+  resTitle.innerText = courseName;
+  resDesc.innerText = `Olá ${name.split(' ')[0]}! Com base no seu perfil, o curso de ${courseName} é a escolha ideal para você conquistar sua independência financeira na área da beleza.`;
+  resLink.href = getWhatsAppLink({ course: courseName, origin: 'simulator-result' });
+
+  // Se clicar no botão de WhatsApp, atualiza para INTERESSADO — mantém UTMs
+  resLink.addEventListener('click', async () => {
     await fetch('/api/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         phone,
         name,
-        origin: 'simulator',
-        course_interest: courseName,
-        objective: answers[0],
-        status: 'QUALIFICADO',
-        last_message: 'Completou simulador de futuro',
+        status: 'INTERESSADO',
+        last_message: 'Clicou no WhatsApp após simulador',
         ...getSessionUtms(),
       })
-    }).catch(() => {}); // Falha silenciosa
-
-    // Meta Pixel standard event — permite otimização por conversão Lead
-    window.fbq?.('track', 'Lead', { content_name: courseName, content_category: 'education' });
-
-    showResult(phone, name);
+    }).catch(() => {});
   });
 
-  function showResult(phone: string, name: string) {
-    captureEl.classList.add('hidden');
-    resultEl.classList.remove('hidden');
-    resultEl.classList.add('animate-in');
+  track({ event: Events.COMPLETE_FUTURE_SIMULATOR, properties: { course: courseName } });
+}
 
-    const courseName = areaMap[answers[2]] || 'Curso Profissional';
-    
-    const resTitle = document.getElementById('res-title')!;
-    const resDesc = document.getElementById('res-desc')!;
-    const resLink = document.getElementById('res-link')! as HTMLAnchorElement;
-
-    resTitle.innerText = courseName;
-    resDesc.innerText = `Olá ${name.split(' ')[0]}! Com base no seu perfil, o curso de ${courseName} é a escolha ideal para você conquistar sua independência financeira na área da beleza.`;
-    resLink.href = getWhatsAppLink({ course: courseName, origin: 'simulator-result' });
-
-    // Se clicar no botão de WhatsApp, atualiza para INTERESSADO — mantém UTMs
-    resLink.addEventListener('click', async () => {
-      await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phone,
-          name,
-          status: 'INTERESSADO',
-          last_message: 'Clicou no WhatsApp após simulador',
-          ...getSessionUtms(),
-        })
-      }).catch(() => {});
-    });
-
-    track({ event: Events.COMPLETE_FUTURE_SIMULATOR, properties: { course: courseName } });
-  }
-
-  render();
+render();
 </script>
 
 <style>
-  /* ── Seção ── */
-  .simulator {
-    padding: clamp(6rem, 15vw, 10rem) var(--spacing-sm);
-    background: #0d0416;
-    position: relative;
-    overflow: hidden;
-  }
+/* ── Seção ── */
+.simulator {
+  padding: clamp(6rem, 15vw, 10rem) var(--spacing-sm);
+  background: #0d0416;
+  position: relative;
+  overflow: hidden;
+}
 
-  /* Orbs de energia */
-  .simulator__energy { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+/* Orbs de energia */
+.simulator__energy { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 
-  .energy__orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(100px);
-    animation: orb-move 20s infinite alternate ease-in-out;
-  }
-  .energy__orb--1 { width: 600px; height: 600px; background: var(--color-purple); opacity: 0.25; top: -10%; left: -10%; }
-  .energy__orb--2 { width: 500px; height: 500px; background: var(--color-orange); opacity: 0.18; bottom: -10%; right: -10%; animation-delay: -5s; }
+.energy__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  animation: orb-move 20s infinite alternate ease-in-out;
+}
+.energy__orb--1 { width: 600px; height: 600px; background: var(--color-purple); opacity: 0.25; top: -10%; left: -10%; }
+.energy__orb--2 { width: 500px; height: 500px; background: var(--color-orange); opacity: 0.18; bottom: -10%; right: -10%; animation-delay: -5s; }
 
-  @keyframes orb-move {
-    0%   { transform: translate(0, 0) scale(1); }
-    50%  { transform: translate(80px, 40px) scale(1.1); }
-    100% { transform: translate(-40px, 80px) scale(0.9); }
-  }
+@keyframes orb-move {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(80px, 40px) scale(1.1); }
+  100% { transform: translate(-40px, 80px) scale(0.9); }
+}
 
-  /* ── Layout ── */
-  .simulator__inner { max-width: 520px; margin: 0 auto; position: relative; z-index: 2; }
+/* ── Layout ── */
+.simulator__inner { max-width: 520px; margin: 0 auto; position: relative; z-index: 2; }
 
-  /* ── Header ── */
-  .simulator__header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
+/* ── Header ── */
+.simulator__header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
 
-  .simulator__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 7px 16px;
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(222, 88, 61, 0.15));
-    border: 1px solid rgba(167, 139, 250, 0.3);
-    border-radius: 100px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: #a78bfa;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
+.simulator__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(222, 88, 61, 0.15));
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
 
-  .simulator__badge svg { flex-shrink: 0; color: #a78bfa; }
+.simulator__badge svg { flex-shrink: 0; color: #a78bfa; }
 
 
-  .simulator__title {
-    font-size: clamp(2rem, 5vw, 2.5rem);
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: -0.04em;
-    line-height: 1.1;
-    margin: 0;
-  }
+.simulator__title {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0;
+}
 
-  .simulator__sub {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 500;
-    margin: 0;
-  }
+.simulator__sub {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  margin: 0;
+}
 
-  /* ── Card ── */
-  .simulator__card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(40px);
-    border-radius: 32px;
-    padding: 2.5rem 2rem;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
-    position: relative;
-    /* Borda gradiente via outline */
-    outline: 1.5px solid transparent;
-    background-clip: padding-box;
-  }
+/* ── Card ── */
+.simulator__card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(40px);
+  border-radius: 32px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+  position: relative;
+  /* Borda gradiente via outline */
+  outline: 1.5px solid transparent;
+  background-clip: padding-box;
+}
 
-  /* Borda com gradiente */
-  .simulator__card::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 33px;
-    background: linear-gradient(135deg, rgba(167,139,250,0.4), rgba(222,88,61,0.2), rgba(167,139,250,0.1));
-    z-index: -1;
-  }
+/* Borda com gradiente */
+.simulator__card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 33px;
+  background: linear-gradient(135deg, rgba(167,139,250,0.4), rgba(222,88,61,0.2), rgba(167,139,250,0.1));
+  z-index: -1;
+}
 
-  /* Efeito de passada com brilho (Gamificação) */
-  .simulator__card.animate-glow::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 32px;
-    background: linear-gradient(
-      110deg,
-      transparent 30%,
-      rgba(0, 243, 255, 0.3) 45%,
-      rgba(0, 243, 255, 0.6) 50%,
-      rgba(0, 243, 255, 0.3) 55%,
-      transparent 70%
-    );
-    background-size: 250% 100%;
+/* Efeito de passada com brilho (Gamificação) */
+.simulator__card.animate-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(0, 243, 255, 0.3) 45%,
+    rgba(0, 243, 255, 0.6) 50%,
+    rgba(0, 243, 255, 0.3) 55%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 0;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+  animation: sweep-glow 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes sweep-glow {
+  0% {
     background-position: 200% 0;
     opacity: 0;
-    z-index: 10;
-    pointer-events: none;
-    animation: sweep-glow 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-
-  @keyframes sweep-glow {
-    0% {
-      background-position: 200% 0;
-      opacity: 0;
-    }
-    20% {
-      opacity: 1;
-    }
-    80% {
-      opacity: 1;
-    }
-    100% {
-      background-position: -100% 0;
-      opacity: 0;
-    }
+  20% {
+    opacity: 1;
   }
-
-  /* ── Progress ── */
-  .simulator__progress-wrap {
-    margin-bottom: 2.5rem;
+  80% {
+    opacity: 1;
   }
-
-  .simulator__progress-track {
-    background: rgba(255, 255, 255, 0.06);
-    height: 6px;
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 1.25rem;
-  }
-
-  .simulator__progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #a78bfa, var(--color-orange));
-    border-radius: 100px;
-    width: 0%;
-    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
-  }
-
-  /* Dots de passo */
-  .simulator__steps-dots {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-
-  .sim-dot {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1.5px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.6875rem;
-    font-weight: 800;
-    color: rgba(255,255,255,0.3);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .sim-dot--active {
-    background: linear-gradient(135deg, #a78bfa, var(--color-orange));
-    border-color: transparent;
-    color: #fff;
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
-    transform: scale(1.15);
-  }
-
-  .sim-dot--done {
-    background: rgba(167, 139, 250, 0.2);
-    border-color: rgba(167, 139, 250, 0.4);
-    color: #a78bfa;
-  }
-
-  .simulator__step-indicator {
-    display: block;
-    font-size: 0.625rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: rgba(255, 255, 255, 0.25);
-    text-align: center;
-  }
-
-  /* ── Question & Options ── */
-  .hidden { display: none; }
-  .fade-out { opacity: 0; transform: translateY(-8px); transition: all 0.25s ease; }
-
-  :global(.sim-question) {
-    font-size: clamp(1.125rem, 3vw, 1.375rem);
-    font-weight: 900;
-    color: #fff;
-    margin-bottom: 1.75rem;
-    text-align: center;
-    letter-spacing: -0.02em;
-    line-height: 1.3;
-  }
-
-  :global(.sim-options) {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  /* Opção com 3 itens: última fica centrada */
-  :global(.sim-options:has(.sim-option-card:last-child:nth-child(3))) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  :global(.sim-options .sim-option-card:last-child:nth-child(3)) {
-    grid-column: 1 / -1;
-    max-width: 240px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  :global(.sim-option-card) {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1.5px solid rgba(255, 255, 255, 0.07);
-    border-radius: 20px;
-    padding: 1.5rem 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.875rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-    overflow: hidden;
-  }
-
-  :global(.sim-option-card::before) {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 19px;
-    background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(222,88,61,0.08));
+  100% {
+    background-position: -100% 0;
     opacity: 0;
-    transition: opacity 0.3s ease;
   }
+}
 
-  :global(.sim-option-card:hover) {
-    border-color: rgba(222, 88, 61, 0.5);
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 20px rgba(222, 88, 61, 0.2);
-  }
+/* ── Progress ── */
+.simulator__progress-wrap {
+  margin-bottom: 2.5rem;
+}
 
-  :global(.sim-option-card:hover::before) { opacity: 1; }
+.simulator__progress-track {
+  background: rgba(255, 255, 255, 0.06);
+  height: 6px;
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
 
-  :global(.sim-option-card:active) {
-    transform: scale(0.96);
-    border-color: var(--color-orange);
-    box-shadow: 0 0 30px rgba(222, 88, 61, 0.4);
-  }
+.simulator__progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #a78bfa, var(--color-orange));
+  border-radius: 100px;
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.6);
+}
 
-  :global(.sim-option-icon) {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(222,88,61,0.1));
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #a78bfa;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-  }
+/* Dots de passo */
+.simulator__steps-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
 
-  :global(.sim-option-icon svg) {
-    width: 22px;
-    height: 22px;
-  }
+.sim-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.3);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  :global(.sim-option-card:hover .sim-option-icon) {
-    background: linear-gradient(135deg, rgba(167,139,250,0.3), rgba(222,88,61,0.2));
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(167,139,250,0.3);
-  }
+.sim-dot--active {
+  background: linear-gradient(135deg, #a78bfa, var(--color-orange));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+  transform: scale(1.15);
+}
 
-  :global(.sim-option-label) {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.85);
-    text-align: center;
-    line-height: 1.3;
-  }
+.sim-dot--done {
+  background: rgba(167, 139, 250, 0.2);
+  border-color: rgba(167, 139, 250, 0.4);
+  color: #a78bfa;
+}
 
-  /* ── Analyzing ── */
-  .simulator__analyzing { text-align: center; padding: 2.5rem 0; }
+.simulator__step-indicator {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+}
 
-  .analyzing__scanner {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: 3px solid rgba(167,139,250,0.2);
-    border-top-color: #a78bfa;
-    margin: 0 auto 1.5rem;
-    animation: spin 1s linear infinite;
-  }
+/* ── Question & Options ── */
+.hidden { display: none; }
+.fade-out { opacity: 0; transform: translateY(-8px); transition: all 0.25s ease; }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
+:global(.sim-question) {
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 1.75rem;
+  text-align: center;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
 
-  .analyzing__text { margin-bottom: 2rem; }
-  .analyzing__title { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
-  .analyzing__sub { font-size: 0.875rem; color: rgba(255,255,255,0.4); }
+:global(.sim-options) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
 
-  .analyzing__bar-container {
-    height: 6px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 100px;
-    overflow: hidden;
-    max-width: 220px;
-    margin: 0 auto;
-  }
+/* Opção com 3 itens: última fica centrada */
+:global(.sim-options:has(.sim-option-card:last-child:nth-child(3))) {
+  grid-template-columns: repeat(2, 1fr);
+}
+:global(.sim-options .sim-option-card:last-child:nth-child(3)) {
+  grid-column: 1 / -1;
+  max-width: 240px;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  .analyzing__bar {
-    height: 100%;
-    background: linear-gradient(90deg, #a78bfa, var(--color-orange));
-    border-radius: 100px;
-    width: 0%;
-    box-shadow: 0 0 12px rgba(167,139,250,0.6);
-  }
+:global(.sim-option-card) {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
 
-  /* ── Capture ── */
-  .simulator__capture { text-align: center; padding: 1rem 0; }
-  .capture__title { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
-  .capture__sub { font-size: 0.875rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; line-height: 1.5; }
+:global(.sim-option-card::before) {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 19px;
+  background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(222,88,61,0.08));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
-  .capture__form { display: flex; flex-direction: column; gap: 0.875rem; max-width: 320px; margin: 0 auto 1.5rem; }
+:global(.sim-option-card:hover) {
+  border-color: rgba(222, 88, 61, 0.5);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 20px rgba(222, 88, 61, 0.2);
+}
 
-  .capture__input {
-    background: rgba(255,255,255,0.05);
-    border: 1.5px solid rgba(255,255,255,0.1);
-    border-radius: 14px;
-    padding: 16px;
-    color: #fff;
-    font-size: 1rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    width: 100%;
-  }
-  .capture__input::placeholder { color: rgba(255,255,255,0.3); }
-  .capture__input:focus {
-    outline: none;
-    border-color: #a78bfa;
-    background: rgba(167,139,250,0.08);
-    box-shadow: 0 0 20px rgba(167,139,250,0.15);
-  }
-  .capture__input.error { border-color: #ff4444; animation: shake 0.4s ease; }
+:global(.sim-option-card:hover::before) { opacity: 1; }
 
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
-  }
+:global(.sim-option-card:active) {
+  transform: scale(0.96);
+  border-color: var(--color-orange);
+  box-shadow: 0 0 30px rgba(222, 88, 61, 0.4);
+}
 
-  .capture__btn {
-    background: linear-gradient(135deg, #a78bfa, var(--color-orange));
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    padding: 17px;
-    font-weight: 800;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(222, 88, 61, 0.25);
-  }
-  .capture__btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(222, 88, 61, 0.45); filter: brightness(1.1); }
-  .capture__btn svg { width: 18px; height: 18px; }
+:global(.sim-option-icon) {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(222,88,61,0.1));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a78bfa;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
 
-  .capture__disclaimer { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
+:global(.sim-option-icon svg) {
+  width: 22px;
+  height: 22px;
+}
 
-  /* ── Result ── */
-  .simulator__result { text-align: center; animation: result-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+:global(.sim-option-card:hover .sim-option-icon) {
+  background: linear-gradient(135deg, rgba(167,139,250,0.3), rgba(222,88,61,0.2));
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(167,139,250,0.3);
+}
 
-  .result__badge {
-    display: inline-block;
-    padding: 6px 16px;
-    background: rgba(0, 255, 127, 0.1);
-    color: #00ff7f;
-    border: 1px solid rgba(0, 255, 127, 0.25);
-    border-radius: 100px;
-    font-size: 0.625rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 1.5rem;
-  }
+:global(.sim-option-label) {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  line-height: 1.3;
+}
 
-  .result__title { font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 1rem; letter-spacing: -0.04em; line-height: 1.1; }
-  .result__desc { font-size: 0.9375rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 2.5rem; }
+/* ── Analyzing ── */
+.simulator__analyzing { text-align: center; padding: 2.5rem 0; }
 
-  .result__actions { display: flex; flex-direction: column; gap: 0.875rem; }
+.analyzing__scanner {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid rgba(167,139,250,0.2);
+  border-top-color: #a78bfa;
+  margin: 0 auto 1.5rem;
+  animation: spin 1s linear infinite;
+}
 
-  .result__btn {
-    padding: 18px 32px;
-    border-radius: 16px;
-    font-weight: 800;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: none;
-  }
-  .result__btn--primary { background: #fff; color: #12071f; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-  .result__btn--primary:hover { transform: translateY(-3px); box-shadow: 0 28px 55px rgba(0,0,0,0.4); }
-  .result__btn--secondary { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
-  .result__btn--secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  @keyframes result-in {
-    from { opacity: 0; transform: scale(0.9) translateY(20px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
+.analyzing__text { margin-bottom: 2rem; }
+.analyzing__title { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+.analyzing__sub { font-size: 0.875rem; color: rgba(255,255,255,0.4); }
 
-  .animate-in { animation: fade-in-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.analyzing__bar-container {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  overflow: hidden;
+  max-width: 220px;
+  margin: 0 auto;
+}
 
-  @keyframes fade-in-up {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.analyzing__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #a78bfa, var(--color-orange));
+  border-radius: 100px;
+  width: 0%;
+  box-shadow: 0 0 12px rgba(167,139,250,0.6);
+}
 
-  @media (max-width: 480px) {
-    .simulator__card { padding: 2rem 1.25rem; }
-    .result__title { font-size: 1.625rem; }
-    :global(.sim-option-card) { padding: 1.25rem 0.75rem; }
-  }
+/* ── Capture ── */
+.simulator__capture { text-align: center; padding: 1rem 0; }
+.capture__title { font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+.capture__sub { font-size: 0.875rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; line-height: 1.5; }
+
+.capture__form { display: flex; flex-direction: column; gap: 0.875rem; max-width: 320px; margin: 0 auto 1.5rem; }
+
+.capture__input {
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 16px;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+.capture__input::placeholder { color: rgba(255,255,255,0.3); }
+.capture__input:focus {
+  outline: none;
+  border-color: #a78bfa;
+  background: rgba(167,139,250,0.08);
+  box-shadow: 0 0 20px rgba(167,139,250,0.15);
+}
+.capture__input.error { border-color: #ff4444; animation: shake 0.4s ease; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.capture__btn {
+  background: linear-gradient(135deg, #a78bfa, var(--color-orange));
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 17px;
+  font-weight: 800;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(222, 88, 61, 0.25);
+}
+.capture__btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(222, 88, 61, 0.45); filter: brightness(1.1); }
+.capture__btn svg { width: 18px; height: 18px; }
+
+.capture__disclaimer { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
+
+/* ── Result ── */
+.simulator__result { text-align: center; animation: result-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+.result__badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(0, 255, 127, 0.1);
+  color: #00ff7f;
+  border: 1px solid rgba(0, 255, 127, 0.25);
+  border-radius: 100px;
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.5rem;
+}
+
+.result__title { font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 1rem; letter-spacing: -0.04em; line-height: 1.1; }
+.result__desc { font-size: 0.9375rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 2.5rem; }
+
+.result__actions { display: flex; flex-direction: column; gap: 0.875rem; }
+
+.result__btn {
+  padding: 18px 32px;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+.result__btn--primary { background: #fff; color: #12071f; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.result__btn--primary:hover { transform: translateY(-3px); box-shadow: 0 28px 55px rgba(0,0,0,0.4); }
+.result__btn--secondary { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
+.result__btn--secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+@keyframes result-in {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-in { animation: fade-in-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .simulator__card { padding: 2rem 1.25rem; }
+  .result__title { font-size: 1.625rem; }
+  :global(.sim-option-card) { padding: 1.25rem 0.75rem; }
+}
 </style>

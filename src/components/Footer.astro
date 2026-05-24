@@ -1,182 +1,182 @@
 ---
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-embelleze.png';
-import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, INSTITUTE_ADDRESS } from '../lib/constants';
+import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, INSTITUTE_ADDRESS, INSTITUTE_INSTAGRAM_URL } from '../lib/constants';
 import { getWhatsAppLink } from '../lib/whatsapp';
 ---
 <footer class="footer">
-  <div class="footer__container">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <Image src={logo} alt="Embelleze" class="footer__logo" />
-        <p class="footer__tagline">Transformando vidas através da beleza em Trindade desde sempre.</p>
-        <div class="footer__social">
-          <a href="https://instagram.com/embellezetrindade" target="_blank" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
-          <a href="https://www.facebook.com/institutoembellezetrindade/" target="_blank" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </a>
-          <a href={getWhatsAppLink({ origin: 'footer' })} target="_blank" aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217s.231.001.332.005c.109.004.258-.041.404.308.159.386.542 1.32.588 1.416.046.096.077.208.014.335-.062.126-.093.204-.188.312-.095.108-.19.242-.271.327-.09.094-.184.197-.079.377.105.18.468.771.999 1.242.685.61 1.262.799 1.443.889.181.09.289.077.397-.049.109-.126.463-.537.586-.719.123-.181.246-.154.414-.093.167.061 1.062.501 1.247.593.185.092.308.138.354.217.046.079.046.458-.098.863z"/></svg>
-          </a>
-        </div>
-      </div>
+<div class="footer__container">
+<div class="footer__top">
+<div class="footer__brand">
+<Image src={logo} alt="Embelleze" class="footer__logo" />
+<p class="footer__tagline">Transformando vidas através da beleza em Trindade desde sempre.</p>
+<div class="footer__social">
+  <a href={INSTITUTE_INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" data-social="instagram" data-origin="footer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+  </a>
+  <a href="https://www.facebook.com/institutoembellezetrindade/" target="_blank" aria-label="Facebook">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+  </a>
+  <a href={getWhatsAppLink({ origin: 'footer' })} target="_blank" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217s.231.001.332.005c.109.004.258-.041.404.308.159.386.542 1.32.588 1.416.046.096.077.208.014.335-.062.126-.093.204-.188.312-.095.108-.19.242-.271.327-.09.094-.184.197-.079.377.105.18.468.771.999 1.242.685.61 1.262.799 1.443.889.181.09.289.077.397-.049.109-.126.463-.537.586-.719.123-.181.246-.154.414-.093.167.061 1.062.501 1.247.593.185.092.308.138.354.217.046.079.046.458-.098.863z"/></svg>
+  </a>
+</div>
+</div>
 
-      <div class="footer__links">
-        <h4 class="footer__title">Navegação</h4>
-        <ul>
-          <li><a href="/">Início</a></li>
-          <li><a href="/cursos">Cursos</a></li>
-          <li><a href="/mapa">Localização</a></li>
-          <li><a href="/#faq">Dúvidas</a></li>
-        </ul>
-      </div>
+<div class="footer__links">
+<h4 class="footer__title">Navegação</h4>
+<ul>
+  <li><a href="/">Início</a></li>
+  <li><a href="/cursos">Cursos</a></li>
+  <li><a href="/mapa">Localização</a></li>
+  <li><a href="/#faq">Dúvidas</a></li>
+</ul>
+</div>
 
-      <div class="footer__contact">
-        <h4 class="footer__title">Contato</h4>
-        <ul>
-          <li>{INSTITUTE_ADDRESS}</li>
-          <li><a href={`tel:${WHATSAPP_NUMBER}`} class="footer__contact-link">{WHATSAPP_DISPLAY}</a></li>
-        </ul>
-      </div>
-    </div>
+<div class="footer__contact">
+<h4 class="footer__title">Contato</h4>
+<ul>
+  <li>{INSTITUTE_ADDRESS}</li>
+  <li><a href={`tel:${WHATSAPP_NUMBER}`} class="footer__contact-link">{WHATSAPP_DISPLAY}</a></li>
+</ul>
+</div>
+</div>
 
-    <div class="footer__bottom">
-      <p>&copy; {new Date().getFullYear()} Instituto Embelleze Trindade - GO. Todos os direitos reservados.</p>
-      <p class="footer__dev">Desenvolvido por <a href="https://www.instagram.com/neoflowoff.eth/" target="_blank" rel="noopener noreferrer">NΞØ FlowOFF</a></p>
-      <div class="footer__legal">
-        <a href="/privacidade">Privacidade</a>
-        <a href="/termos">Termos</a>
-      </div>
-    </div>
-  </div>
+<div class="footer__bottom">
+<p>&copy; {new Date().getFullYear()} Instituto Embelleze Trindade - GO. Todos os direitos reservados.</p>
+<p class="footer__dev">Desenvolvido por <a href="https://www.instagram.com/neoflowoff.eth/" target="_blank" rel="noopener noreferrer">NΞØ FlowOFF</a></p>
+<div class="footer__legal">
+<a href="/privacidade">Privacidade</a>
+<a href="/termos">Termos</a>
+</div>
+</div>
+</div>
 </footer>
 
 <style>
-  .footer {
-    background: #08020d;
-    padding: 5rem 0 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    color: #fff;
-    position: relative;
-    z-index: 10;
-  }
+.footer {
+background: #08020d;
+padding: 5rem 0 2rem;
+border-top: 1px solid rgba(255, 255, 255, 0.05);
+color: #fff;
+position: relative;
+z-index: 10;
+}
 
-  .footer__container {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
+.footer__container {
+max-width: 1240px;
+margin: 0 auto;
+padding: 0 1.5rem;
+}
 
-  .footer__top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 4rem;
-    margin-bottom: 4rem;
-  }
+.footer__top {
+display: grid;
+grid-template-columns: 2fr 1fr 1fr;
+gap: 4rem;
+margin-bottom: 4rem;
+}
 
-  .footer__logo {
-    height: 28px;
-    width: auto;
-    filter: brightness(0) invert(1);
-    margin-bottom: 1.5rem;
-  }
+.footer__logo {
+height: 28px;
+width: auto;
+filter: brightness(0) invert(1);
+margin-bottom: 1.5rem;
+}
 
-  .footer__tagline {
-    font-size: 0.9375rem;
-    color: rgba(255, 255, 255, 0.5);
-    line-height: 1.6;
-    max-width: 300px;
-    margin-bottom: 2rem;
-  }
+.footer__tagline {
+font-size: 0.9375rem;
+color: rgba(255, 255, 255, 0.5);
+line-height: 1.6;
+max-width: 300px;
+margin-bottom: 2rem;
+}
 
-  .footer__social {
-    display: flex;
-    gap: 1.5rem;
-  }
+.footer__social {
+display: flex;
+gap: 1.5rem;
+}
 
-  .footer__social a {
-    color: rgba(255, 255, 255, 0.4);
-    transition: color 0.3s ease;
-  }
+.footer__social a {
+color: rgba(255, 255, 255, 0.4);
+transition: color 0.3s ease;
+}
 
-  .footer__social a:hover {
-    color: var(--color-orange);
-  }
+.footer__social a:hover {
+color: var(--color-orange);
+}
 
-  .footer__social svg { width: 20px; height: 20px; }
+.footer__social svg { width: 20px; height: 20px; }
 
-  .footer__title {
-    font-size: 0.875rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 1.5rem;
-    color: var(--color-orange);
-  }
+.footer__title {
+font-size: 0.875rem;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+margin-bottom: 1.5rem;
+color: var(--color-orange);
+}
 
-  .footer__links ul, .footer__contact ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+.footer__links ul, .footer__contact ul {
+list-style: none;
+padding: 0;
+margin: 0;
+}
 
-  .footer__links li, .footer__contact li {
-    margin-bottom: 1rem;
-    font-size: 0.9375rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
+.footer__links li, .footer__contact li {
+margin-bottom: 1rem;
+font-size: 0.9375rem;
+color: rgba(255, 255, 255, 0.6);
+}
 
-  .footer__links a, .footer__contact-link {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .footer__links a:hover, .footer__contact-link:hover {
-    color: #fff;
-  }
+.footer__links a, .footer__contact-link {
+color: inherit;
+text-decoration: none;
+transition: color 0.3s ease;
+}
 
-  .footer__bottom {
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
-  }
+.footer__links a:hover, .footer__contact-link:hover {
+color: #fff;
+}
 
-  .footer__legal {
-    display: flex;
-    gap: 2rem;
-  }
+.footer__bottom {
+padding-top: 2rem;
+border-top: 1px solid rgba(255, 255, 255, 0.05);
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size: 0.75rem;
+color: rgba(255, 255, 255, 0.3);
+}
 
-  .footer__legal a {
-    color: inherit;
-    text-decoration: none;
-  }
+.footer__legal {
+display: flex;
+gap: 2rem;
+}
 
-  .footer__dev a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 600;
-  }
+.footer__legal a {
+color: inherit;
+text-decoration: none;
+}
 
-  .footer__dev a:hover {
-    color: var(--color-orange);
-  }
+.footer__dev a {
+color: inherit;
+text-decoration: none;
+font-weight: 600;
+}
 
-  @media (max-width: 768px) {
-    .footer__top {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-    .footer__bottom {
-      flex-direction: column;
-      gap: 1.5rem;
-      text-align: center;
-    }
-  }
+.footer__dev a:hover {
+color: var(--color-orange);
+}
+
+@media (max-width: 768px) {
+.footer__top {
+grid-template-columns: 1fr;
+gap: 3rem;
+}
+.footer__bottom {
+flex-direction: column;
+gap: 1.5rem;
+text-align: center;
+}
+}
 </style>

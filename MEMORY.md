@@ -16,6 +16,7 @@ Função : Decisões tomadas — não regredir
   não institucional genérica.
 - Bella aparece como consultora virtual
   e ponte para o WhatsApp.
+- Vitória é o agente de atendimento do chat do site: entende intenção, responde dúvidas do site e encaminha para Bella/WhatsApp quando houver pedido de atendimento, condição comercial ou reserva. Prompt canônico: `src/content/vitoria.web.md`.
 - Oferta é dinâmica por curso ativo
   via `src/content/offers.json`.
 - Ticket/código de desconto é mecânica
@@ -26,25 +27,28 @@ Função : Decisões tomadas — não regredir
   aprovados pelo cliente.
 - Params UTM de `/oferta` são repassados
   para o link do WhatsApp.
-- Webhook validado em PRODUÇÃO:
-  - `src/pages/api/zapi/webhook.ts` — entrada Z-API
-  - `src/lib/zapi.ts` — envio com `normalizePhone` + `maskPhone`
+- Webhook ativo:
+  - `src/pages/api/whatsapp/webhook.ts` — entrada Baileys via `neo-whatsapp-connect`
+  - `src/lib/whatsapp-gateway.ts` — envio via gateway Baileys
+  - `src/lib/phone.ts` — `normalizePhone` + `maskPhone`
   - `src/lib/bella.ts` — Azure OpenAI (system prompt de `bella.knowledge.md`)
-  - `src/pages/api/health/zapi.ts` — requer `X-Health-Token`
-- Fluxo de dados: Z-API → Webhook → bella.ts (Azure)
-  → zapi.ts → db.ts → lead_events.
+- Fluxo de dados: Baileys → Webhook → bella.ts (Azure)
+  → whatsapp-gateway.ts → db.ts → lead_events.
 - Probeltec implementado: `src/lib/probeltec.ts`
   Auth + createLead. Sync atômico via `claimProbeltecSync`.
   Sync só ocorre se `upsertLead` salvar com sucesso (leadSaved).
 - `appendLeadEvent` persiste em tabela `lead_events`
   (criada automaticamente na primeira chamada por processo).
 - Segurança reforçada nesta sessão:
-  - Webhook rejeita quando `ZAPI_CLIENT_TOKEN` não está definido
-  - Health endpoint exige `HEALTH_TOKEN` via `X-Health-Token`
+  - Webhook Baileys rejeita quando `WHATSAPP_WEBHOOK_SECRET` não está definido
+  - FlowPay exige `FLOWPAY_WEBHOOK_SECRET`
   - `content-length` validado como número (não string)
-  - Telefone normalizado para E.164 antes de enviar pela Z-API
+  - `/api/bella/chat`, `/api/leads` e `/api/location-intent` têm rate limit em memória por IP
+  - Middleware global aplica headers básicos: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`
+  - Telefone normalizado para E.164 antes de enviar pelo gateway WhatsApp
   - Logs nunca expõem mais que os últimos 4 dígitos do telefone
   - `isValidTicket` valida formato real `BELLA-{base36}-{3chars}`
+- Handoff do chat do site deve usar apenas o fluxo canônico `wa.me` via CTA do componente; não usar deep link de WhatsApp Business, Play Store, Apple Store ou URL alternativa.
 
 ────────────────────────────────────────
 

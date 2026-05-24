@@ -5,548 +5,534 @@ import courses from '../content/courses.json';
 import CourseIcon from '../components/CourseIcon.astro';
 
 interface Props {
-  title?: string;
-  subtitle?: string;
-  courseName?: string;
-  nextClass?: string;
-  registrationDeadline?: string;
-  entryPrice?: string;
-  entryLabel?: string;
-  iconId?: string;
-  accentColor?: string;
-  serialNumber?: string;
+title?: string;
+subtitle?: string;
+courseName?: string;
+nextClass?: string;
+registrationDeadline?: string;
+iconId?: string;
+accentColor?: string;
+serialNumber?: string;
 }
 
 const { activeOffer } = offers;
 const featuredCourse = courses.find(c => c.id === activeOffer.courseId);
 
 const {
-  title = activeOffer.title,
-  subtitle = activeOffer.highlightBenefit,
-  courseName = featuredCourse?.name || "Curso Profissional",
-  nextClass = activeOffer.nextClass,
-  registrationDeadline = activeOffer.registrationDeadline,
-  entryPrice = activeOffer.entryPrice || "R$ 19,90",
-  entryLabel = activeOffer.entryLabel || "Reserva de Vaga",
-  iconId = "lucide:zap",
-  accentColor = "var(--color-orange)",
-  serialNumber = `TRD-${Math.floor(Math.random() * 90000) + 10000}`
+title = activeOffer.title,
+subtitle = activeOffer.highlightBenefit,
+courseName = featuredCourse?.name || "Curso Profissional",
+nextClass = activeOffer.nextClass,
+registrationDeadline = activeOffer.registrationDeadline,
+iconId = "lucide:zap",
+accentColor = "var(--color-orange)",
+serialNumber = `TRD-${Math.floor(Math.random() * 90000) + 10000}`
 } = Astro.props;
 
 const ctaLink = getWhatsAppLink({ course: courseName, origin: 'course-offer' });
 ---
 
 <section class="offer" style={`--accent-color: ${accentColor};`}>
-  <div class="offer__bg-glow" aria-hidden="true"></div>
-  
-  <div class="offer__container">
-    <div class="offer__ticket" id="vip-ticket">
-      <!-- Marca d'água decorativa -->
-      <div class="ticket__watermark">{courseName}</div>
+<div class="offer__bg-glow" aria-hidden="true"></div>
 
-      <!-- Lado Principal do Ticket -->
-      <div class="ticket__main">
-        <div class="ticket__header">
-          <div class="ticket__badge">
-            <CourseIcon iconId={iconId} className="ticket__badge-icon" />
-            <span>Acesso VIP Prioritário</span>
+<div class="offer__container">
+<div class="offer__ticket" id="vip-ticket">
+  <!-- Marca d'água decorativa -->
+  <div class="ticket__watermark">{courseName}</div>
+
+  <!-- Lado Principal do Ticket -->
+  <div class="ticket__main">
+    <div class="ticket__header">
+      <div class="ticket__badge">
+        <CourseIcon iconId={iconId} className="ticket__badge-icon" />
+        <span>Acesso VIP Prioritário</span>
+      </div>
+      <div class="ticket__serial">{serialNumber}</div>
+    </div>
+    
+    <div class="ticket__body">
+      <p class="ticket__eyebrow">{title}</p>
+      <h2 class="ticket__title">{courseName}</h2>
+      <p class="ticket__subtitle">{subtitle}</p>
+    </div>
+    
+    <div class="ticket__footer">
+      <div class="ticket__meta">
+        {nextClass && (
+          <div class="ticket__meta-item">
+            <span class="meta-label">INÍCIO DAS AULAS</span>
+            <span class="meta-value">{nextClass}</span>
           </div>
-          <div class="ticket__serial">{serialNumber}</div>
-        </div>
-        
-        <div class="ticket__body">
-          <p class="ticket__eyebrow">{title}</p>
-          <h2 class="ticket__title">{courseName}</h2>
-          <p class="ticket__subtitle">{subtitle}</p>
-        </div>
-        
-        <div class="ticket__footer">
-          <div class="ticket__meta">
-            {nextClass && (
-              <div class="ticket__meta-item">
-                <span class="meta-label">INÍCIO DAS AULAS</span>
-                <span class="meta-value">{nextClass}</span>
-              </div>
-            )}
-            {registrationDeadline && (
-              <div class="ticket__meta-item">
-                <span class="meta-label">INSCRIÇÕES ATÉ</span>
-                <span class="meta-value" style="color: var(--accent-color)">{registrationDeadline}</span>
-              </div>
-            )}
-            <div class="ticket__meta-item">
-              <span class="meta-label">DISPONIBILIDADE</span>
-              <span class="meta-value meta-value--active">Fale com a Bella e garanta sua vaga</span>
-            </div>
-            <div class="ticket__meta-item ticket__meta-item--price">
-              <span class="meta-label">{entryLabel.toUpperCase()}</span>
-              <span class="meta-value meta-value--price">{entryPrice}</span>
-              <span class="meta-abatimento">abatido na matrícula</span>
-            </div>
+        )}
+        {registrationDeadline && (
+          <div class="ticket__meta-item">
+            <span class="meta-label">INSCRIÇÕES ATÉ</span>
+            <span class="meta-value" style="color: var(--accent-color)">{registrationDeadline}</span>
           </div>
+        )}
+        <div class="ticket__meta-item">
+          <span class="meta-label">DISPONIBILIDADE</span>
+          <span class="meta-value meta-value--active">Fale com a Bella e garanta sua vaga</span>
         </div>
       </div>
-
-      <!-- Aviso legal antes do picote -->
-      <p class="ticket__disclaimer">
-        * Data de início sujeita a confirmação de turma. A abertura da turma está condicionada ao número mínimo de inscritos, conforme política de cada curso.
-      </p>
-
-      <!-- Divisor com Picote -->
-      <div class="ticket__divider">
-        <div class="ticket__cutout ticket__cutout--top"></div>
-        <div class="ticket__line"></div>
-        <div class="ticket__cutout ticket__cutout--bottom"></div>
-      </div>
-
-      <!-- Canhoto/CTA -->
-      <div class="ticket__stub">
-        <div class="stub__left">
-          <div class="ticket__barcode" aria-hidden="true">
-            {Array.from({ length: 15 }).map(() => <div class="barcode__line"></div>)}
-          </div>
-          <div class="stub__price-seal">
-            <span class="seal__from">reserve por</span>
-            <strong class="seal__value">{entryPrice}</strong>
-            <span class="seal__detail">via PIX</span>
-          </div>
-        </div>
-        <a href={ctaLink} class="ticket__cta">
-          <CourseIcon iconId="lucide:arrow-right" className="cta-icon" />
-          <span>GARANTIR VAGA</span>
-        </a>
-        <p class="ticket__fine-print">Trindade • GO</p>
-      </div>
-
-      <!-- Texturas e Efeitos -->
-      <div class="ticket__texture"></div>
-      <div class="ticket__shimmer"></div>
     </div>
   </div>
+
+  <!-- Aviso legal antes do picote -->
+  <p class="ticket__disclaimer">
+    * Data de início sujeita a confirmação de turma. A abertura da turma está condicionada ao número mínimo de inscritos, conforme política de cada curso.
+  </p>
+
+  <!-- Divisor com Picote -->
+  <div class="ticket__divider">
+    <div class="ticket__cutout ticket__cutout--top"></div>
+    <div class="ticket__line"></div>
+    <div class="ticket__cutout ticket__cutout--bottom"></div>
+  </div>
+
+  <!-- Canhoto/CTA -->
+  <div class="ticket__stub">
+    <div class="stub__left">
+      <div class="ticket__barcode" aria-hidden="true">
+        {Array.from({ length: 15 }).map(() => <div class="barcode__line"></div>)}
+      </div>
+    </div>
+    <a href={ctaLink} class="ticket__cta">
+      <CourseIcon iconId="lucide:arrow-right" className="cta-icon" />
+      <span>GARANTIR VAGA</span>
+    </a>
+    <p class="ticket__fine-print">Trindade • GO</p>
+  </div>
+
+  <!-- Texturas e Efeitos -->
+  <div class="ticket__texture"></div>
+  <div class="ticket__shimmer"></div>
+</div>
+</div>
 </section>
 
 <style>
-  .offer {
-    padding: clamp(6rem, 15vw, 12rem) var(--spacing-sm);
-    background: #08020d;
-    position: relative;
-    overflow: hidden;
-    perspective: 2000px;
-  }
+.offer {
+padding: clamp(6rem, 15vw, 12rem) var(--spacing-sm);
+background: #08020d;
+position: relative;
+overflow: hidden;
+perspective: 2000px;
+}
 
-  .offer__bg-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150%;
-    height: 150%;
-    background: radial-gradient(circle at center, var(--accent-color) 0%, transparent 70%);
-    opacity: 0.08;
-    pointer-events: none;
-  }
+.offer__bg-glow {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 150%;
+height: 150%;
+background: radial-gradient(circle at center, var(--accent-color) 0%, transparent 70%);
+opacity: 0.08;
+pointer-events: none;
+}
 
-  .offer__container {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-  }
+.offer__container {
+max-width: 1100px;
+margin: 0 auto;
+display: flex;
+justify-content: center;
+}
 
-  /* ── Ticket Base ── */
-  .offer__ticket {
-    display: flex;
-    background: #fdfdfd;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(222, 88, 61, 0.02) 0, transparent 50%),
-      radial-gradient(at 50% 0%, rgba(18, 7, 31, 0.01) 0, transparent 50%);
-    border-radius: 44px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 
-      0 120px 200px rgba(0,0,0,0.8),
-      0 0 50px rgba(222, 88, 61, 0.05);
-    animation: ticket-reveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-    max-width: 940px;
-    width: 100%;
-  }
+/* ── Ticket Base ── */
+.offer__ticket {
+display: flex;
+background: #fdfdfd;
+background-image: 
+  radial-gradient(at 0% 0%, rgba(222, 88, 61, 0.02) 0, transparent 50%),
+  radial-gradient(at 50% 0%, rgba(18, 7, 31, 0.01) 0, transparent 50%);
+border-radius: 44px;
+position: relative;
+overflow: hidden;
+box-shadow: 
+  0 120px 200px rgba(0,0,0,0.8),
+  0 0 50px rgba(222, 88, 61, 0.05);
+animation: ticket-reveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+max-width: 940px;
+width: 100%;
+}
 
-  @keyframes ticket-reveal {
-    from { opacity: 0; transform: translateY(120px) rotateX(10deg) scale(0.9); }
-    to { opacity: 1; transform: translateY(0) rotateX(0) scale(1); }
-  }
+@keyframes ticket-reveal {
+from { opacity: 0; transform: translateY(120px) rotateX(10deg) scale(0.9); }
+to { opacity: 1; transform: translateY(0) rotateX(0) scale(1); }
+}
 
-  /* ── Watermark ── */
-  .ticket__watermark {
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translateY(-50%) rotate(-90deg);
-    font-size: 8rem;
-    font-weight: 900;
-    color: rgba(18, 7, 31, 0.02);
-    pointer-events: none;
-    user-select: none;
-    letter-spacing: 0.1em;
-    z-index: 1;
-  }
+/* ── Watermark ── */
+.ticket__watermark {
+position: absolute;
+top: 50%;
+left: 5%;
+transform: translateY(-50%) rotate(-90deg);
+font-size: 8rem;
+font-weight: 900;
+color: rgba(18, 7, 31, 0.02);
+pointer-events: none;
+user-select: none;
+letter-spacing: 0.1em;
+z-index: 1;
+}
 
-  /* ── Textures ── */
-  .ticket__texture {
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.06;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    z-index: 2;
-  }
+/* ── Textures ── */
+.ticket__texture {
+position: absolute;
+inset: 0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+opacity: 0.06;
+mix-blend-mode: multiply;
+pointer-events: none;
+z-index: 2;
+}
 
-  .ticket__shimmer {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      120deg,
-      transparent 35%,
-      rgba(255, 255, 255, 0.03) 48%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.03) 52%,
-      transparent 65%
-    );
-    background-size: 300% 300%;
-    animation: shimmer 20s infinite linear;
-    pointer-events: none;
-    z-index: 5;
-    mix-blend-mode: overlay;
-  }
+.ticket__shimmer {
+position: absolute;
+inset: 0;
+background: linear-gradient(
+  120deg,
+  transparent 35%,
+  rgba(255, 255, 255, 0.03) 48%,
+  rgba(255, 255, 255, 0.12) 50%,
+  rgba(255, 255, 255, 0.03) 52%,
+  transparent 65%
+);
+background-size: 300% 300%;
+animation: shimmer 20s infinite linear;
+pointer-events: none;
+z-index: 5;
+mix-blend-mode: overlay;
+}
 
-  @keyframes shimmer {
-    0% { background-position: -150% -150%; }
-    100% { background-position: 150% 150%; }
-  }
+@keyframes shimmer {
+0% { background-position: -150% -150%; }
+100% { background-position: 150% 150%; }
+}
 
-  /* ── Main Section ── */
-  .ticket__main {
-    flex: 1;
-    padding: clamp(2.5rem, 5vw, 4.5rem) clamp(2.5rem, 6vw, 5rem);
-    position: relative;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 480px;
-  }
+/* ── Main Section ── */
+.ticket__main {
+flex: 1;
+padding: clamp(2.5rem, 5vw, 4.5rem) clamp(2.5rem, 6vw, 5rem);
+position: relative;
+z-index: 3;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+min-height: 480px;
+}
 
-  .ticket__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
+.ticket__header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 2rem;
+}
 
-  .ticket__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
-    background: rgba(18, 7, 31, 0.03);
-    border: 1px solid rgba(18, 7, 31, 0.06);
-    border-radius: 100px;
-    color: #12071f;
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
+.ticket__badge {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+padding: 10px 20px;
+background: rgba(18, 7, 31, 0.03);
+border: 1px solid rgba(18, 7, 31, 0.06);
+border-radius: 100px;
+color: #12071f;
+font-size: 0.75rem;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 0.12em;
+}
 
-  .ticket__badge-icon { 
-    width: 14px; height: 14px; 
-    stroke-width: 3.5;
-    color: var(--accent-color);
-  }
+.ticket__badge-icon { 
+width: 14px; height: 14px; 
+stroke-width: 3.5;
+color: var(--accent-color);
+}
 
-  .ticket__serial {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: rgba(18, 7, 31, 0.25);
-    letter-spacing: 0.2em;
-  }
+.ticket__serial {
+font-family: 'JetBrains Mono', monospace;
+font-size: 0.75rem;
+color: rgba(18, 7, 31, 0.25);
+letter-spacing: 0.2em;
+}
 
-  .ticket__body {
-    margin: 2rem 0;
-  }
+.ticket__body {
+margin: 2rem 0;
+}
 
-  .ticket__title {
-    font-size: clamp(2.5rem, 7vw, 4rem);
-    font-weight: 900;
-    color: #12071f;
-    line-height: 0.95;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.06em;
-  }
+.ticket__title {
+font-size: clamp(2.5rem, 7vw, 4rem);
+font-weight: 900;
+color: #12071f;
+line-height: 0.95;
+margin-bottom: 1.5rem;
+letter-spacing: -0.06em;
+}
 
-  .ticket__subtitle {
-    font-size: clamp(1.125rem, 2vw, 1.375rem);
-    color: rgba(18, 7, 31, 0.5);
-    font-weight: 500;
-    max-width: 480px;
-    line-height: 1.4;
-  }
+.ticket__subtitle {
+font-size: clamp(1.125rem, 2vw, 1.375rem);
+color: rgba(18, 7, 31, 0.5);
+font-weight: 500;
+max-width: 480px;
+line-height: 1.4;
+}
 
-  .ticket__meta {
-    display: flex;
-    gap: clamp(2rem, 5vw, 5rem);
-    border-top: 1px solid rgba(18, 7, 31, 0.06);
-    padding-top: 2rem;
-  }
+.ticket__meta {
+display: flex;
+gap: clamp(2rem, 5vw, 5rem);
+border-top: 1px solid rgba(18, 7, 31, 0.06);
+padding-top: 2rem;
+}
 
-  .ticket__meta-item { display: flex; flex-direction: column; gap: 8px; }
+.ticket__meta-item { display: flex; flex-direction: column; gap: 8px; }
 
-  .meta-label {
-    font-size: 0.65rem;
-    font-weight: 800;
-    color: rgba(18, 7, 31, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-  }
+.meta-label {
+font-size: 0.65rem;
+font-weight: 800;
+color: rgba(18, 7, 31, 0.3);
+text-transform: uppercase;
+letter-spacing: 0.15em;
+}
 
-  .meta-value {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: #12071f;
-    letter-spacing: -0.01em;
-  }
+.meta-value {
+font-size: 1.25rem;
+font-weight: 800;
+color: #12071f;
+letter-spacing: -0.01em;
+}
 
-  .meta-value--active {
-    color: #00b36b;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+.meta-value--active {
+color: #00b36b;
+display: flex;
+align-items: center;
+gap: 8px;
+}
 
-  .meta-value--price {
-    color: var(--accent-color);
-    font-size: 1.5rem;
-  }
+.meta-value--price {
+color: var(--accent-color);
+font-size: 1.5rem;
+}
 
-  .meta-abatimento {
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: rgba(18, 7, 31, 0.35);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-top: -4px;
-  }
+.meta-abatimento {
+font-size: 0.65rem;
+font-weight: 600;
+color: rgba(18, 7, 31, 0.35);
+text-transform: uppercase;
+letter-spacing: 0.08em;
+margin-top: -4px;
+}
 
-  /* ── Selo de preço no canhoto ── */
-  .stub__price-seal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 1.25rem 1.75rem;
-    border: 1.5px solid rgba(222, 88, 61, 0.2);
-    border-radius: 16px;
-    background: rgba(222, 88, 61, 0.04);
-    text-align: center;
-  }
+/* ── Selo de preço no canhoto ── */
+.stub__price-seal {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 2px;
+padding: 1.25rem 1.75rem;
+border: 1.5px solid rgba(222, 88, 61, 0.2);
+border-radius: 16px;
+background: rgba(222, 88, 61, 0.04);
+text-align: center;
+}
 
-  .seal__from {
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: rgba(18, 7, 31, 0.35);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
+.seal__from {
+font-size: 0.6rem;
+font-weight: 700;
+color: rgba(18, 7, 31, 0.35);
+text-transform: uppercase;
+letter-spacing: 0.12em;
+}
 
-  .seal__value {
-    font-size: 1.75rem;
-    font-weight: 900;
-    color: var(--accent-color);
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
+.seal__value {
+font-size: 1.75rem;
+font-weight: 900;
+color: var(--accent-color);
+letter-spacing: -0.03em;
+line-height: 1;
+}
 
-  .seal__detail {
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: rgba(18, 7, 31, 0.3);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
+.seal__detail {
+font-size: 0.6rem;
+font-weight: 700;
+color: rgba(18, 7, 31, 0.3);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+}
 
-  .meta-value--active::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: currentColor;
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(0, 179, 107, 0.4);
-    animation: pulse 2.5s infinite;
-  }
+.meta-value--active::before {
+content: '';
+width: 8px;
+height: 8px;
+background: currentColor;
+border-radius: 50%;
+box-shadow: 0 0 15px rgba(0, 179, 107, 0.4);
+animation: pulse 2.5s infinite;
+}
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
+@keyframes pulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.5; transform: scale(0.8); }
+}
 
-  /* ── Aviso legal ── */
-  .ticket__disclaimer {
-    font-size: 0.6rem;
-    color: rgba(18, 7, 31, 0.28);
-    line-height: 1.5;
-    padding: 0 clamp(2.5rem, 6vw, 5rem) 1.25rem;
-    max-width: 520px;
-    z-index: 3;
-    position: relative;
-  }
+/* ── Aviso legal ── */
+.ticket__disclaimer {
+font-size: 0.6rem;
+color: rgba(18, 7, 31, 0.28);
+line-height: 1.5;
+padding: 0 clamp(2.5rem, 6vw, 5rem) 1.25rem;
+max-width: 520px;
+z-index: 3;
+position: relative;
+}
 
-  /* ── Divider ── */
-  .ticket__divider {
-    width: 1px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 3;
-  }
+/* ── Divider ── */
+.ticket__divider {
+width: 1px;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+z-index: 3;
+}
 
-  .ticket__line {
-    flex: 1;
-    width: 1px;
-    border-left: 2px dashed rgba(18, 7, 31, 0.1);
-    margin: 40px 0;
-  }
+.ticket__line {
+flex: 1;
+width: 1px;
+border-left: 2px dashed rgba(18, 7, 31, 0.1);
+margin: 40px 0;
+}
 
-  .ticket__cutout {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background: #08020d;
-    border-radius: 50%;
-    left: -30px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-  }
+.ticket__cutout {
+position: absolute;
+width: 60px;
+height: 60px;
+background: #08020d;
+border-radius: 50%;
+left: -30px;
+box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+}
 
-  .ticket__cutout--top { top: -30px; }
-  .ticket__cutout--bottom { bottom: -30px; }
+.ticket__cutout--top { top: -30px; }
+.ticket__cutout--bottom { bottom: -30px; }
 
-  /* ── Stub Section ── */
-  .ticket__stub {
-    width: 320px;
-    background: rgba(18, 7, 31, 0.015);
-    padding: 4.5rem 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3.5rem;
-    z-index: 3;
-  }
+/* ── Stub Section ── */
+.ticket__stub {
+width: 320px;
+background: rgba(18, 7, 31, 0.015);
+padding: 4.5rem 3rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 3.5rem;
+z-index: 3;
+}
 
-  .stub__left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
+.stub__left {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 2rem;
+}
 
-  .ticket__barcode {
-    display: flex;
-    gap: 3px;
-    height: 80px;
-    opacity: 0.7;
-    mix-blend-mode: multiply;
-  }
+.ticket__barcode {
+display: flex;
+gap: 3px;
+height: 80px;
+opacity: 0.7;
+mix-blend-mode: multiply;
+}
 
-  .barcode__line {
-    width: 2px;
-    height: 100%;
-    background: #12071f;
-  }
-  .barcode__line:nth-child(3n) { width: 5px; }
-  .barcode__line:nth-child(4n) { width: 1px; }
-  .barcode__line:nth-child(7n) { width: 3px; }
+.barcode__line {
+width: 2px;
+height: 100%;
+background: #12071f;
+}
+.barcode__line:nth-child(3n) { width: 5px; }
+.barcode__line:nth-child(4n) { width: 1px; }
+.barcode__line:nth-child(7n) { width: 3px; }
 
-  .ticket__cta {
-    width: 140px;
-    height: 140px;
-    background: #12071f;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    text-decoration: none;
-    font-weight: 900;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 30px 60px rgba(18, 7, 31, 0.3);
-    text-align: center;
-    padding: 20px;
-    line-height: 1.2;
-  }
+.ticket__cta {
+width: 140px;
+height: 140px;
+background: #12071f;
+color: #fff;
+border-radius: 50%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 12px;
+text-decoration: none;
+font-weight: 900;
+font-size: 0.75rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+box-shadow: 0 30px 60px rgba(18, 7, 31, 0.3);
+text-align: center;
+padding: 20px;
+line-height: 1.2;
+}
 
-  .ticket__cta:hover {
-    transform: scale(1.1) rotate(5deg);
-    background: var(--accent-color);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
-  }
+.ticket__cta:hover {
+transform: scale(1.1) rotate(5deg);
+background: var(--accent-color);
+box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
+}
 
-  .cta-icon { width: 32px; height: 32px; }
+.cta-icon { width: 32px; height: 32px; }
 
-  .ticket__fine-print {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: rgba(18, 7, 31, 0.2);
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-  }
+.ticket__fine-print {
+font-size: 0.75rem;
+font-weight: 700;
+color: rgba(18, 7, 31, 0.2);
+text-transform: uppercase;
+letter-spacing: 0.25em;
+}
 
-  /* ── Responsive ── */
-  @media (max-width: 940px) {
-    .offer__ticket { flex-direction: column; border-radius: 40px; overflow: hidden; }
-    .ticket__main { padding: 3.5rem 2.5rem; min-height: auto; }
-    .ticket__watermark { display: none; }
-    .ticket__disclaimer { padding: 0 2.5rem 1.25rem; }
-    .ticket__divider { width: 100%; height: 1px; }
-    .ticket__line {
-      width: 100%;
-      height: 1px;
-      border-left: none;
-      border-top: 2px dashed rgba(18, 7, 31, 0.1);
-      margin: 0 40px;
-    }
-    /* Cutouts menores no mobile para não sair das margens */
-    .ticket__cutout { width: 44px; height: 44px; top: -22px; left: auto; }
-    .ticket__cutout--top { left: -22px; }
-    .ticket__cutout--bottom { right: -22px; }
-    .ticket__stub { width: 100%; padding: 3rem 2.5rem; flex-direction: row; justify-content: space-between; align-items: center; gap: 2rem; }
-    .stub__left { flex-direction: row; align-items: center; gap: 1.5rem; }
-    .stub__price-seal { padding: 0.75rem 1.25rem; }
-    .seal__value { font-size: 1.375rem; }
-    .ticket__cta { width: 160px; height: 64px; border-radius: 100px; flex-direction: row; }
-    .ticket__barcode { height: 50px; opacity: 0.5; }
-    .ticket__fine-print { display: none; }
-  }
+/* ── Responsive ── */
+@media (max-width: 940px) {
+.offer__ticket { flex-direction: column; border-radius: 40px; overflow: hidden; }
+.ticket__main { padding: 3.5rem 2.5rem; min-height: auto; }
+.ticket__watermark { display: none; }
+.ticket__disclaimer { padding: 0 2.5rem 1.25rem; }
+.ticket__divider { width: 100%; height: 1px; }
+.ticket__line {
+  width: 100%;
+  height: 1px;
+  border-left: none;
+  border-top: 2px dashed rgba(18, 7, 31, 0.1);
+  margin: 0 40px;
+}
+/* Cutouts menores no mobile para não sair das margens */
+.ticket__cutout { width: 44px; height: 44px; top: -22px; left: auto; }
+.ticket__cutout--top { left: -22px; }
+.ticket__cutout--bottom { right: -22px; }
+.ticket__stub { width: 100%; padding: 3rem 2.5rem; flex-direction: row; justify-content: space-between; align-items: center; gap: 2rem; }
+.stub__left { flex-direction: row; align-items: center; gap: 1.5rem; }
+.stub__price-seal { padding: 0.75rem 1.25rem; }
+.seal__value { font-size: 1.375rem; }
+.ticket__cta { width: 160px; height: 64px; border-radius: 100px; flex-direction: row; }
+.ticket__barcode { height: 50px; opacity: 0.5; }
+.ticket__fine-print { display: none; }
+}
 
-  @media (max-width: 500px) {
-    .offer { padding-top: 4rem; padding-bottom: 6rem; }
-    .ticket__main { padding: 2.5rem 1.5rem; }
-    .ticket__title { font-size: 2.15rem; }
-    .ticket__subtitle { font-size: 1rem; margin-bottom: 2rem; }
-    .ticket__meta { gap: 1.5rem; flex-wrap: wrap; }
-    .meta-value { font-size: 1.125rem; }
-    .ticket__stub { padding: 1.25rem 1rem; gap: 0.75rem; }
-    .stub__left { gap: 0.75rem; }
-    .ticket__barcode { height: 42px; }
-    .stub__price-seal { padding: 0.5rem 0.875rem; }
-    .seal__value { font-size: 1.125rem; }
-    .ticket__cta { width: 110px; height: 52px; font-size: 0.65rem; gap: 6px; }
-    .cta-icon { width: 18px; height: 18px; }
-  }
+@media (max-width: 500px) {
+.offer { padding-top: 4rem; padding-bottom: 6rem; }
+.ticket__main { padding: 2.5rem 1.5rem; }
+.ticket__title { font-size: 2.15rem; }
+.ticket__subtitle { font-size: 1rem; margin-bottom: 2rem; }
+.ticket__meta { gap: 1.5rem; flex-wrap: wrap; }
+.meta-value { font-size: 1.125rem; }
+.ticket__stub { padding: 1.25rem 1rem; gap: 0.75rem; }
+.stub__left { gap: 0.75rem; }
+.ticket__barcode { height: 42px; }
+.stub__price-seal { padding: 0.5rem 0.875rem; }
+.seal__value { font-size: 1.125rem; }
+.ticket__cta { width: 110px; height: 52px; font-size: 0.65rem; gap: 6px; }
+.cta-icon { width: 18px; height: 18px; }
+}
 </style>

@@ -8,495 +8,495 @@ import imgUnhas from '../assets/cursos/manicure.jpg';
 import imgEstetica from '../assets/cursos/sombrancelhas.jpg';
 
 const categories = [
-  { name: 'Cabelo',   iconId: 'lucide:scissors',  color: '#a78bfa', desc: 'Corte, coloração e tratamentos', image: imgCabelo },
-  { name: 'Unhas',    iconId: 'lucide:sparkles',   color: '#fb923c', desc: 'Manicure, gel e alongamento', image: imgUnhas },
-  { name: 'Estética', iconId: 'lucide:star',        color: '#34d399', desc: 'Design facial e corporal', image: imgEstetica },
+{ name: 'Cabelo',   iconId: 'lucide:scissors',  color: '#a78bfa', desc: 'Corte, coloração e tratamentos', image: imgCabelo },
+{ name: 'Unhas',    iconId: 'lucide:sparkles',   color: '#fb923c', desc: 'Manicure, gel e alongamento', image: imgUnhas },
+{ name: 'Estética', iconId: 'lucide:star',        color: '#34d399', desc: 'Design facial e corporal', image: imgEstetica },
 ];
 
 const countByCategory = Object.fromEntries(
-  categories.map(c => [c.name, courses.filter(course => course.category === c.name).length])
+categories.map(c => [c.name, courses.filter(course => course.category === c.name).length])
 );
 ---
 
 <section class="area-picker" id="cursos">
-  <div class="area-picker__bg" aria-hidden="true"></div>
+<div class="area-picker__bg" aria-hidden="true"></div>
 
-  <div class="area-picker__container">
-    <header class="area-picker__header">
-      <span class="area-picker__eyebrow">Formações Profissionais</span>
-      <h2 class="area-picker__title">Qual é a sua área?</h2>
-      <p class="area-picker__subtitle">
-        Toque na área e veja os cursos disponíveis agora.
-      </p>
-    </header>
+<div class="area-picker__container">
+<header class="area-picker__header">
+  <span class="area-picker__eyebrow">Formações Profissionais</span>
+  <h2 class="area-picker__title">Qual é a sua área?</h2>
+  <p class="area-picker__subtitle">
+    Toque na área e veja os cursos disponíveis agora.
+  </p>
+</header>
 
-    <div class="area-picker__grid">
-      {categories.map(cat => (
-        <a
-          href={`/cursos?area=${cat.name}`}
-          class="area-card"
-          data-category={cat.name}
-          style={`--cat-color: ${cat.color};`}
-        >
-          <div class="area-card__image-container">
-            <Image src={cat.image} alt={cat.name} class="area-card__image" />
-          </div>
-          <div class="area-card__check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-          </div>
-          <div class="area-card__icon">
-            <CourseIcon iconId={cat.iconId} className="area-card__icon-svg" />
-          </div>
-          <div class="area-card__body">
-            <strong class="area-card__name">{cat.name}</strong>
-            <span class="area-card__desc">{cat.desc}</span>
-          </div>
-
-          <div class="area-card__count">
-            <span class="area-card__count-num">{countByCategory[cat.name]}</span>
-            <span class="area-card__count-label">cursos</span>
-          </div>
-        </a>
-      ))}
-    </div>
-
-    <div class="area-picker__footer">
-      <a href="/cursos" class="area-picker__cta">
-        Ver todas as formações
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M5 12h14m-7-7 7 7-7 7"/>
+<div class="area-picker__grid">
+  {categories.map(cat => (
+    <a
+      href={`/cursos?area=${cat.name}`}
+      class="area-card"
+      data-category={cat.name}
+      style={`--cat-color: ${cat.color};`}
+    >
+      <div class="area-card__image-container">
+        <Image src={cat.image} alt={cat.name} class="area-card__image" />
+      </div>
+      <div class="area-card__check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"/>
         </svg>
-      </a>
-    </div>
-  </div>
+      </div>
+      <div class="area-card__icon">
+        <CourseIcon iconId={cat.iconId} className="area-card__icon-svg" />
+      </div>
+      <div class="area-card__body">
+        <strong class="area-card__name">{cat.name}</strong>
+        <span class="area-card__desc">{cat.desc}</span>
+      </div>
+
+      <div class="area-card__count">
+        <span class="area-card__count-num">{countByCategory[cat.name]}</span>
+        <span class="area-card__count-label">cursos</span>
+      </div>
+    </a>
+  ))}
+</div>
+
+<div class="area-picker__footer">
+  <a href="/cursos" class="area-picker__cta">
+    Ver todas as formações
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M5 12h14m-7-7 7 7-7 7"/>
+    </svg>
+  </a>
+</div>
+</div>
 </section>
 
 <style>
-  .area-picker {
-    scroll-margin-top: 80px;
-    padding: clamp(5rem, 12vw, 9rem) var(--spacing-sm);
-    background: #0a0212;
-    position: relative;
-    overflow: hidden;
-  }
+.area-picker {
+scroll-margin-top: 80px;
+padding: clamp(5rem, 12vw, 9rem) var(--spacing-sm);
+background: #0a0212;
+position: relative;
+overflow: hidden;
+}
 
-  .area-picker__bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at 20% 50%, rgba(95, 48, 128, 0.12) 0%, transparent 55%),
-      radial-gradient(circle at 80% 50%, rgba(222, 88, 61, 0.08) 0%, transparent 55%);
-    pointer-events: none;
-  }
+.area-picker__bg {
+position: absolute;
+inset: 0;
+background:
+  radial-gradient(circle at 20% 50%, rgba(95, 48, 128, 0.12) 0%, transparent 55%),
+  radial-gradient(circle at 80% 50%, rgba(222, 88, 61, 0.08) 0%, transparent 55%);
+pointer-events: none;
+}
 
-  .area-picker__container {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    padding: 0 var(--spacing-sm);
-  }
+.area-picker__container {
+max-width: 800px;
+margin: 0 auto;
+position: relative;
+z-index: 2;
+text-align: center;
+padding: 0 var(--spacing-sm);
+}
 
-  @media (min-width: 1100px) {
-    .area-picker__container {
-      max-width: 1100px;
-    }
-  }
+@media (min-width: 1100px) {
+.area-picker__container {
+  max-width: 1100px;
+}
+}
 
-  .area-picker__header {
-    margin-bottom: clamp(2.5rem, 6vw, 4rem);
-  }
+.area-picker__header {
+margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
 
-  .area-picker__eyebrow {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: var(--color-orange);
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    margin-bottom: 1rem;
-  }
+.area-picker__eyebrow {
+display: block;
+font-size: 0.75rem;
+font-weight: 800;
+color: var(--color-orange);
+text-transform: uppercase;
+letter-spacing: 0.2em;
+margin-bottom: 1rem;
+}
 
-  .area-picker__title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: -0.04em;
-    margin-bottom: 1rem;
-  }
+.area-picker__title {
+font-size: clamp(2.5rem, 6vw, 4rem);
+font-weight: 900;
+color: #fff;
+letter-spacing: -0.04em;
+margin-bottom: 1rem;
+}
 
-  .area-picker__subtitle {
-    font-size: 1.125rem;
-    color: rgba(255, 255, 255, 0.5);
-    max-width: 600px;
-    margin: 0 auto;
-  }
+.area-picker__subtitle {
+font-size: 1.125rem;
+color: rgba(255, 255, 255, 0.5);
+max-width: 600px;
+margin: 0 auto;
+}
 
-  /* ── Cards ── */
-  .area-picker__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-bottom: 3.5rem;
-  }
+/* ── Cards ── */
+.area-picker__grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 0.75rem;
+margin-bottom: 3.5rem;
+}
 
-  @media (min-width: 600px) {
-    .area-picker__grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-  }
+@media (min-width: 600px) {
+.area-picker__grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+}
 
-  @media (min-width: 1100px) {
-    .area-picker__grid {
-      gap: 2rem;
-    }
-  }
+@media (min-width: 1100px) {
+.area-picker__grid {
+  gap: 2rem;
+}
+}
 
-  .area-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1.5px solid rgba(255, 255, 255, 0.07);
-    border-radius: 20px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                background 0.3s ease,
-                border-color 0.3s ease,
-                box-shadow 0.4s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
+.area-card {
+display: flex;
+align-items: center;
+gap: 1rem;
+padding: 1.25rem 1.5rem;
+background: rgba(255, 255, 255, 0.03);
+border: 1.5px solid rgba(255, 255, 255, 0.07);
+border-radius: 20px;
+text-decoration: none;
+position: relative;
+overflow: hidden;
+transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            background 0.3s ease,
+            border-color 0.3s ease,
+            box-shadow 0.4s ease;
+-webkit-tap-highlight-color: transparent;
+}
 
-  @media (min-width: 600px) {
-    .area-card {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 2rem;
-      border-radius: 28px;
-      gap: 1.25rem;
-      min-height: 340px;
-      text-align: left;
-    }
-  }
+@media (min-width: 600px) {
+.area-card {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  border-radius: 28px;
+  gap: 1.25rem;
+  min-height: 340px;
+  text-align: left;
+}
+}
 
-  @media (min-width: 1100px) {
-    .area-card {
-      padding: 2.5rem;
-      min-height: 280px;
-      gap: 1.5rem;
-    }
-  }
+@media (min-width: 1100px) {
+.area-card {
+  padding: 2.5rem;
+  min-height: 280px;
+  gap: 1.5rem;
+}
+}
 
-  .area-card:active {
-    transform: scale(0.97);
-  }
+.area-card:active {
+transform: scale(0.97);
+}
 
-  .area-card:hover,
-  .area-card:focus-visible {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--cat-color);
-    box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.3),
-      0 0 20px color-mix(in srgb, var(--cat-color) 15%, transparent);
-    transform: translateY(-8px);
-  }
+.area-card:hover,
+.area-card:focus-visible {
+background: rgba(255, 255, 255, 0.05);
+border-color: var(--cat-color);
+box-shadow: 
+  0 20px 40px rgba(0, 0, 0, 0.3),
+  0 0 20px color-mix(in srgb, var(--cat-color) 15%, transparent);
+transform: translateY(-8px);
+}
 
-  /* Check badge (aparece no hover) */
-  .area-card__check {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--cat-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 3;
-  }
+/* Check badge (aparece no hover) */
+.area-card__check {
+position: absolute;
+top: 16px;
+right: 16px;
+width: 28px;
+height: 28px;
+border-radius: 50%;
+background: var(--cat-color);
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transform: scale(0.5);
+transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+z-index: 3;
+}
 
-  .area-card__check svg {
-    width: 14px;
-    height: 14px;
-    stroke: #000;
-  }
+.area-card__check svg {
+width: 14px;
+height: 14px;
+stroke: #000;
+}
 
-  .area-card:hover .area-card__check,
-  .area-card:focus-visible .area-card__check {
-    opacity: 1;
-    transform: scale(1);
-  }
+.area-card:hover .area-card__check,
+.area-card:focus-visible .area-card__check {
+opacity: 1;
+transform: scale(1);
+}
 
-  /* Icon */
-  .area-card__icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
-    background: color-mix(in srgb, var(--cat-color) 10%, transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--cat-color);
-    transition: all 0.3s ease;
-    border: 1px solid color-mix(in srgb, var(--cat-color) 15%, transparent);
-  }
+/* Icon */
+.area-card__icon {
+width: 48px;
+height: 48px;
+border-radius: 16px;
+background: color-mix(in srgb, var(--cat-color) 10%, transparent);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+color: var(--cat-color);
+transition: all 0.3s ease;
+border: 1px solid color-mix(in srgb, var(--cat-color) 15%, transparent);
+}
 
-  .area-card:hover .area-card__icon {
-    background: var(--cat-color);
-    color: #000;
-    transform: rotate(-5deg);
-  }
+.area-card:hover .area-card__icon {
+background: var(--cat-color);
+color: #000;
+transform: rotate(-5deg);
+}
 
-  .area-card__icon-svg {
-    width: 24px;
-    height: 24px;
-    stroke-width: 2.2;
-  }
+.area-card__icon-svg {
+width: 24px;
+height: 24px;
+stroke-width: 2.2;
+}
 
-  /* Body */
-  .area-card__body {
-    flex: 1;
-    min-width: 0;
-    text-align: left;
-  }
+/* Body */
+.area-card__body {
+flex: 1;
+min-width: 0;
+text-align: left;
+}
 
-  @media (min-width: 600px) {
-    .area-card__body {
-      width: 100%;
-    }
-  }
+@media (min-width: 600px) {
+.area-card__body {
+  width: 100%;
+}
+}
 
-  .area-card__name {
-    display: block;
-    font-size: 1.125rem;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.35rem;
-  }
+.area-card__name {
+display: block;
+font-size: 1.125rem;
+font-weight: 800;
+color: #fff;
+letter-spacing: -0.01em;
+margin-bottom: 0.35rem;
+}
 
-  .area-card__desc {
-    display: block;
-    font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.5;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.area-card__desc {
+display: block;
+font-size: 0.875rem;
+color: rgba(255, 255, 255, 0.45);
+line-height: 1.5;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
 
-  /* Imagem com Multiply */
-  .area-card__image-container {
-    width: 100%;
-    height: 100px;
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-    background: var(--cat-color);
-  }
+/* Imagem com Multiply */
+.area-card__image-container {
+width: 100%;
+height: 100px;
+border-radius: 14px;
+overflow: hidden;
+margin-bottom: 1rem;
+background: var(--cat-color);
+}
 
-  .area-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%);
-    mix-blend-mode: multiply;
-    opacity: 0.7;
-    transition: all 0.4s ease;
-  }
+.area-card__image {
+width: 100%;
+height: 100%;
+object-fit: cover;
+filter: grayscale(100%);
+mix-blend-mode: multiply;
+opacity: 0.7;
+transition: all 0.4s ease;
+}
 
-  .area-card:hover .area-card__image {
-    filter: grayscale(0%);
-    mix-blend-mode: normal;
-    opacity: 1;
-  }
+.area-card:hover .area-card__image {
+filter: grayscale(0%);
+mix-blend-mode: normal;
+opacity: 1;
+}
 
-  @media (min-width: 600px) {
-    .area-card__desc { 
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-  }
+@media (min-width: 600px) {
+.area-card__desc { 
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+}
 
-  /* Count badge */
-  .area-card__count {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-    background: color-mix(in srgb, var(--cat-color) 8%, transparent);
-    border: 1.5px solid color-mix(in srgb, var(--cat-color) 20%, transparent);
-    border-radius: 14px;
-    padding: 0.5rem 0.85rem;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    width: fit-content;
-    z-index: 2;
-  }
+/* Count badge */
+.area-card__count {
+display: flex;
+flex-direction: column;
+align-items: center;
+flex-shrink: 0;
+background: color-mix(in srgb, var(--cat-color) 8%, transparent);
+border: 1.5px solid color-mix(in srgb, var(--cat-color) 20%, transparent);
+border-radius: 14px;
+padding: 0.5rem 0.85rem;
+transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+width: fit-content;
+z-index: 2;
+}
 
-  /* ── Mobile: layout horizontal compacto ── */
-  @media (max-width: 599px) {
-    /* Imagem: thumbnail fixo à esquerda */
-    .area-card__image-container {
-      width: 88px;
-      height: 88px;
-      flex-shrink: 0;
-      margin-bottom: 0;
-      border-radius: 12px;
-    }
+/* ── Mobile: layout horizontal compacto ── */
+@media (max-width: 599px) {
+/* Imagem: thumbnail fixo à esquerda */
+.area-card__image-container {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  margin-bottom: 0;
+  border-radius: 12px;
+}
 
-    /* Ícone escondido no mobile — imagem já comunica a categoria */
-    .area-card__icon {
-      display: none;
-    }
+/* Ícone escondido no mobile — imagem já comunica a categoria */
+.area-card__icon {
+  display: none;
+}
 
-    /* Count: absoluto canto superior direito */
-    .area-card__count {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 44px;
-      height: 44px;
-      padding: 0;
-      justify-content: center;
-      border-radius: 10px;
-    }
+/* Count: absoluto canto superior direito */
+.area-card__count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 10px;
+}
 
-    .area-card__count-num {
-      font-size: 1rem;
-      line-height: 1;
-    }
+.area-card__count-num {
+  font-size: 1rem;
+  line-height: 1;
+}
 
-    .area-card__count-label {
-      font-size: 0.45rem;
-      margin-top: -1px;
-    }
+.area-card__count-label {
+  font-size: 0.45rem;
+  margin-top: -1px;
+}
 
-    /* Body: garante que o nome não seja cortado pelo badge */
-    .area-card__body {
-      padding-right: 54px;
-    }
+/* Body: garante que o nome não seja cortado pelo badge */
+.area-card__body {
+  padding-right: 54px;
+}
 
-    .area-card__name {
-      font-size: 1.05rem;
-    }
-  }
+.area-card__name {
+  font-size: 1.05rem;
+}
+}
 
-  .area-card:hover .area-card__count {
-    background: color-mix(in srgb, var(--cat-color) 15%, transparent);
-    border-color: color-mix(in srgb, var(--cat-color) 40%, transparent);
-  }
+.area-card:hover .area-card__count {
+background: color-mix(in srgb, var(--cat-color) 15%, transparent);
+border-color: color-mix(in srgb, var(--cat-color) 40%, transparent);
+}
 
-  @media (min-width: 600px) {
-    .area-card__count {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      width: 44px;
-      height: 44px;
-      padding: 0;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(8px);
-      border-radius: 14px;
-    }
+@media (min-width: 600px) {
+.area-card__count {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+}
 
-    .area-card:hover .area-card__count {
-      opacity: 0;
-      transform: scale(0.8);
-    }
+.area-card:hover .area-card__count {
+  opacity: 0;
+  transform: scale(0.8);
+}
 
-    .area-card__check {
-      top: 2rem;
-      right: 2rem;
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      margin: 0;
-    }
+.area-card__check {
+  top: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  margin: 0;
+}
 
-    .area-card__count-num {
-      font-size: 1.125rem;
-    }
+.area-card__count-num {
+  font-size: 1.125rem;
+}
 
-    .area-card__count-label {
-      font-size: 0.5rem;
-      margin-top: -2px;
-    }
-  }
+.area-card__count-label {
+  font-size: 0.5rem;
+  margin-top: -2px;
+}
+}
 
-  @media (min-width: 1100px) {
-    .area-card__count {
-      bottom: 2.5rem;
-      right: 2.5rem;
-    }
-  }
+@media (min-width: 1100px) {
+.area-card__count {
+  bottom: 2.5rem;
+  right: 2.5rem;
+}
+}
 
-  .area-card__count-num {
-    font-size: 1.25rem;
-    font-weight: 900;
-    color: var(--cat-color);
-    line-height: 1;
-  }
+.area-card__count-num {
+font-size: 1.25rem;
+font-weight: 900;
+color: var(--cat-color);
+line-height: 1;
+}
 
-  .area-card__count-label {
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.35);
-    margin-top: 2px;
-  }
+.area-card__count-label {
+font-size: 0.65rem;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 0.08em;
+color: rgba(255, 255, 255, 0.35);
+margin-top: 2px;
+}
 
-  /* CTA */
-  .area-picker__footer {
-    display: flex;
-    justify-content: center;
-  }
+/* CTA */
+.area-picker__footer {
+display: flex;
+justify-content: center;
+}
 
-  .area-picker__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 36px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 100px;
-    color: rgba(255, 255, 255, 0.6);
-    font-weight: 700;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+.area-picker__cta {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+padding: 18px 36px;
+background: rgba(255, 255, 255, 0.04);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 100px;
+color: rgba(255, 255, 255, 0.6);
+font-weight: 700;
+font-size: 1rem;
+text-decoration: none;
+transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  .area-picker__cta svg {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+.area-picker__cta svg {
+width: 20px;
+height: 20px;
+transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  .area-picker__cta:hover {
-    background: #fff;
-    border-color: #fff;
-    color: #12071f;
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  }
+.area-picker__cta:hover {
+background: #fff;
+border-color: #fff;
+color: #12071f;
+transform: translateY(-4px);
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
 
-  .area-picker__cta:hover svg {
-    transform: translateX(6px);
-  }
+.area-picker__cta:hover svg {
+transform: translateX(6px);
+}
 </style>

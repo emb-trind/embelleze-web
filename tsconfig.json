@@ -6,7 +6,7 @@
       "@/*": ["./src/*"]
     },
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "types": ["astro/client"]

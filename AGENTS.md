@@ -35,21 +35,28 @@ src/
   sections/                blocos da landing
   components/              UI reutilizável
   content/                 dados editáveis (courses, faqs, offers)
+  middleware.ts             security headers + CSP com nonce por request
+  env.d.ts                 tipos de App.Locals (cspNonce)
   lib/
     bella.ts               generateBellaReply() — Azure OpenAI
     db.ts                  upsertLead, claimProbeltecSync, getLeadByPhone
     redis.ts               histórico conversa Bella
-    zapi.ts                sendTextMessage (legado Z-API)
+    phone.ts               normalizePhone, maskPhone
+    rate-limit.ts          enforceRateLimit() — in-memory, por IP
+    whatsapp-gateway.ts    sendGatewayMessage → neo-whatsapp-connect
     probeltec.ts           createLead → CRM
     resend.ts              emails transacionais
     whatsapp.ts            links wa.me
   pages/api/
-    whatsapp/webhook.ts    ← inbound Baileys (gateway neo-whatsapp-connect)
-    zapi/webhook.ts        ← inbound Z-API (legado — desativar após Baileys)
-    bella/chat.ts          chat FAB do site (Vitória)
+    whatsapp/webhook.ts    ← inbound Baileys (Bearer WHATSAPP_WEBHOOK_SECRET)
+    bella/chat.ts          chat FAB do site (Vitória — atendimento web)
     leads.ts               captura formulário
+    location-intent.ts     geolocalização de intenção
     payment/flowpay/
-      webhook.ts           confirmação pagamento PIX_PAGO
+      webhook.ts           confirmação pagamento PIX_PAGO (Bearer FLOWPAY_WEBHOOK_SECRET)
+  content/
+    vitoria.web.md         prompt da Vitória — atendimento web
+    bella.knowledge.md     base de conhecimento estratégica da Bella (não exposta no site)
 ```
 
 ---
@@ -57,11 +64,7 @@ src/
 ## ◬ Canais WhatsApp
 
 | Canal | Status | Endpoint |
-|---|---|---|
-| Baileys (neo-whatsapp-connect) | ativo em breve | `/api/whatsapp/webhook` |
-| Z-API | legado — em produção | `/api/zapi/webhook` |
-
-Desativar Z-API somente após validar Baileys em produção.
+| Baileys (neo-whatsapp-connect) | ativo | `/api/whatsapp/webhook` |
 
 ---
 

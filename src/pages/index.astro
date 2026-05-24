@@ -11,6 +11,9 @@ import SocialProof from '../sections/SocialProof.astro';
 import FutureSimulator from '../sections/FutureSimulator.astro';
 import MapPreview from '../sections/MapPreview.astro';
 import FinalCTA from '../sections/FinalCTA.astro';
+
+const showSocialProof =
+  (process.env.PUBLIC_SHOW_SOCIAL_PROOF ?? import.meta.env.PUBLIC_SHOW_SOCIAL_PROOF ?? 'true') !== 'false';
 ---
 
 <BaseLayout title="Instituto Embelleze Trindade — Comece sua nova profissão">
@@ -21,7 +24,7 @@ import FinalCTA from '../sections/FinalCTA.astro';
   <AcademyTeaser />
   <BellaIntro />
   <ObjectionBreak />
-  <SocialProof />
+  {showSocialProof && <SocialProof />}
   <FutureSimulator />
   <MapPreview />
   <FinalCTA />

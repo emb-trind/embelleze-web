@@ -1,31 +1,127 @@
-# ABOUT
+# Embelleze Web · Codex Context
 
-Embelleze Landing
-Framework: Astro
-Deploy: Railway
-Domain: embelleze-bella.online
+## Identity
 
-Primary objective: Convert visitors into qualified WhatsApp conversations with Bella
+Official site/webapp for Instituto Embelleze Trindade.
+
+- Framework: Astro SSR
+- Deploy: Railway direct build from `emb-trind/embelleze-web`
+- Domain: `embelleze-bella.online`
+- Primary goal: convert visitors into qualified WhatsApp conversations with Bella
+
+## Required Reading
+
+Before changing code, read the closest applicable docs:
+
+- `AGENTS.md`
+- `CONTEXT.md`
+- `MEMORY.md`
+- `SKILL.md`
+- parent workspace docs when the task touches deploy, workspace, or service boundaries
+
+This service belongs to the `embelleze-trdd` control plane, but it is its own repo.
+Do not assume a monorepo contract beyond the parent `pnpm-workspace.yaml`.
+
+## Operating Rules
+
+- Keep `src/pages/index.astro` as a section importer only.
+- Keep landing sections in `src/sections/`.
+- Keep reusable UI in `src/components/`.
+- Keep business/editable data in `src/content/`.
+- Keep Bella orchestration in `src/lib/bella.ts`.
+- Keep WhatsApp URL generation in `src/lib/whatsapp.ts`.
+- Keep tracking names and helpers in `src/lib/tracking.ts`.
+- Vitória is the site chat atendimento agent; Bella is the WhatsApp SDR handoff.
+- Do not duplicate WhatsApp links, lead flow logic, or Bella prompt logic.
+- Do not invent prices, offers, courses, testimonials, or commercial claims.
+- Do not touch `.env`, secrets, tokens, private keys, or credentials.
+- Do not expose phone numbers beyond masked/last-four patterns in logs.
+- Public API routes must keep payload limits and rate limits.
+- Prefer the smallest functional patch that preserves the current architecture.
+
+## Lead And Messaging Flow
+
+Active/known paths:
+
+- Site form: `src/pages/api/leads.ts`
+- Site chat: `src/pages/api/bella/chat.ts`
+- WhatsApp Baileys inbound: `src/pages/api/whatsapp/webhook.ts`
+- FlowPay payment webhook: `src/pages/api/payment/flowpay/webhook.ts`
+- Vitória web prompt: `src/content/vitoria.web.md`
+
+Important libraries:
+
+- `src/lib/db.ts` persists and deduplicates leads/events
+- `src/lib/probeltec.ts` syncs leads to CRM
+- `src/lib/whatsapp-gateway.ts` sends WhatsApp responses through `neo-whatsapp-connect`
+- `src/lib/phone.ts` normalizes and masks phone numbers
+- `src/lib/redis.ts` stores Bella conversation history
+- `src/lib/resend.ts` sends transactional email
+
+The legacy WhatsApp provider has been removed from runtime. Do not reintroduce it without an explicit integration decision.
+
+Vitória handoff rule: when the site chat needs WhatsApp, it must trigger the canonical `wa.me` flow only. Do not add WhatsApp Business deep links, app-store fallbacks, Play Store links, or alternate WhatsApp URLs.
+
+## Section Contract
+
+Every landing section should:
+
+- Have one clear conversion role
+- Be readable on mobile
+- Be isolated enough to work without another section
+- Use a CTA only when it helps the user's next action
+- Avoid business data hardcoded in markup when `src/content/` is a better source
 
 Core sections:
 
-- Hero
-- BellaIntro
-- LocalImpact
-- CourseOffer
-- DiscountTicket
-- CoursesGrid
-- ObjectionBreak
-- SocialProof
-- FutureSimulator
-- MapPreview
-- FinalCTA
-- WhatsAppFloat
+- `Hero`
+- `BellaIntro`
+- `LocalImpact`
+- `CourseOffer`
+- `CoursesGrid`
+- `ObjectionBreak`
+- `SocialProof`
+- `FutureSimulator`
+- `MapPreview`
+- `FinalCTA`
+- `WhatsAppFloat`
 
-Implementation constraints:
+`DiscountTicket` exists but is intentionally disabled unless a campaign requires it.
 
-- index.astro imports sections only.
-- sections should remain focused and isolated.
-- business data belongs in src/content.
-- WhatsApp URL creation belongs in src/lib/whatsapp.ts.
-- tracking event names belong in src/lib/tracking.ts.
+## Commands
+
+Use pnpm. The parent workspace also uses pnpm.
+
+```sh
+make help
+make dev
+make check
+make build
+make validate
+make smoke
+```
+
+Fallback without Make:
+
+```sh
+pnpm check
+pnpm build
+pnpm dev -- --host 127.0.0.1 --port 4321
+```
+
+## Validation
+
+For code changes, run:
+
+```sh
+make validate
+```
+
+For local runtime smoke after starting the dev server, run:
+
+```sh
+make smoke
+```
+
+For documentation-only or context-only changes, at least inspect the final diff
+and confirm no unrelated user changes were modified.

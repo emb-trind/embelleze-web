@@ -4,109 +4,111 @@ import { Image } from 'astro:assets';
 import avatarImg from '../../public/brand/avatar_e-trindade.png';
 import formBgImg from '../assets/home/form-bg.jpg';
 import {
-  INSTITUTE_INSTAGRAM,
-  INSTITUTE_INSTAGRAM_URL,
-  buildUtmUrl,
+INSTITUTE_INSTAGRAM,
+INSTITUTE_INSTAGRAM_URL,
+buildUtmUrl,
 } from '../lib/constants';
 
 const instagramHref = buildUtmUrl(
-  INSTITUTE_INSTAGRAM_URL,
-  'social_cta',
-  'local_section_instagram_btn',
+INSTITUTE_INSTAGRAM_URL,
+'social_cta',
+'local_section_instagram_btn',
 );
 ---
 
 <section class="local">
-  <div class="local__inner">
-    <div class="local__content">
-      <div class="local__avatar">
-        <Image src={avatarImg} alt="Instituto Embelleze Trindade" class="local__avatar-img" />
-      </div>
-      <h3 class="local__eyebrow">Aqui pertinho de você</h3>
-      
-      <a 
-        href="https://www.google.com/maps/search/?api=1&query=Instituto+Embelleze+Trindade+Av.+Manoel+Monteiro+1691" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        class="local__address-link"
-      >
-        <div class="local__address-card">
-          <Icon name="lucide:map-pin" class="local__address-icon" />
-          <div class="local__address-text">
-            <span class="local__street">Av. Manoel Monteiro, 1691</span>
-            <span class="local__city">Vila Padre Eterno, Trindade/GO</span>
-          </div>
-        </div>
-      </a>
+<div class="local__inner">
+<div class="local__content">
+<div class="local__avatar">
+<Image src={avatarImg} alt="Instituto Embelleze Trindade" class="local__avatar-img" />
+</div>
+<h3 class="local__eyebrow">Aqui pertinho de você</h3>
 
-      <p class="local__desc">
-        Aprendizado presencial, prático e real. Sem aula gravada, sem teoria vaga. Você aprende fazendo, com supervisão de profissionais da área.
-      </p>
-
-      <div class="local__seals">
-        <div class="local__seal">
-          <div class="local__seal-icon-wrap">
-            <Icon name="lucide:graduation-cap" class="local__seal-icon" />
-          </div>
-          <div class="local__seal-text">
-            <span class="local__seal-title">Certificado</span>
-            <span class="local__seal-sub">Nacional Embelleze</span>
-          </div>
-        </div>
-        
-        <div class="local__seal">
-          <div class="local__seal-icon-wrap">
-            <Icon name="lucide:briefcase" class="local__seal-icon" />
-          </div>
-          <div class="local__seal-text">
-            <span class="local__seal-title">Aulas</span>
-            <span class="local__seal-sub">100% Práticas</span>
-          </div>
-        </div>
-        
-        <div class="local__seal">
-          <div class="local__seal-icon-wrap">
-            <Icon name="lucide:users" class="local__seal-icon" />
-          </div>
-          <div class="local__seal-text">
-            <span class="local__seal-title">+20 anos</span>
-            <span class="local__seal-sub">formando profissionais</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="local__media-wrapper">
-      <div class="local__image-container">
-        <Image src={formBgImg} alt="Aula VIP de Barbeiro no Instituto Embelleze" class="local__image" />
-      </div>
-      
-      <div class="local__floating-video">
-        <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F944660838368472%2F&show_text=true&width=267&t=0" width="267" height="591" style="border:none;overflow:hidden" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-
-        <a
-          href={instagramHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="local__insta-cta"
-          aria-label={`Seguir ${INSTITUTE_INSTAGRAM} no Instagram`}
-        >
-          <svg class="local__insta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-          </svg>
-          <span class="local__insta-label">
-            <span class="local__insta-action">Siga no Instagram</span>
-            <span class="local__insta-handle">{INSTITUTE_INSTAGRAM}</span>
-          </span>
-          <svg class="local__insta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-      </div>
-    </div>
+<a 
+href="https://www.google.com/maps/search/?api=1&query=Instituto+Embelleze+Trindade+Av.+Manoel+Monteiro+1691" 
+target="_blank" 
+rel="noopener noreferrer" 
+class="local__address-link"
+>
+<div class="local__address-card">
+  <Icon name="lucide:map-pin" class="local__address-icon" />
+  <div class="local__address-text">
+    <span class="local__street">Av. Manoel Monteiro, 1691</span>
+    <span class="local__city">Vila Padre Eterno, Trindade/GO</span>
   </div>
+</div>
+</a>
+
+<p class="local__desc">
+Aprendizado presencial, prático e real. Sem aula gravada, sem teoria vaga. Você aprende fazendo, com supervisão de profissionais da área.
+</p>
+
+<div class="local__seals">
+<div class="local__seal">
+  <div class="local__seal-icon-wrap">
+    <Icon name="lucide:graduation-cap" class="local__seal-icon" />
+  </div>
+  <div class="local__seal-text">
+    <span class="local__seal-title">Certificado</span>
+    <span class="local__seal-sub">Nacional Embelleze</span>
+  </div>
+</div>
+
+<div class="local__seal">
+  <div class="local__seal-icon-wrap">
+    <Icon name="lucide:briefcase" class="local__seal-icon" />
+  </div>
+  <div class="local__seal-text">
+    <span class="local__seal-title">Aulas</span>
+    <span class="local__seal-sub">100% Práticas</span>
+  </div>
+</div>
+
+<div class="local__seal">
+  <div class="local__seal-icon-wrap">
+    <Icon name="lucide:users" class="local__seal-icon" />
+  </div>
+  <div class="local__seal-text">
+    <span class="local__seal-title">+20 anos</span>
+    <span class="local__seal-sub">formando profissionais</span>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="local__media-wrapper">
+<div class="local__image-container">
+<Image src={formBgImg} alt="Aula VIP de Barbeiro no Instituto Embelleze" class="local__image" />
+</div>
+
+<div class="local__floating-video">
+<iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F944660838368472%2F&show_text=true&width=267&t=0" width="267" height="591" style="border:none;overflow:hidden" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+
+<a
+  href={instagramHref}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="local__insta-cta"
+  aria-label={`Seguir ${INSTITUTE_INSTAGRAM} no Instagram`}
+  data-social="instagram"
+  data-origin="local-impact"
+>
+  <svg class="local__insta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+  </svg>
+  <span class="local__insta-label">
+    <span class="local__insta-action">Siga no Instagram</span>
+    <span class="local__insta-handle">{INSTITUTE_INSTAGRAM}</span>
+  </span>
+  <svg class="local__insta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+</a>
+</div>
+</div>
+</div>
 </section>
 
 <style>

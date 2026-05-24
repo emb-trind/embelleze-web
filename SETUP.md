@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD003 MD007 MD013 MD022 MD023 MD025 MD029 MD032 MD033 MD034 -->
+# SETUP
 
 ```text
 ========================================
@@ -49,19 +50,31 @@ cp .env.example .env
 ```
 
 ```text
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ VARIÁVEL                  FONTE
-┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ PUBLIC_GTM_ID             Google Tag Manager
-┃ PUBLIC_META_PIXEL_ID      Meta Business Suite
-┃ DATABASE_URL              PostgreSQL Connection String
-┃ REDIS_URL                 Redis Connection String
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┃ VARIÁVEL                  OBRIGATÓRIA   FONTE
+┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┃ DATABASE_URL              sim           Railway Postgres
+┃ REDIS_URL                 sim           Railway Redis
+┃ AZURE_OPENAI_ENDPOINT     sim           Azure OpenAI
+┃ AZURE_OPENAI_API_KEY      sim           Azure OpenAI
+┃ AZURE_OPENAI_DEPLOYMENT   sim           Azure OpenAI
+┃ WHATSAPP_WEBHOOK_SECRET   sim           gerado — mesmo valor em neo-whatsapp-connect
+┃ FLOWPAY_WEBHOOK_SECRET    sim           gerado — configurar no FlowPay como Bearer
+┃ WHATSAPP_GATEWAY_URL      sim           URL do neo-whatsapp-connect em produção
+┃ RESEND_API_KEY            sim           Resend dashboard
+┃ RESEND_FROM               sim           ex: bella@embelleze-bella.online
+┃ PROBELTEC_API_KEY         sim           Probeltec CRM
+┃ PUBLIC_GTM_ID             não           Google Tag Manager (opcional)
+┃ PUBLIC_META_PIXEL_ID      não           Meta Business Suite (opcional)
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-> Enquanto os IDs não estiverem preenchidos,
-> GTM e Meta Pixel simplesmente não são injetados.
-> O build não quebra.
+> `WHATSAPP_WEBHOOK_SECRET` e `FLOWPAY_WEBHOOK_SECRET` devem ser strings
+> aleatórias fortes (ex: `openssl rand -base64 32`). O endpoint retorna 503
+> se a variável não estiver configurada — fail closed por design.
+>
+> Enquanto `PUBLIC_GTM_ID` e `PUBLIC_META_PIXEL_ID` não estiverem preenchidos,
+> GTM e Meta Pixel simplesmente não são injetados. O build não quebra.
 
 ────────────────────────────────────────
 
@@ -125,8 +138,12 @@ Estes arquivos não exigem toque no código:
 └─ src/content/testimonials.json
    Depoimentos. approved: true para exibir.
 
+└─ src/content/vitoria.web.md
+   Prompt da Vitória — atendimento via chat do site.
+
 └─ src/content/bella.knowledge.md
-   Base de conhecimento da Bella.
+   Base de conhecimento estratégica da Bella (WhatsApp).
+   Não exposta no site — uso interno do SDR.
 ```
 
 ────────────────────────────────────────
@@ -148,12 +165,8 @@ npm run build
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-> Para SSR ou rotas dinâmicas futuras,
-> instalar o adapter Node antes do deploy:
-
-```bash
-npx astro add node
-```
+> O adapter Node já está instalado e configurado (`@astrojs/node`).
+> O projeto é SSR — não é necessário nenhum passo adicional para rotas dinâmicas.
 
 ────────────────────────────────────────
 

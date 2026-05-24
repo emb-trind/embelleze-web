@@ -7,348 +7,348 @@ import { getWhatsAppLink } from '../lib/whatsapp';
 const ctaLink = getWhatsAppLink({ origin: 'header' });
 ---
 <header class="header" id="main-header">
-  <div class="header__container">
-    <a href="/" class="header__logo">
-      <Image src={logo} alt="Instituto Embelleze" class="header__logo-img" loading="eager" />
-    </a>
+<div class="header__container">
+<a href="/" class="header__logo">
+<Image src={logo} alt="Instituto Embelleze" class="header__logo-img" loading="eager" />
+</a>
 
-    <nav class="header__nav">
-      <ul class="header__menu">
-        <li><a href="/" class="header__link">Início</a></li>
-        <li><a href="/cursos" class="header__link">Cursos</a></li>
-        <li><a href="/mapa" class="header__link">Localização</a></li>
-        <li><a href="/#faq" class="header__link">Dúvidas</a></li>
-      </ul>
-      <a href={ctaLink} class="header__cta">Falar pelo WhatsApp</a>
-    </nav>
+<nav class="header__nav">
+<ul class="header__menu">
+  <li><a href="/" class="header__link">Início</a></li>
+  <li><a href="/cursos" class="header__link">Cursos</a></li>
+  <li><a href="/mapa" class="header__link">Localização</a></li>
+  <li><a href="/#faq" class="header__link">Dúvidas</a></li>
+</ul>
+<a href={ctaLink} class="header__cta">Falar pelo WhatsApp</a>
+</nav>
 
-    <button class="header__mobile-toggle" id="mobile-menu-toggle" aria-label="Menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
+<button class="header__mobile-toggle" id="mobile-menu-toggle" aria-label="Menu" aria-expanded="false">
+<span></span>
+<span></span>
+<span></span>
+</button>
+</div>
 </header>
 
 <!-- Bottom Sheet Mobile Menu -->
 <div class="mobile-backdrop" id="mobile-backdrop" aria-hidden="true"></div>
 <div class="mobile-sheet" id="mobile-sheet" role="dialog" aria-modal="true" aria-label="Menu de navegação">
-  <div class="mobile-sheet__handle" aria-hidden="true"></div>
+<div class="mobile-sheet__handle" aria-hidden="true"></div>
 
-  <nav class="mobile-sheet__nav">
-    <a href="/" class="mobile-sheet__link">
-      <span class="mobile-sheet__link-icon">
-        <Icon name="lucide:home" />
-      </span>
-      <span>Início</span>
-    </a>
-    <a href="/cursos" class="mobile-sheet__link">
-      <span class="mobile-sheet__link-icon">
-        <Icon name="lucide:graduation-cap" />
-      </span>
-      <span>Cursos</span>
-    </a>
-    <a href="/mapa" class="mobile-sheet__link">
-      <span class="mobile-sheet__link-icon">
-        <Icon name="lucide:map-pin" />
-      </span>
-      <span>Localização</span>
-    </a>
-    <a href="/#faq" class="mobile-sheet__link">
-      <span class="mobile-sheet__link-icon">
-        <Icon name="lucide:message-circle" />
-      </span>
-      <span>Dúvidas</span>
-    </a>
-  </nav>
+<nav class="mobile-sheet__nav">
+<a href="/" class="mobile-sheet__link">
+<span class="mobile-sheet__link-icon">
+  <Icon name="lucide:home" />
+</span>
+<span>Início</span>
+</a>
+<a href="/cursos" class="mobile-sheet__link">
+<span class="mobile-sheet__link-icon">
+  <Icon name="lucide:graduation-cap" />
+</span>
+<span>Cursos</span>
+</a>
+<a href="/mapa" class="mobile-sheet__link">
+<span class="mobile-sheet__link-icon">
+  <Icon name="lucide:map-pin" />
+</span>
+<span>Localização</span>
+</a>
+<a href="/#faq" class="mobile-sheet__link">
+<span class="mobile-sheet__link-icon">
+  <Icon name="lucide:message-circle" />
+</span>
+<span>Dúvidas</span>
+</a>
+</nav>
 
-  <a
-    href={ctaLink}
-    class="mobile-sheet__cta"
-    target="_blank"
-    rel="noopener"
-  >
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.41.001 12.045c0 2.12.554 4.189 1.605 6.04L0 24l6.096-1.6c1.801.982 3.82 1.5 5.867 1.5h.005c6.636 0 12.048-5.41 12.051-12.047a11.824 11.824 0 00-3.468-8.411z"/>
-    </svg>
-    Falar pelo WhatsApp
-  </a>
+<a
+href={ctaLink}
+class="mobile-sheet__cta"
+target="_blank"
+rel="noopener"
+>
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.41.001 12.045c0 2.12.554 4.189 1.605 6.04L0 24l6.096-1.6c1.801.982 3.82 1.5 5.867 1.5h.005c6.636 0 12.048-5.41 12.051-12.047a11.824 11.824 0 00-3.468-8.411z"/>
+</svg>
+Falar pelo WhatsApp
+</a>
 </div>
 
 <script>
-  const header   = document.getElementById('main-header');
-  const toggle   = document.getElementById('mobile-menu-toggle');
-  const sheet    = document.getElementById('mobile-sheet');
-  const backdrop = document.getElementById('mobile-backdrop');
+const header   = document.getElementById('main-header');
+const toggle   = document.getElementById('mobile-menu-toggle');
+const sheet    = document.getElementById('mobile-sheet');
+const backdrop = document.getElementById('mobile-backdrop');
 
-  function openMenu() {
-    sheet?.classList.add('active');
-    backdrop?.classList.add('active');
-    document.body.classList.add('no-scroll');
-    toggle?.setAttribute('aria-expanded', 'true');
-    toggle?.classList.add('active');
-  }
+function openMenu() {
+sheet?.classList.add('active');
+backdrop?.classList.add('active');
+document.body.classList.add('no-scroll');
+toggle?.setAttribute('aria-expanded', 'true');
+toggle?.classList.add('active');
+}
 
-  function closeMenu() {
-    sheet?.classList.remove('active');
-    backdrop?.classList.remove('active');
-    document.body.classList.remove('no-scroll');
-    toggle?.setAttribute('aria-expanded', 'false');
-    toggle?.classList.remove('active');
-  }
+function closeMenu() {
+sheet?.classList.remove('active');
+backdrop?.classList.remove('active');
+document.body.classList.remove('no-scroll');
+toggle?.setAttribute('aria-expanded', 'false');
+toggle?.classList.remove('active');
+}
 
-  toggle?.addEventListener('click', () => {
-    sheet?.classList.contains('active') ? closeMenu() : openMenu();
-  });
+toggle?.addEventListener('click', () => {
+sheet?.classList.contains('active') ? closeMenu() : openMenu();
+});
 
-  backdrop?.addEventListener('click', closeMenu);
+backdrop?.addEventListener('click', closeMenu);
 
-  sheet?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', closeMenu);
-  });
+sheet?.querySelectorAll('a').forEach(link => {
+link.addEventListener('click', closeMenu);
+});
 
-  // Scroll effect
-  window.addEventListener('scroll', () => {
-    header?.classList.toggle('header--scrolled', window.scrollY > 50);
-  }, { passive: true });
+// Scroll effect
+window.addEventListener('scroll', () => {
+header?.classList.toggle('header--scrolled', window.scrollY > 50);
+}, { passive: true });
 </script>
 
 <style>
-  .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 99999;
-    padding: 2rem 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+.header {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+z-index: 99999;
+padding: 2rem 0;
+transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  .header--scrolled {
-    padding: 1rem 0;
-    background: rgba(13, 4, 22, 0.85);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
+.header--scrolled {
+padding: 1rem 0;
+background: rgba(13, 4, 22, 0.85);
+backdrop-filter: blur(20px) saturate(180%);
+-webkit-backdrop-filter: blur(20px) saturate(180%);
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-  .header__container {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.header__container {
+max-width: 1240px;
+margin: 0 auto;
+padding: 0 1.5rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
 
-  .header__logo-img {
-    height: 38px;
-    width: auto;
-    filter: brightness(0) invert(1);
-  }
+.header__logo-img {
+height: 38px;
+width: auto;
+filter: brightness(0) invert(1);
+}
 
-  .header__nav {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-  }
+.header__nav {
+display: flex;
+align-items: center;
+gap: 3rem;
+}
 
-  .header__menu {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-  }
+.header__menu {
+display: flex;
+list-style: none;
+gap: 2rem;
+}
 
-  .header__link {
-    color: var(--color-white);
-    text-decoration: none;
-    font-size: var(--font-size-sm);
-    font-weight: 700;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-  }
+.header__link {
+color: var(--color-white);
+text-decoration: none;
+font-size: var(--font-size-sm);
+font-weight: 700;
+opacity: 0.8;
+transition: opacity 0.2s ease;
+}
 
-  .header__link--map {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+.header__link--map {
+display: flex;
+align-items: center;
+gap: 6px;
+}
 
-  .header__icon { width: 14px; height: 14px; color: var(--color-orange); }
-  .header__link:hover { opacity: 1; }
+.header__icon { width: 14px; height: 14px; color: var(--color-orange); }
+.header__link:hover { opacity: 1; }
 
-  .header__cta {
-    background: #fff;
-    color: #12071f;
-    padding: 10px 24px;
-    border-radius: 100px;
-    font-size: 0.875rem;
-    font-weight: 800;
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
+.header__cta {
+background: #fff;
+color: #12071f;
+padding: 10px 24px;
+border-radius: 100px;
+font-size: 0.875rem;
+font-weight: 800;
+text-decoration: none;
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-  .header__cta:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-  }
+.header__cta:hover {
+transform: scale(1.05);
+box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
 
-  /* ── Hamburger ── */
-  .header__mobile-toggle {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    z-index: 100000;
-  }
+/* ── Hamburger ── */
+.header__mobile-toggle {
+display: none;
+flex-direction: column;
+gap: 5px;
+background: none;
+border: none;
+cursor: pointer;
+padding: 6px;
+z-index: 100000;
+}
 
-  .header__mobile-toggle span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: #fff;
-    border-radius: 2px;
-    transition: transform 0.3s ease, opacity 0.2s ease;
-    transform-origin: center;
-  }
+.header__mobile-toggle span {
+display: block;
+width: 24px;
+height: 2px;
+background: #fff;
+border-radius: 2px;
+transition: transform 0.3s ease, opacity 0.2s ease;
+transform-origin: center;
+}
 
-  .header__mobile-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .header__mobile-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .header__mobile-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.header__mobile-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.header__mobile-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.header__mobile-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  /* ── Backdrop ── */
-  .mobile-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    z-index: 9000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
+/* ── Backdrop ── */
+.mobile-backdrop {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0, 0, 0, 0.6);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+z-index: 9000;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+}
 
-  .mobile-backdrop.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
+.mobile-backdrop.active {
+opacity: 1;
+pointer-events: auto;
+}
 
-  /* ── Bottom Sheet ── */
-  .mobile-sheet {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 9001;
-    background: rgba(18, 7, 31, 0.97);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 28px 28px 0 0;
-    padding: 0 1.5rem calc(env(safe-area-inset-bottom, 0px) + 2rem);
-    transform: translateY(100%);
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.5);
-  }
+/* ── Bottom Sheet ── */
+.mobile-sheet {
+display: none;
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+z-index: 9001;
+background: rgba(18, 7, 31, 0.97);
+backdrop-filter: blur(30px) saturate(180%);
+-webkit-backdrop-filter: blur(30px) saturate(180%);
+border-top: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 28px 28px 0 0;
+padding: 0 1.5rem calc(env(safe-area-inset-bottom, 0px) + 2rem);
+transform: translateY(100%);
+transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.5);
+}
 
-  .mobile-sheet.active {
-    transform: translateY(0);
-  }
+.mobile-sheet.active {
+transform: translateY(0);
+}
 
-  .mobile-sheet__handle {
-    width: 40px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 2px;
-    margin: 1rem auto 1.5rem;
-  }
+.mobile-sheet__handle {
+width: 40px;
+height: 4px;
+background: rgba(255, 255, 255, 0.15);
+border-radius: 2px;
+margin: 1rem auto 1.5rem;
+}
 
-  .mobile-sheet__nav {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 1.5rem;
-  }
+.mobile-sheet__nav {
+display: flex;
+flex-direction: column;
+gap: 4px;
+margin-bottom: 1.5rem;
+}
 
-  .mobile-sheet__link {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    border-radius: 16px;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 700;
-    transition: background 0.2s ease, color 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
+.mobile-sheet__link {
+display: flex;
+align-items: center;
+gap: 1rem;
+padding: 1rem 1.25rem;
+border-radius: 16px;
+color: rgba(255, 255, 255, 0.8);
+text-decoration: none;
+font-size: 1rem;
+font-weight: 700;
+transition: background 0.2s ease, color 0.2s ease;
+-webkit-tap-highlight-color: transparent;
+}
 
-  .mobile-sheet__link:active,
-  .mobile-sheet__link:hover {
-    background: rgba(255, 255, 255, 0.07);
-    color: #fff;
-  }
+.mobile-sheet__link:active,
+.mobile-sheet__link:hover {
+background: rgba(255, 255, 255, 0.07);
+color: #fff;
+}
 
-  .mobile-sheet__link-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.06);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-orange);
-    flex-shrink: 0;
-  }
+.mobile-sheet__link-icon {
+width: 40px;
+height: 40px;
+border-radius: 12px;
+background: rgba(255, 255, 255, 0.06);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--color-orange);
+flex-shrink: 0;
+}
 
-  .mobile-sheet__link-icon svg {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2;
-  }
+.mobile-sheet__link-icon svg {
+width: 18px;
+height: 18px;
+stroke-width: 2;
+}
 
-  .mobile-sheet__cta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 18px;
-    background: #25d366;
-    color: #fff;
-    border-radius: 18px;
-    font-weight: 800;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: filter 0.2s ease, transform 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
+.mobile-sheet__cta {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+width: 100%;
+padding: 18px;
+background: #25d366;
+color: #fff;
+border-radius: 18px;
+font-weight: 800;
+font-size: 1rem;
+text-decoration: none;
+transition: filter 0.2s ease, transform 0.2s ease;
+-webkit-tap-highlight-color: transparent;
+}
 
-  .mobile-sheet__cta svg {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-  }
+.mobile-sheet__cta svg {
+width: 22px;
+height: 22px;
+flex-shrink: 0;
+}
 
-  .mobile-sheet__cta:active {
-    filter: brightness(0.9);
-    transform: scale(0.98);
-  }
+.mobile-sheet__cta:active {
+filter: brightness(0.9);
+transform: scale(0.98);
+}
 
-  /* ── Responsive ── */
-  @media (max-width: 900px) {
-    .header__nav { display: none; }
-    .header__mobile-toggle { display: flex; }
-    .mobile-backdrop,
-    .mobile-sheet { display: block; }
-  }
+/* ── Responsive ── */
+@media (max-width: 900px) {
+.header__nav { display: none; }
+.header__mobile-toggle { display: flex; }
+.mobile-backdrop,
+.mobile-sheet { display: block; }
+}
 
-  :global(body.no-scroll) { overflow: hidden; }
+:global(body.no-scroll) { overflow: hidden; }
 </style>

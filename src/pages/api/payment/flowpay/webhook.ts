@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { upsertLead, appendLeadEvent, getLeadByPhone } from "../../../../lib/db";
-import { maskPhone, sendTextMessage } from "../../../../lib/zapi";
+import { maskPhone } from "../../../../lib/phone";
+import { sendGatewayMessage } from "../../../../lib/whatsapp-gateway";
 import {
   sendPaymentConfirmationToLead,
   sendPaymentNotificationToTeam,
@@ -10,21 +11,24 @@ import {
  * POST /api/payment/flowpay/webhook
  *
  * Recebe callbacks de pagamento do FlowPay e avança o lead para PIX_PAGO.
- * Também dispara mensagem de confirmação via Z-API e registra o evento no DB.
+ * Também dispara mensagem de confirmação via gateway WhatsApp e registra o evento no DB.
  *
  * Segurança: Bearer token estático via FLOWPAY_WEBHOOK_SECRET.
- * Se a variável não estiver configurada, o endpoint aceita sem autenticação
- * (apenas para desenvolvimento — configurar em produção obrigatoriamente).
+ * A variável é obrigatória; sem ela o endpoint retorna 503.
  *
  * Payload esperado do FlowPay:
  * {
  *   status: "APPROVED" | "PAID" | "PENDING" | "FAILED" | ...,
  *   transaction_id: string,
- *   metadata: { phone: string }   ← injetado pelo ZAPI webhook via query param
+ *   metadata: { phone: string }   ← injetado pela Bella ao gerar o link FlowPay
  * }
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
+    if (Number(request.headers.get("content-length") ?? "0") > 16_384) {
+      return new Response(JSON.stringify({ error: "Payload too large" }), { status: 413 });
+    }
+
     // ── Segurança: Bearer token ──────────────────────────────────────────────
     const webhookSecret =
       process.env.FLOWPAY_WEBHOOK_SECRET || import.meta.env.FLOWPAY_WEBHOOK_SECRET;
@@ -37,7 +41,8 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify({ status: "unauthorized" }), { status: 401 });
       }
     } else {
-      console.warn("[FlowPay Webhook] FLOWPAY_WEBHOOK_SECRET não configurado — endpoint sem autenticação.");
+      console.error("[FlowPay Webhook] FLOWPAY_WEBHOOK_SECRET não configurado.");
+      return new Response(JSON.stringify({ status: "misconfigured" }), { status: 503 });
     }
 
     const payload = await request.json();
@@ -94,7 +99,7 @@ export const POST: APIRoute = async ({ request }) => {
         `Pagamento confirmado! 🎉 Sua vaga está pré-reservada.\n\n` +
         `Vou passar seu contato para nossa consultora finalizar sua matrícula. ` +
         `Ela vai te chamar do número (62) 99481-3565. 😊`;
-      await sendTextMessage(leadPhone, confirmMessage);
+      await sendGatewayMessage(leadPhone, confirmMessage);
     } catch (sendError) {
       console.error("[FlowPay Webhook] Erro ao enviar confirmação WhatsApp (silenciado):", sendError);
     }

@@ -84,9 +84,9 @@ separados `embelleze-lp-[slug]`.
 
 ```bash
 https://embelleze-bella.online/
-  ?utm_source=google
-  &utm_medium=cpc
-  &utm_campaign=manicure-jun26
+?utm_source=google
+&utm_medium=cpc
+&utm_campaign=manicure-jun26
 ```
 
 UTMs preservados na URL e gravados

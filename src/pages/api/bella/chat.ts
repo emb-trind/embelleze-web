@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
-import systemPrompt from '../../../content/bella.web.md?raw';
+import { enforceRateLimit } from '../../../lib/rate-limit';
+import systemPrompt from '../../../content/vitoria.web.md?raw';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -8,6 +9,13 @@ interface ChatMessage {
 
 export const POST: APIRoute = async ({ request }) => {
   const headers = { 'Content-Type': 'application/json' };
+
+  const rateLimited = enforceRateLimit(request, 'bella-chat', 20, 60_000);
+  if (rateLimited) return rateLimited;
+
+  if (Number(request.headers.get('content-length') ?? '0') > 8192) {
+    return new Response(JSON.stringify({ error: 'payload_too_large' }), { status: 413, headers });
+  }
 
   let body: { message?: string; history?: ChatMessage[] };
   try {
@@ -19,6 +27,10 @@ export const POST: APIRoute = async ({ request }) => {
   const { message, history = [] } = body;
   if (!message?.trim()) {
     return new Response(JSON.stringify({ error: 'message_required' }), { status: 400, headers });
+  }
+
+  if (message.length > 1000 || history.length > 10) {
+    return new Response(JSON.stringify({ error: 'payload_too_large' }), { status: 413, headers });
   }
 
   const endpoint = import.meta.env.AZURE_OPENAI_ENDPOINT;
