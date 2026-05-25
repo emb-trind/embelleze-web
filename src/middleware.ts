@@ -5,12 +5,9 @@ const buildCSP = (nonce: string): string => {
     "default-src 'self'",
 
     // 'self' cobre os bundles Astro servidos em /_astro/*.js.
-    // 'nonce-{value}': browsers modernos ignoram 'unsafe-inline' quando nonce presente —
-    // scripts inline sem o nonce são bloqueados (XSS mitigation).
-    // 'unsafe-inline' fica como fallback para browsers sem suporte a nonce.
-    // Nota: strict-dynamic foi removido porque em browsers modernos ele ignora 'self'
-    // e a URL allowlist, o que bloqueava os bundles Astro (/_astro/*.js) sem nonce.
-    `script-src 'self' 'nonce-${nonce}' 'unsafe-inline'`
+    // O middleware injeta o nonce em todos os <script> inline do HTML renderizado,
+    // incluindo os gerados pelo Astro (type="module" inline). Sem 'unsafe-inline'.
+    `script-src 'self' 'nonce-${nonce}'`
       + " https://connect.facebook.net",
 
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
@@ -28,7 +25,7 @@ const buildCSP = (nonce: string): string => {
       + " https://api-auth.probeltec.com"
       + " https://api.probeltec.com",
 
-    "frame-src 'self' https://www.google.com https://www.facebook.com",
+    "frame-src 'self' https://www.google.com https://www.facebook.com https://m.facebook.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -48,14 +45,27 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 
   const response = await next();
 
-  response.headers.set("X-Content-Type-Options", "nosniff");
-  response.headers.set("X-Frame-Options", "DENY");
-  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  response.headers.set(
+  const headers = new Headers(response.headers);
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set(
     "Permissions-Policy",
     "camera=(), microphone=(), payment=(), usb=(), geolocation=(self)",
   );
-  response.headers.set("Content-Security-Policy", buildCSP(nonce));
+  headers.set("Content-Security-Policy", buildCSP(nonce));
 
-  return response;
+  // Injeta nonce em todos os <script> inline gerados pelo Astro (e os nossos).
+  // Necessário porque o Astro gera <script type="module"> inline sem nonce.
+  const contentType = headers.get("content-type") ?? "";
+  if (contentType.includes("text/html")) {
+    const html = await response.text();
+    const noncedHtml = html.replace(
+      /<script(?![^>]*\bnonce=)(?=[^>]*>)/gi,
+      `<script nonce="${nonce}"`,
+    );
+    return new Response(noncedHtml, { status: response.status, headers });
+  }
+
+  return new Response(response.body, { status: response.status, headers });
 };
