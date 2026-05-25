@@ -56,7 +56,7 @@ Função : Decisões tomadas — não regredir
 - Deploy Railway usa `pnpm`, não `npm`.
   `railway.toml` deve ter `pnpm install && pnpm run build` e `pnpm run start`.
   Usar `npm install` gerava warning de deprecação. Sem `--frozen-lockfile`
-  pois o `pnpm-lock.yaml` não está commitado no repo.
+  pois o `pnpm-lock.yaml` não está commitado no repo..
 
 ────────────────────────────────────────
 
