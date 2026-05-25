@@ -14,14 +14,13 @@ Status: ATIVO
 ## ⟠ Estado Atual
 
 ```text
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ┃ CANAL          STATUS
-┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ Google Ads     Ativo — AW-18004058795
-┃ Google GTM     Pronto — aguarda PUBLIC_GTM_ID
-┃ Meta Pixel     Pronto — aguarda conta Meta
-┃ Meta Ads       Bloqueado — conta do cliente
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┃ Meta Pixel     Ativo — PUBLIC_META_PIXEL_ID (Railway)
+┃ Meta Ads       Ativo — campanhas rodando
+┃ Google Ads     Não implementado — removido do código
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ────────────────────────────────────────
@@ -38,13 +37,6 @@ Status: ATIVO
 └─ OPEN_MAP                  interação com mapa
 └─ START_FUTURE_SIMULATOR    início do quiz
 └─ COMPLETE_FUTURE_SIMULATOR conclusão do quiz
-```
-
-```text
-▓▓▓ CONVERSÕES RECOMENDADAS — Google Ads
-────────────────────────────────────────
-└─ Principal   CLICK_WHATSAPP           lead quente
-└─ Secundária  COMPLETE_FUTURE_SIMULATOR lead qualificado
 ```
 
 ────────────────────────────────────────
@@ -97,21 +89,9 @@ no Postgres (first-touch, nunca sobrescrito).
 ## ◬ Checklist Pré-Campanha
 
 ```text
-▓▓▓ ATIVAÇÕES NECESSÁRIAS
-────────────────────────────────────────
-[ ] PUBLIC_META_PIXEL_ID no Railway
-[ ] PUBLIC_GTM_ID no Railway (se usar GTM)
-[ ] Conversões configuradas no Google Ads
-[ ] Evento customizado Meta Ads: CLICK_WHATSAPP
-[ ] Validar com Meta Pixel Helper + GA4 DebugView
-[ ] Definir públicos de remarketing
-```
-
-```text
 ▓▓▓ ENV VARS (Railway → Variables)
 ────────────────────────────────────────
-└─ PUBLIC_GTM_ID=GTM-XXXXXXX
-└─ PUBLIC_META_PIXEL_ID=000000000000
+└─ PUBLIC_META_PIXEL_ID=<pixel_id>
 ```
 
 ────────────────────────────────────────

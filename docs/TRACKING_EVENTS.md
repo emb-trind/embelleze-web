@@ -11,35 +11,20 @@
 ## ⟠ Eventos Implementados
 
 ```text
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ┃ EVENTO                    ONDE               TOOL
-┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ PAGE_VIEW                 Todas as páginas   GA4, Meta
-┃ CLICK_WHATSAPP            Botões WhatsApp    GA4, Meta
-┃ CLICK_COURSE              CourseCard         GA4
-┃ GENERATE_DISCOUNT_TICKET  DiscountTicket     GA4
-┃ OPEN_MAP                  MapPreview         GA4
-┃ START_FUTURE_SIMULATOR    FutureSimulator    GA4
-┃ COMPLETE_FUTURE_SIMULATOR FutureSimulator    GA4
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+┃ PAGE_VIEW                 Todas as páginas   Meta
+┃ CLICK_WHATSAPP            Botões WhatsApp    Meta
+┃ CLICK_COURSE              CourseCard         Meta
+┃ GENERATE_DISCOUNT_TICKET  DiscountTicket     Meta
+┃ START_FUTURE_SIMULATOR    FutureSimulator    Meta
+┃ COMPLETE_FUTURE_SIMULATOR FutureSimulator    Meta
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-────────────────────────────────────────
-
-## ⨷ IDs Pendentes
-
-```text
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ VARIÁVEL               STATUS
-┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ PUBLIC_GTM_ID          aguardando cliente
-┃ PUBLIC_META_PIXEL_ID   aguardando cliente
-┃ PUBLIC_GA_MEASUREMENT  aguardando cliente
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-> Sem os IDs, GTM e Meta Pixel não são injetados.
-> O build não quebra.
+> Google Ads / GA4 removidos. Tracking ativo somente via Meta Pixel (fbq).
+> Env: `PUBLIC_META_PIXEL_ID` no Railway.
 
 ────────────────────────────────────────
 
@@ -52,5 +37,5 @@
 └─ src/scripts/events.client.ts
    PAGE_VIEW e CLICK automáticos por elemento
 └─ src/components/TrackingPixel.astro
-   Injeção de GTM e Meta Pixel
+   Injeção do Meta Pixel (condicional via PUBLIC_META_PIXEL_ID)
 ```
