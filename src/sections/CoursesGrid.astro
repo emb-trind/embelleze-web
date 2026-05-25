@@ -195,8 +195,8 @@ transition: opacity 0.3s ease;
 }
 
 .course-card {
-width: 100% !important; /* Forçar preenchimento total da coluna */
-margin: 0 !important;
+width: 100%;
+margin: 0;
 }
 
 @media (min-width: 768px) {
@@ -210,21 +210,6 @@ gap: 1.5rem;
 .courses__grid {
 grid-template-columns: repeat(4, 1fr);
 gap: 20px;
-}
-}
-
-@media (max-width: 600px) {
-.courses__grid {
-grid-template-columns: repeat(2, 1fr);
-gap: 8px;
-}
-}
-
-@media (max-width: 400px) {
-/* Em telas muito pequenas, se 2 colunas ficarem apertadas, podemos manter 1 ou reduzir o gap */
-.courses__grid {
-grid-template-columns: repeat(2, 1fr);
-gap: 6px;
 }
 }
 

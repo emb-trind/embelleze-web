@@ -8,7 +8,7 @@
 ========================================
 Escopo : embelleze-web/
 Repo   : github.com/emb-trind/embelleze-web
-Deploy : Railway — build direto do repo via Dockerfile
+Deploy : Railway — Railpack (v0.23.0) via railway.toml
 ========================================
 ```
 

@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help install dev build check validate start preview health smoke clean status
+.PHONY: help install dev build check validate start preview health smoke health-prod smoke-prod clean status
 
 NODE := $(shell mise which node 2>/dev/null || which node)
 PNPM := PATH="$(dir $(NODE)):$$PATH" pnpm
@@ -7,6 +7,7 @@ PNPM := PATH="$(dir $(NODE)):$$PATH" pnpm
 HOST     ?= 127.0.0.1
 APP_PORT ?= 4321
 URL      ?= http://$(HOST):$(APP_PORT)
+PROD_URL ?= https://embelleze-trindade.up.railway.app
 
 help:
 	@echo ""
@@ -22,6 +23,8 @@ help:
 	@echo ""
 	@echo "  health     chama /api/health           [URL=$(URL)]"
 	@echo "  smoke      testa / e /api/health       [URL=$(URL)]"
+	@echo "  health-prod  chama /api/health em produção [$(PROD_URL)]"
+	@echo "  smoke-prod   testa / e /api/health em produção [$(PROD_URL)]"
 	@echo "  status     mostra versão node/pnpm e scripts"
 	@echo "  clean      remove dist/ e .astro/"
 	@echo ""
@@ -55,6 +58,12 @@ smoke:
 	@curl -fsSI "$(URL)/" >/dev/null
 	@$(MAKE) --no-print-directory health URL="$(URL)"
 	@echo "  smoke ok: $(URL)"
+
+health-prod:
+	@$(MAKE) --no-print-directory health URL="$(PROD_URL)"
+
+smoke-prod:
+	@$(MAKE) --no-print-directory smoke URL="$(PROD_URL)"
 
 status:
 	@echo "node: $$($(NODE) --version)"
