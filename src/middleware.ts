@@ -1,6 +1,6 @@
 import type { MiddlewareHandler } from "astro";
 
-function buildCSP(nonce: string): string {
+const buildCSP = (nonce: string): string => {
   return [
     "default-src 'self'",
 
@@ -26,9 +26,6 @@ function buildCSP(nonce: string): string {
       + " https://www.googletagmanager.com"
       + " https://www.facebook.com",
 
-    // Nota: o Meta Pixel também conecta em *.ecs.us-east-2.on.aws (infra AWS da Meta).
-    // CSP wildcards cobrem apenas um nível de subdomínio, então esse endpoint de múltiplos
-    // níveis não pode ser allowlistado de forma precisa — é uma limitação conhecida do Pixel.
     "connect-src 'self'"
       + " https://www.google-analytics.com"
       + " https://analytics.google.com"
@@ -38,6 +35,7 @@ function buildCSP(nonce: string): string {
       + " https://www.facebook.com"
       + " https://graph.facebook.com"
       + " https://connect.facebook.net"
+      + " https://*.ecs.us-east-2.on.aws"
       + " https://api-auth.probeltec.com"
       + " https://api.probeltec.com",
 
@@ -48,7 +46,7 @@ function buildCSP(nonce: string): string {
     "frame-ancestors 'none'",
     "upgrade-insecure-requests",
   ].join("; ");
-}
+};
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
   // Nonce gerado por request — 128 bits de entropia, base64
