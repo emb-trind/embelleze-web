@@ -1,0 +1,29 @@
+# Build output — gerado no container
+dist/
+.astro/
+
+# Dependências — instaladas no container
+node_modules/
+
+# Secrets
+.env
+.env.*
+
+# Docs e arquivos locais
+docs/
+*.md
+!README.md
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore

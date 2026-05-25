@@ -1,0 +1,19 @@
+# Gerado no container — não precisa fazer upload
+dist/
+.astro/
+node_modules/
+
+# Secrets
+.env
+.env.*
+
+# Docs locais — não usados no build
+docs/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/

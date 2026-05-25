@@ -4,11 +4,13 @@ function buildCSP(nonce: string): string {
   return [
     "default-src 'self'",
 
-    // 'strict-dynamic': permite que scripts carregados por um script com nonce válido
-    // também executem — necessário para GTM e Meta Pixel injetarem seus sub-scripts.
-    // Em browsers modernos: nonce + strict-dynamic são usados; 'unsafe-inline' e URLs
-    // são ignorados. Em browsers antigos: cai para 'unsafe-inline' + URL allowlist.
-    `script-src 'strict-dynamic' 'nonce-${nonce}' 'unsafe-inline'`
+    // 'self' cobre os bundles Astro servidos em /_astro/*.js.
+    // 'nonce-{value}': browsers modernos ignoram 'unsafe-inline' quando nonce presente —
+    // scripts inline sem o nonce são bloqueados (XSS mitigation).
+    // 'unsafe-inline' fica como fallback para browsers sem suporte a nonce.
+    // Nota: strict-dynamic foi removido porque em browsers modernos ele ignora 'self'
+    // e a URL allowlist, o que bloqueava os bundles Astro (/_astro/*.js) sem nonce.
+    `script-src 'self' 'nonce-${nonce}' 'unsafe-inline'`
       + " https://www.googletagmanager.com"
       + " https://www.googleadservices.com"
       + " https://googleads.g.doubleclick.net"
