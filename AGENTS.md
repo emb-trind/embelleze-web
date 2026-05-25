@@ -35,7 +35,8 @@ src/
   sections/                blocos da landing
   components/              UI reutilizável
   content/                 dados editáveis (courses, faqs, offers)
-  middleware.ts             security headers + CSP com nonce por request
+  middleware.ts             security headers + CSP nonce por request
+                            injeta nonce em todos os <script> do HTML (incluindo os do Astro)
   env.d.ts                 tipos de App.Locals (cspNonce)
   lib/
     bella.ts               generateBellaReply() — Azure OpenAI

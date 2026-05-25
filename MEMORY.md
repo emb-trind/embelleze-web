@@ -39,12 +39,15 @@ Função : Decisões tomadas — não regredir
   Sync só ocorre se `upsertLead` salvar com sucesso (leadSaved).
 - `appendLeadEvent` persiste em tabela `lead_events`
   (criada automaticamente na primeira chamada por processo).
-- Segurança reforçada nesta sessão:
+- Segurança:
   - Webhook Baileys rejeita quando `WHATSAPP_WEBHOOK_SECRET` não está definido
   - FlowPay exige `FLOWPAY_WEBHOOK_SECRET`
   - `content-length` validado como número (não string)
   - `/api/bella/chat`, `/api/leads` e `/api/location-intent` têm rate limit em memória por IP
-  - Middleware global aplica headers básicos: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`
+  - Middleware aplica headers de segurança + CSP com nonce por request
+  - Nonce injetado em **todos** os `<script>` do HTML renderizado (incluindo os gerados pelo Astro)
+    — sem isso, Astro gera `<script type="module">` inline sem nonce e o browser bloqueia tudo
+  - `'unsafe-inline'` removido do `script-src` — nonce cobre todos os scripts
   - Telefone normalizado para E.164 antes de enviar pelo gateway WhatsApp
   - Logs nunca expõem mais que os últimos 4 dígitos do telefone
   - `isValidTicket` valida formato real `BELLA-{base36}-{3chars}`
