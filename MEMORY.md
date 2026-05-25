@@ -51,9 +51,9 @@ Função : Decisões tomadas — não regredir
 - Handoff do chat do site deve usar apenas o fluxo canônico `wa.me` via CTA do componente; não usar deep link de WhatsApp Business, Play Store, Apple Store ou URL alternativa.
 
 - Deploy Railway usa `pnpm`, não `npm`.
-  `railway.toml` deve ter `pnpm install --frozen-lockfile && pnpm run build`
-  e `pnpm run start`. Usar `npm install` gerava warning de deprecação e
-  inconsistência com o lockfile do projeto.
+  `railway.toml` deve ter `pnpm install && pnpm run build` e `pnpm run start`.
+  Usar `npm install` gerava warning de deprecação. Sem `--frozen-lockfile`
+  pois o `pnpm-lock.yaml` não está commitado no repo.
 
 ────────────────────────────────────────
 
