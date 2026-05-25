@@ -141,8 +141,6 @@ const nameInput = document.getElementById('sim-name') as HTMLInputElement;
 const phoneInput = document.getElementById('sim-phone') as HTMLInputElement;
 const submitCapture = document.getElementById('sim-submit-capture')!;
 
-track({ event: Events.START_FUTURE_SIMULATOR });
-
 // Animação de contorno em onda (uma vez por user)
 function setupGlowAnimation() {
   const hasAnimated = localStorage.getItem('quiz_glow_animated');
@@ -193,6 +191,7 @@ function render() {
 
   stepsEl.querySelectorAll('.sim-option-card').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (answers.length === 0) track({ event: Events.START_FUTURE_SIMULATOR });
       answers.push((btn as HTMLElement).dataset.value!);
       stepsEl.querySelector('.sim-step')?.classList.add('fade-out');
       
@@ -260,23 +259,32 @@ submitCapture.addEventListener('click', async () => {
   localStorage.setItem('sim_name', name);
 
   // Captura o lead como QUALIFICADO — inclui UTMs do canal de origem
-  await fetch('/api/leads', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      phone,
-      name,
-      origin: 'simulator',
-      course_interest: courseName,
-      objective: answers[0],
-      status: 'QUALIFICADO',
-      last_message: 'Completou simulador de futuro',
-      ...getSessionUtms(),
-    })
-  }).catch(() => {}); // Falha silenciosa
+  let capiEventId: string | undefined;
+  try {
+    const res = await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phone,
+        name,
+        origin: 'simulator',
+        course_interest: courseName,
+        objective: answers[0],
+        status: 'QUALIFICADO',
+        last_message: 'Completou simulador de futuro',
+        ...getSessionUtms(),
+      }),
+    });
+    capiEventId = (await res.json())?.event_id;
+  } catch {}
 
-  // Meta Pixel standard event — permite otimização por conversão Lead
-  window.fbq?.('track', 'Lead', { content_name: courseName, content_category: 'education' });
+  // Meta Pixel standard event — event_id sincronizado com CAPI para deduplicação
+  const fbqParams = { content_name: courseName, content_category: 'education' };
+  if (capiEventId) {
+    window.fbq?.('track', 'Lead', fbqParams, { eventID: capiEventId });
+  } else {
+    window.fbq?.('track', 'Lead', fbqParams);
+  }
 
   showResult(phone, name);
 });

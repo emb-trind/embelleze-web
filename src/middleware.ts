@@ -1,4 +1,5 @@
 import type { MiddlewareHandler } from "astro";
+import { sendCapiPageView } from "./lib/capi";
 
 const buildCSP = (nonce: string): string => {
   return [
@@ -40,8 +41,10 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     crypto.getRandomValues(new Uint8Array(16))
   ).toString("base64");
 
-  // Disponibiliza para todos os .astro via Astro.locals.cspNonce
+  const pageViewEventId = crypto.randomUUID();
+
   context.locals.cspNonce = nonce;
+  context.locals.pageViewEventId = pageViewEventId;
 
   const response = await next();
 
@@ -58,7 +61,22 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // Injeta nonce em todos os <script> inline gerados pelo Astro (e os nossos).
   // Necessário porque o Astro gera <script type="module"> inline sem nonce.
   const contentType = headers.get("content-type") ?? "";
-  if (contentType.includes("text/html")) {
+  const isPage = contentType.includes("text/html")
+    && !context.url.pathname.startsWith("/api");
+
+  if (isPage) {
+    const ip = context.request.headers.get("x-forwarded-for")?.split(",")[0].trim()
+      ?? context.request.headers.get("cf-connecting-ip")
+      ?? undefined;
+    const userAgent = context.request.headers.get("user-agent") ?? undefined;
+
+    void sendCapiPageView({
+      eventId: pageViewEventId,
+      eventSourceUrl: context.url.href,
+      ip,
+      userAgent,
+    });
+
     const html = await response.text();
     const noncedHtml = html.replace(
       /<script(?![^>]*\bnonce=)(?=[^>]*>)/gi,
