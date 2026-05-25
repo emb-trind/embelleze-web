@@ -11,9 +11,6 @@ const buildCSP = (nonce: string): string => {
     // Nota: strict-dynamic foi removido porque em browsers modernos ele ignora 'self'
     // e a URL allowlist, o que bloqueava os bundles Astro (/_astro/*.js) sem nonce.
     `script-src 'self' 'nonce-${nonce}' 'unsafe-inline'`
-      + " https://www.googletagmanager.com"
-      + " https://www.googleadservices.com"
-      + " https://googleads.g.doubleclick.net"
       + " https://connect.facebook.net",
 
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
@@ -21,17 +18,9 @@ const buildCSP = (nonce: string): string => {
 
     "img-src 'self' data:"
       + " https://www.google.com"
-      + " https://www.googleadservices.com"
-      + " https://googleads.g.doubleclick.net"
-      + " https://www.googletagmanager.com"
       + " https://www.facebook.com",
 
     "connect-src 'self'"
-      + " https://www.google-analytics.com"
-      + " https://analytics.google.com"
-      + " https://stats.g.doubleclick.net"
-      + " https://region1.google-analytics.com"
-      + " https://www.googletagmanager.com"
       + " https://www.facebook.com"
       + " https://graph.facebook.com"
       + " https://connect.facebook.net"
@@ -39,7 +28,7 @@ const buildCSP = (nonce: string): string => {
       + " https://api-auth.probeltec.com"
       + " https://api.probeltec.com",
 
-    "frame-src 'self' https://www.google.com https://www.facebook.com https://td.doubleclick.net",
+    "frame-src 'self' https://www.google.com https://www.facebook.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

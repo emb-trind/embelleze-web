@@ -24,12 +24,6 @@ export function track(payload: TrackingPayload): void {
 
   const { event, ...params } = payload;
 
-  // GA4
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', event, params);
-  }
-
-  // Meta Pixel — evento customizado
   if (typeof window.fbq === 'function') {
     window.fbq('trackCustom', event, params);
   }
@@ -45,7 +39,6 @@ export function trackMeta(eventName: string, params?: Record<string, unknown>): 
 
 declare global {
   interface Window {
-    gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
   }
 }

@@ -47,17 +47,6 @@ Voltar para a Home
 </BaseLayout>
 
 <script>
-// dispara evento de conversão quando disponível
-declare global {
-interface Window {
-gtag?: (...args: unknown[]) => void;
-fbq?: (...args: unknown[]) => void;
-}
-}
-
-if (typeof window.gtag === 'function') {
-window.gtag('event', 'conversion', { send_to: 'AW-18004058795/SmrtCJXE7q0cEKvFgIlD' });
-}
 if (typeof window.fbq === 'function') {
 window.fbq('track', 'Lead');
 }
