@@ -1,0 +1,292 @@
+---
+// Modal leve de captura — exibido quando o lead clica em wa.me sem ter passado pelo simulador.
+// Coleta telefone (obrigatório) + nome (opcional), grava em /api/leads com UTMs e redireciona.
+// Expõe window.showLeadCapture(waUrl, origin) para o interceptor global do BaseLayout.
+const { cspNonce } = Astro.locals;
+---
+
+<div id="lcm-overlay" class="lcm-overlay" aria-modal="true" role="dialog" aria-label="Antes de continuar" hidden>
+  <div class="lcm-card">
+    <!-- Ícone WhatsApp -->
+    <div class="lcm-icon" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.529 5.858L0 24l6.335-1.51A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.791 9.791 0 01-5.031-1.389l-.361-.214-3.759.897.938-3.666-.237-.376A9.784 9.784 0 012.182 12C2.182 6.579 6.579 2.182 12 2.182S21.818 6.579 21.818 12 17.421 21.818 12 21.818z"/>
+      </svg>
+    </div>
+
+    <h2 class="lcm-title">Só um segundo!</h2>
+    <p class="lcm-sub">Deixa seu WhatsApp para nossa consultora já saber quem você é 😊</p>
+
+    <form id="lcm-form" class="lcm-form" novalidate>
+      <input
+        type="text"
+        id="lcm-name"
+        placeholder="Seu nome (opcional)"
+        autocomplete="name"
+        class="lcm-input"
+        maxlength="120"
+      />
+      <input
+        type="tel"
+        id="lcm-phone"
+        placeholder="WhatsApp com DDD — ex: 62 9 9999-9999"
+        autocomplete="tel"
+        required
+        class="lcm-input"
+        maxlength="20"
+      />
+      <p id="lcm-error" class="lcm-error" hidden>Digite um número válido com DDD.</p>
+
+      <button type="submit" class="lcm-btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.529 5.858L0 24l6.335-1.51A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.791 9.791 0 01-5.031-1.389l-.361-.214-3.759.897.938-3.666-.237-.376A9.784 9.784 0 012.182 12C2.182 6.579 6.579 2.182 12 2.182S21.818 6.579 21.818 12 17.421 21.818 12 21.818z"/>
+        </svg>
+        Ir para o WhatsApp
+      </button>
+    </form>
+
+    <button id="lcm-skip" class="lcm-btn-skip" type="button">
+      Prefiro não informar, ir assim mesmo →
+    </button>
+  </div>
+</div>
+
+<script is:inline nonce={cspNonce}>
+(function () {
+  var overlay  = document.getElementById('lcm-overlay');
+  var form     = document.getElementById('lcm-form');
+  var nameInput  = document.getElementById('lcm-name');
+  var phoneInput = document.getElementById('lcm-phone');
+  var errorEl  = document.getElementById('lcm-error');
+  var skipBtn  = document.getElementById('lcm-skip');
+
+  var _pendingUrl    = '';
+  var _pendingOrigin = '';
+
+  function open(waUrl, origin) {
+    _pendingUrl    = waUrl;
+    _pendingOrigin = origin || '';
+    phoneInput.value = '';
+    nameInput.value  = '';
+    errorEl.hidden   = true;
+    overlay.hidden   = false;
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () { phoneInput.focus(); }, 80);
+  }
+
+  function close() {
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  function redirect() {
+    close();
+    window.open(_pendingUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  function getUtms() {
+    var keys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+    var obj  = {};
+    keys.forEach(function (k) {
+      var v = sessionStorage.getItem(k);
+      if (v) obj[k] = v;
+    });
+    return obj;
+  }
+
+  function submit(e) {
+    e.preventDefault();
+    var phone = phoneInput.value.replace(/\D/g, '');
+    var name  = nameInput.value.trim();
+
+    if (phone.length < 10) {
+      errorEl.hidden = false;
+      phoneInput.focus();
+      return;
+    }
+    errorEl.hidden = true;
+
+    // Persiste para o interceptor global não voltar a exibir o modal
+    localStorage.setItem('sim_phone', phone);
+    if (name) localStorage.setItem('sim_name', name);
+
+    var payload = Object.assign({
+      phone: phone,
+      name:  name || undefined,
+      origin: _pendingOrigin || 'direct-wa',
+      status: 'INTERESSADO',
+      last_message: 'Clique direto no WhatsApp (modal de captura)',
+    }, getUtms());
+
+    // Fire-and-forget — o redirect não espera a resposta
+    fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(function () {});
+
+    // Dispara evento Meta Pixel (Contact)
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Contact');
+    }
+
+    redirect();
+  }
+
+  // Fecha ao clicar fora do card
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) redirect();
+  });
+
+  skipBtn.addEventListener('click', redirect);
+  form.addEventListener('submit', submit);
+
+  // Expõe para o interceptor global
+  window.showLeadCapture = open;
+})();
+</script>
+
+<style>
+.lcm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(18, 7, 31, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.lcm-overlay[hidden] {
+  display: none;
+}
+
+.lcm-card {
+  background: var(--color-surface);
+  border: 1px solid rgba(95, 48, 128, 0.4);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-strong);
+  padding: 2rem 1.75rem 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: lcm-in 0.22s ease;
+}
+
+@keyframes lcm-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lcm-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: #25d36620;
+  color: #25d366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+
+.lcm-title {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-text);
+  text-align: center;
+  margin: 0;
+}
+
+.lcm-sub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0 0 0.5rem;
+  line-height: 1.5;
+}
+
+.lcm-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lcm-input {
+  width: 100%;
+  background: var(--color-surface-2);
+  border: 1px solid rgba(95, 48, 128, 0.35);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  font-family: var(--font-base);
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.lcm-input:focus {
+  border-color: var(--color-purple-light);
+}
+
+.lcm-input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+.lcm-error {
+  font-size: var(--font-size-xs);
+  color: #f97b6b;
+  margin: -0.25rem 0 0;
+}
+
+.lcm-btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #25d366;
+  color: #fff;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  font-family: var(--font-base);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 0.85rem 1.5rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  margin-top: 0.25rem;
+}
+
+.lcm-btn-primary:hover {
+  background: #1db954;
+  transform: translateY(-1px);
+}
+
+.lcm-btn-skip {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-base);
+  cursor: pointer;
+  padding: 0.25rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+  margin-top: 0.25rem;
+}
+
+.lcm-btn-skip:hover {
+  color: var(--color-text);
+}
+</style>

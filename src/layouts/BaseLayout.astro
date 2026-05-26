@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import TrackingPixel from '../components/TrackingPixel.astro';
 import LocalSEO from '../components/LocalSEO.astro';
 import BellaFAB from '../components/BellaFAB.astro';
+import LeadCaptureModal from '../components/LeadCaptureModal.astro';
 import { CANONICAL_BASE_URL, OG_IMAGE_URL } from '../lib/constants';
 
 interface Props {
@@ -60,6 +61,7 @@ const { cspNonce } = Astro.locals;
 <slot />
 <Footer />
 <BellaFAB />
+<LeadCaptureModal />
 
 <script>
 import '../scripts/events.client';
@@ -83,15 +85,26 @@ if (v && !sessionStorage.getItem(k)) {
 })();
 
 // ── Global Lead Capture Interceptor ─────────────────────────────────────
-// Quando o lead clica em qualquer botão WA e já passou pelo simulador,
-// atualiza o status para INTERESSADO — inclui os UTMs da sessão.
+// Intercepta todos os cliques em wa.me.
+// · Lead que passou pelo simulador (sim_phone existe) → atualiza status para INTERESSADO.
+// · Lead sem simulador → abre modal de captura (LeadCaptureModal) antes de redirecionar.
 window.addEventListener('click', async function(e) {
 var target = e.target.closest('a[href*="wa.me"]');
 if (!target) return;
 
-var phone = localStorage.getItem('sim_phone');
-if (!phone) return;
+var phone  = localStorage.getItem('sim_phone');
+var origin = target.dataset.origin || '';
 
+if (!phone) {
+  // Sem dados do simulador — exibe modal de captura para coletar telefone + UTMs
+  if (typeof window.showLeadCapture === 'function') {
+    e.preventDefault();
+    window.showLeadCapture(target.href, origin);
+  }
+  return;
+}
+
+// Já tem telefone — apenas atualiza status
 var body = {
 phone: phone,
 status: 'INTERESSADO',
