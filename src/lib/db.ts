@@ -211,6 +211,7 @@ export async function claimProbeltecSync(phone: string): Promise<boolean> {
 }
 
 let leadEventsTableReady = false;
+let followupEventsTableReady = false;
 
 async function ensureLeadEventsTable(client: pg.PoolClient): Promise<void> {
   if (leadEventsTableReady) return;
@@ -224,6 +225,31 @@ async function ensureLeadEventsTable(client: pg.PoolClient): Promise<void> {
     )
   `);
   leadEventsTableReady = true;
+}
+
+async function ensureFollowupEventsTable(client: pg.PoolClient): Promise<void> {
+  if (followupEventsTableReady) return;
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS followup_events (
+      id                   SERIAL PRIMARY KEY,
+      lead_id              TEXT NOT NULL,
+      event_type           TEXT NOT NULL,
+      result               TEXT NOT NULL,
+      provider             TEXT NOT NULL,
+      provider_message_id  TEXT,
+      notes                TEXT,
+      created_at           TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+  await client.query(`
+    CREATE INDEX IF NOT EXISTS idx_followup_events_lead_id_created_at
+      ON followup_events (lead_id, created_at DESC)
+  `);
+  await client.query(`
+    CREATE INDEX IF NOT EXISTS idx_followup_events_provider_message_id
+      ON followup_events (provider_message_id)
+  `);
+  followupEventsTableReady = true;
 }
 
 /**
@@ -276,6 +302,70 @@ export async function appendLeadEvent(
     );
   } catch (err) {
     console.error(`[DB-EVENT] Erro ao registrar evento ${eventType}:`, err);
+  } finally {
+    if (client) client.release();
+  }
+}
+
+export async function appendFollowupEvent(params: {
+  lead_id: string;
+  event_type: string;
+  result: string;
+  provider: string;
+  provider_message_id?: string | null;
+  notes?: string;
+  created_at?: string;
+}): Promise<void> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl || !params.lead_id || !params.event_type) return;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureFollowupEventsTable(client);
+    await client.query(
+      `INSERT INTO followup_events
+        (lead_id, event_type, result, provider, provider_message_id, notes, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, COALESCE($7::timestamptz, NOW()))`,
+      [
+        params.lead_id,
+        params.event_type,
+        params.result,
+        params.provider,
+        params.provider_message_id ?? null,
+        params.notes ?? null,
+        params.created_at ?? null,
+      ],
+    );
+  } catch (err) {
+    console.error(`[DB-FOLLOWUP] Erro ao registrar evento ${params.event_type}:`, err);
+  } finally {
+    if (client) client.release();
+  }
+}
+
+export async function findLeadIdByProviderMessageId(providerMessageId: string): Promise<string | null> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl || !providerMessageId) return null;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureFollowupEventsTable(client);
+    const res = await client.query<{ lead_id: string }>(
+      `SELECT lead_id
+       FROM followup_events
+       WHERE provider = 'resend'
+         AND provider_message_id = $1
+         AND event_type = 'email.sent'
+       ORDER BY created_at DESC
+       LIMIT 1`,
+      [providerMessageId],
+    );
+    return res.rows[0]?.lead_id ?? null;
+  } catch (err) {
+    console.error('[DB-FOLLOWUP] Erro ao buscar lead por provider_message_id:', err);
+    return null;
   } finally {
     if (client) client.release();
   }

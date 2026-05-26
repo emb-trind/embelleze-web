@@ -1,33 +1,12 @@
 import type { APIRoute } from 'astro';
-import { appendFile, mkdir, readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { enforceRateLimit } from '../../../lib/rate-limit';
-
-type FollowupEventLog = {
-  ts: string;
-  lead_id: string;
-  event_type: string;
-  result: string;
-  provider: 'resend';
-  provider_message_id?: string | null;
-  notes?: string;
-};
+import { appendFollowupEvent, findLeadIdByProviderMessageId } from '../../../lib/db';
 
 type ResendWebhookEvent = {
   type?: string;
   created_at?: string;
   data?: Record<string, unknown>;
 };
-
-function getEventsPath(): string {
-  return process.env.FOLLOWUP_EVENTS_PATH || path.join(process.cwd(), 'data', 'followup-events.jsonl');
-}
-
-async function appendEvent(event: FollowupEventLog): Promise<void> {
-  const filePath = getEventsPath();
-  await mkdir(path.dirname(filePath), { recursive: true });
-  await appendFile(filePath, `${JSON.stringify(event)}\n`, 'utf-8');
-}
 
 function mapResendTypeToFollowup(type: string): string | null {
   const normalized = type.toLowerCase();
@@ -52,32 +31,6 @@ function getProviderMessageId(payload: ResendWebhookEvent): string | null {
     if (typeof value === 'string' && value.trim()) return value.trim();
   }
   return null;
-}
-
-async function findLeadIdByProviderMessageId(providerMessageId: string): Promise<string | null> {
-  try {
-    const raw = await readFile(getEventsPath(), 'utf-8');
-    const lines = raw.split('\n').filter(Boolean);
-
-    for (let i = lines.length - 1; i >= 0; i -= 1) {
-      try {
-        const event = JSON.parse(lines[i]) as FollowupEventLog;
-        if (
-          event.provider === 'resend'
-          && event.provider_message_id === providerMessageId
-          && typeof event.lead_id === 'string'
-          && event.lead_id
-        ) {
-          return event.lead_id;
-        }
-      } catch {
-        // ignore malformed line
-      }
-    }
-    return null;
-  } catch {
-    return null;
-  }
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -131,14 +84,14 @@ export const POST: APIRoute = async ({ request }) => {
       continue;
     }
 
-    await appendEvent({
-      ts: event.created_at || new Date().toISOString(),
+    await appendFollowupEvent({
       lead_id: leadId,
       event_type: mappedType,
       result: mappedType.replace('email.', ''),
       provider: 'resend',
       provider_message_id: providerMessageId,
       notes: `resend_type=${resendType}`,
+      created_at: event.created_at,
     });
 
     accepted += 1;

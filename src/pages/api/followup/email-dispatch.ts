@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro';
-import { appendFile, mkdir, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { sendFollowupEmail } from '../../../lib/resend';
 import { enforceRateLimit } from '../../../lib/rate-limit';
+import { appendFollowupEvent } from '../../../lib/db';
 
 type QueueItem = {
   lead_id: string;
@@ -22,16 +23,6 @@ type QueueItem = {
   };
 };
 
-type EventLog = {
-  ts: string;
-  lead_id: string;
-  event_type: string;
-  result: string;
-  provider: 'resend';
-  provider_message_id?: string | null;
-  notes?: string;
-};
-
 function getQueuePath(): string {
   return process.env.EMAIL_DISPATCH_QUEUE_PATH
     || path.join(process.cwd(), 'data', 'email-dispatch-queue.json');
@@ -39,17 +30,6 @@ function getQueuePath(): string {
 
 function getQueueUrl(): string | null {
   return process.env.EMAIL_DISPATCH_QUEUE_URL || null;
-}
-
-function getEventsPath(): string {
-  return process.env.FOLLOWUP_EVENTS_PATH
-    || path.join(process.cwd(), 'data', 'followup-events.jsonl');
-}
-
-async function appendEvent(event: EventLog): Promise<void> {
-  const filePath = getEventsPath();
-  await mkdir(path.dirname(filePath), { recursive: true });
-  await appendFile(filePath, `${JSON.stringify(event)}\n`, 'utf-8');
 }
 
 function sourceLabel(source: string): string {
@@ -137,8 +117,7 @@ export const POST: APIRoute = async ({ request }) => {
   const failed: Array<{ lead_id: string; reason: string }> = [];
 
   for (const item of selected) {
-    await appendEvent({
-      ts: new Date().toISOString(),
+    await appendFollowupEvent({
       lead_id: item.lead_id,
       event_type: 'email.queued',
       result: 'queued',
@@ -156,8 +135,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (result.messageId) {
       sent.push(item.lead_id);
       sentItems.push({ lead_id: item.lead_id, provider_message_id: result.messageId });
-      await appendEvent({
-        ts: new Date().toISOString(),
+      await appendFollowupEvent({
         lead_id: item.lead_id,
         event_type: 'email.sent',
         result: 'sent',
@@ -166,8 +144,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     } else {
       failed.push({ lead_id: item.lead_id, reason: 'send_failed' });
-      await appendEvent({
-        ts: new Date().toISOString(),
+      await appendFollowupEvent({
         lead_id: item.lead_id,
         event_type: 'email.failed',
         result: 'send_failed',
