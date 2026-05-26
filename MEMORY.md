@@ -6,63 +6,20 @@
    EMBELLEZE WEB · MEMORY
 ========================================
 Escopo : embelleze-web/
-Função : Decisões tomadas — não regredir
+Função : decisões para evitar regressão
 ========================================
 ```
 
-## ⟠ Decisões
+## Decisões vigentes
 
-- A landing deve parecer local e real,
-  não institucional genérica.
-- Bella aparece como consultora virtual
-  e ponte para o WhatsApp.
-- Vitória é o agente de atendimento do chat do site: entende intenção, responde dúvidas do site e encaminha para Bella/WhatsApp quando houver pedido de atendimento, condição comercial ou reserva. Prompt canônico: `src/content/vitoria.web.md`.
-- Oferta é dinâmica por curso ativo
-  via `src/content/offers.json`.
-- Ticket/código de desconto é mecânica
-  de conversão, não desconto real.
-- O componente `DiscountTicket` foi comentado por decisão do arquiteto, pois não há ação de marketing ativa no momento. A seção foi mantida modular para ser ativada/desativada conforme a necessidade de campanhas.
-- Mapa é página separada em `/mapa`.
-- Prova social usa apenas materiais
-  aprovados pelo cliente.
-- Params UTM de `/oferta` são repassados
-  para o link do WhatsApp.
-- Webhook ativo:
-  - `src/pages/api/whatsapp/webhook.ts` — entrada Baileys via `neo-whatsapp-connect`
-  - `src/lib/whatsapp-gateway.ts` — envio via gateway Baileys
-  - `src/lib/phone.ts` — `normalizePhone` + `maskPhone`
-  - `src/lib/bella.ts` — Azure OpenAI (system prompt de `bella.knowledge.md`)
-- Fluxo de dados: Baileys → Webhook → bella.ts (Azure)
-  → whatsapp-gateway.ts → db.ts → lead_events.
-- Probeltec implementado: `src/lib/probeltec.ts`
-  Auth + createLead. Sync atômico via `claimProbeltecSync`.
-  Sync só ocorre se `upsertLead` salvar com sucesso (leadSaved).
-- `appendLeadEvent` persiste em tabela `lead_events`
-  (criada automaticamente na primeira chamada por processo).
-- Segurança:
-  - Webhook Baileys rejeita quando `WHATSAPP_WEBHOOK_SECRET` não está definido
-  - FlowPay exige `FLOWPAY_WEBHOOK_SECRET`
-  - `content-length` validado como número (não string)
-  - `/api/bella/chat`, `/api/leads` e `/api/location-intent` têm rate limit em memória por IP
-  - Middleware aplica headers de segurança + CSP com nonce por request
-  - Nonce injetado em **todos** os `<script>` do HTML renderizado (incluindo os gerados pelo Astro)
-    — sem isso, Astro gera `<script type="module">` inline sem nonce e o browser bloqueia tudo
-  - `'unsafe-inline'` removido do `script-src` — nonce cobre todos os scripts
-  - Telefone normalizado para E.164 antes de enviar pelo gateway WhatsApp
-  - Logs nunca expõem mais que os últimos 4 dígitos do telefone
-  - `isValidTicket` valida formato real `BELLA-{base36}-{3chars}`
-- Handoff do chat do site deve usar apenas o fluxo canônico `wa.me` via CTA do componente; não usar deep link de WhatsApp Business, Play Store, Apple Store ou URL alternativa.
+- `embelleze-web` é dono do estado de follow-up.
+- Dispatch de email usa `/api/followup/email-dispatch` com `FOLLOWUP_DISPATCH_SECRET`.
+- Webhook da Resend entra por `/api/followup/resend-webhook` com `RESEND_WEBHOOK_SECRET`.
+- `provider_message_id` precisa ser preservado para reconciliar eventos de entrega/abertura.
+- Dashboard consome estado derivado; não deve implementar lógica paralela de atualização.
+- URL de webhook da Resend é configurada no painel da Resend, não no `.env` da aplicação.
 
-- Deploy Railway usa `pnpm`, não `npm`.
-  `railway.toml` deve ter `pnpm install && pnpm run build` e `pnpm run start`.
-  Usar `npm install` gerava warning de deprecação. Sem `--frozen-lockfile`
-  pois o `pnpm-lock.yaml` não está commitado no repo..
+## Guardrails
 
-────────────────────────────────────────
-
-## ⍟ Princípio
-
-O site não é vitrine.
-É máquina de captação, qualificação e conversão
-para WhatsApp e matrícula.
-LPs de campanha são satélites — convertem para o mesmo WhatsApp.
+- Sem logs com tokens, secrets ou payload completo sensível.
+- Sem fallback que mascare erro estrutural de produção sem sinalizar.

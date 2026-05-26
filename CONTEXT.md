@@ -9,43 +9,22 @@ Escopo : embelleze-web/
 ========================================
 ```
 
-## ⟠ Objetivo
+## Objetivo atual
 
-Converter visitantes em conversas qualificadas
-no WhatsApp com a equipe do Instituto.
+Ser o núcleo de estado operacional de captação e follow-up:
+- recebe dados
+- normaliza
+- persiste
+- integra canais
 
-> Bella integrada ao Azure OpenAI via `src/lib/bella.ts`.
-> System prompt carregado de `src/content/bella.knowledge.md`.
-> Seção `BellaIntro` pode ser reativada em `index.astro`.
+## Fronteiras
 
-────────────────────────────────────────
+- Dashboard: visualização, sem escrita de regra de negócio
+- Neo WhatsApp Connect: transporte de mensagens
+- Resend: provedor externo de entrega de email
 
-## ⨷ Público
+## Estado crítico
 
-Pessoas de Trindade/GO e região que buscam:
-
-- nova profissão
-- renda extra
-- formação prática
-- entrada no mercado da beleza
-
-────────────────────────────────────────
-
-## ⧉ Tom
-
-Direto. Humano. Local. Confiante.
-Orientado à ação.
-
-────────────────────────────────────────
-
-## ⍟ Identidade Visual
-
-```text
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ COR        HEX       USO
-┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-┃ Laranja    #de583d   CTA, botões, destaque
-┃ Roxo       #5f3080   Títulos, fundo
-┃ Branco     #ffffff   Contraste, leitura
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+- Eventos de email devem ser tratados por webhook (`resend-webhook`)
+- Estado não deve depender de arquivo local em produção
+- Alterações de taxonomia (status/origem/mídia) devem manter compatibilidade com dashboard PT-BR
