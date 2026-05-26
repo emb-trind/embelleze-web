@@ -112,3 +112,49 @@ export async function sendPaymentNotificationToTeam(params: {
     console.error("[Resend] Erro ao enviar notificação interna (silenciado):", err);
   }
 }
+
+export async function sendFollowupEmail(params: {
+  to: string;
+  name: string | null;
+  templateKey: string;
+  sourceLabel?: string | null;
+}): Promise<{ messageId: string | null }> {
+  const client = getClient();
+  if (!client) return { messageId: null };
+
+  const firstName = params.name?.split(" ")[0] || "Olá";
+  const sourceLine = params.sourceLabel ? `<p>Canal de origem: <strong>${params.sourceLabel}</strong></p>` : "";
+
+  const subjectByTemplate: Record<string, string> = {
+    followup_contato: "Continuamos por aqui para te ajudar 💬",
+    followup_novo: "Recebemos seu interesse no Instituto Embelleze ✨",
+  };
+  const subject = subjectByTemplate[params.templateKey] || "Instituto Embelleze Trindade · Seguimento";
+
+  try {
+    const response = await client.emails.send({
+      from: FROM,
+      to: params.to,
+      subject,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#171018;">
+          <div style="background:#5f3080;padding:24px 20px;border-radius:12px 12px 0 0;">
+            <h2 style="color:#fff;margin:0;">Instituto Embelleze Trindade</h2>
+          </div>
+          <div style="background:#fff;padding:24px 20px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px;">
+            <p style="margin-top:0;">${firstName}, tudo bem?</p>
+            <p>Passando para te ajudar com sua jornada de formação profissional na área da beleza.</p>
+            ${sourceLine}
+            <p>Se preferir, podemos continuar direto pelo WhatsApp para te orientar melhor.</p>
+            <p style="font-size:12px;color:#777;margin-bottom:0;">Mensagem automática de acompanhamento.</p>
+          </div>
+        </div>
+      `,
+    });
+
+    return { messageId: response?.data?.id ?? null };
+  } catch (err) {
+    console.error("[Resend] Erro no envio de follow-up (silenciado):", err);
+    return { messageId: null };
+  }
+}
