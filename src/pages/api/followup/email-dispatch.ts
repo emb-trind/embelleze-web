@@ -133,6 +133,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const sent: string[] = [];
+  const sentItems: Array<{ lead_id: string; provider_message_id: string }> = [];
   const failed: Array<{ lead_id: string; reason: string }> = [];
 
   for (const item of selected) {
@@ -154,6 +155,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (result.messageId) {
       sent.push(item.lead_id);
+      sentItems.push({ lead_id: item.lead_id, provider_message_id: result.messageId });
       await appendEvent({
         ts: new Date().toISOString(),
         lead_id: item.lead_id,
@@ -174,7 +176,12 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  return new Response(JSON.stringify({ processed: selected.length, sent: sent.length, failed: failed.length }), {
+  return new Response(JSON.stringify({
+    processed: selected.length,
+    sent: sent.length,
+    failed: failed.length,
+    sent_items: sentItems,
+  }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
