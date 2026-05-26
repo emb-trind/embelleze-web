@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { appendFile, readFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { enforceRateLimit } from '../../../lib/rate-limit';
 
@@ -24,7 +24,9 @@ function getEventsPath(): string {
 }
 
 async function appendEvent(event: FollowupEventLog): Promise<void> {
-  await appendFile(getEventsPath(), `${JSON.stringify(event)}\n`, 'utf-8');
+  const filePath = getEventsPath();
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await appendFile(filePath, `${JSON.stringify(event)}\n`, 'utf-8');
 }
 
 function mapResendTypeToFollowup(type: string): string | null {
