@@ -37,6 +37,10 @@ function getQueuePath(): string {
     || path.join(process.cwd(), 'data', 'email-dispatch-queue.json');
 }
 
+function getQueueUrl(): string | null {
+  return process.env.EMAIL_DISPATCH_QUEUE_URL || null;
+}
+
 function getEventsPath(): string {
   return process.env.FOLLOWUP_EVENTS_PATH
     || path.join(process.cwd(), 'data', 'followup-events.jsonl');
@@ -79,21 +83,43 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const body = await request.json().catch(() => ({} as { limit?: number; dryRun?: boolean }));
+  const body = await request.json().catch(() => ({} as { limit?: number; dryRun?: boolean; queue?: QueueItem[] }));
   const limit = Math.min(Math.max(Number(body?.limit ?? 25), 1), 100);
   const dryRun = Boolean(body?.dryRun);
 
   let queue: QueueItem[] = [];
-  try {
-    const raw = await readFile(getQueuePath(), 'utf-8');
-    const parsed = JSON.parse(raw) as QueueItem[];
-    queue = Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
-    console.error('[Followup Dispatch] queue_read_error', err);
-    return new Response(JSON.stringify({ error: 'queue_read_error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  if (Array.isArray(body?.queue)) {
+    queue = body.queue;
+  } else {
+    const queueUrl = getQueueUrl();
+    if (queueUrl) {
+      try {
+        const response = await fetch(queueUrl);
+        if (!response.ok) {
+          throw new Error(`queue_url_http_${response.status}`);
+        }
+        const parsed = (await response.json()) as QueueItem[];
+        queue = Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        console.error('[Followup Dispatch] queue_url_read_error', err);
+        return new Response(JSON.stringify({ error: 'queue_url_read_error' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } else {
+      try {
+        const raw = await readFile(getQueuePath(), 'utf-8');
+        const parsed = JSON.parse(raw) as QueueItem[];
+        queue = Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        console.error('[Followup Dispatch] queue_read_error', err);
+        return new Response(JSON.stringify({ error: 'queue_read_error' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    }
   }
 
   const selected = queue.slice(0, limit);
