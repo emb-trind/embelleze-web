@@ -23,3 +23,11 @@ Função : decisões para evitar regressão
 
 - Sem logs com tokens, secrets ou payload completo sensível.
 - Sem fallback que mascare erro estrutural de produção sem sinalizar.
+
+---
+
+## Atualização 2026-05-26 (aditiva · sync)
+
+- `scripts/sync-followup-data.py` passou a priorizar Postgres (`followup_events`) como fonte oficial de eventos.
+- `jsonl` local permanece somente como fallback de contingência (offline/sem conectividade).
+- Validação operacional concluída: `events_source=postgres`, `events_found=3`, `events_applied=3`.
