@@ -7,8 +7,30 @@ interface ChatMessage {
   content: string;
 }
 
+const ALLOWED_ORIGINS = [
+  'https://embelleze-bella.online',
+  'https://lp.embelleze-bella.online',
+  'http://localhost:4321',
+  'http://localhost:4323',
+];
+
+function corsHeaders(origin: string | null) {
+  const allowed = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
+
+export const OPTIONS: APIRoute = ({ request }) => {
+  const origin = request.headers.get('origin');
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
+};
+
 export const POST: APIRoute = async ({ request }) => {
-  const headers = { 'Content-Type': 'application/json' };
+  const origin = request.headers.get('origin');
+  const headers = { 'Content-Type': 'application/json', ...corsHeaders(origin) };
 
   const rateLimited = enforceRateLimit(request, 'bella-chat', 20, 60_000);
   if (rateLimited) return rateLimited;

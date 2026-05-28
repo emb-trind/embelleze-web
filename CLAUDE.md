@@ -23,6 +23,12 @@ Quando houver conflito de "quem grava estado", o `embelleze-web` é a referênci
 - Resend (`RESEND_API_KEY`)
 - Azure OpenAI
 
+## Convenções TypeScript
+
+`tsconfig.json` segue o padrão workspace — ver raiz `CLAUDE.md` → *Convenções de Configuração*.
+Este módulo usa `baseUrl` + path alias `@/*`, por isso inclui `ignoreDeprecations: "6.0"`.
+Targets Makefile canônicos: `dev` · `build` · `check` · `clean` · `install`.
+
 ## Fluxo follow-up/email
 
 1. Geração de fila de dispatch (pipeline local)

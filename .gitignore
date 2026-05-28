@@ -3,3 +3,10 @@ dist/
 .astro/
 node_modules/
 .env
+
+# Dados operacionais locais com PII/leads
+private/
+recon/
+TABELA*.csv
+*.xlsx
+*.xls

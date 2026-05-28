@@ -18,6 +18,12 @@ Função : decisões para evitar regressão
 - `provider_message_id` precisa ser preservado para reconciliar eventos de entrega/abertura.
 - Dashboard consome estado derivado; não deve implementar lógica paralela de atualização.
 - URL de webhook da Resend é configurada no painel da Resend, não no `.env` da aplicação.
+- OpenAI Ads Pixel é client-side: `PUBLIC_OPENAI_PIXEL_ID` pode ir ao browser e não é secret.
+- `OPENAI_PIXEL_ID` sem prefixo público fica reservado para eventual medição server-side; token/API key de Conversions API nunca deve ser exposto.
+- Funil OpenAI Ads atual: page view em `TrackingPixel.astro`, curso visto e clique WhatsApp em `events.client.ts`, conversão final em `/obrigado`.
+- Planilha oficial operacional fica online no Google Sheets: `1Qs54aeCLBgt1yPU6_L9ZTx0vTLEvLVD0bimMFzhsUv0`.
+- Snapshots locais de 2026-05-28 ficam fora da raiz, em pasta ignorada: `private/lead-snapshots/2026-05-28/`.
+- Operação atual: atualização de cadastro e reenvio de mensagem para checar intenção; dashboard deve consumir estado/eventos por sync ou webhook, sem virar fonte de regra.
 
 ## Guardrails
 

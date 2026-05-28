@@ -47,6 +47,7 @@ CAPI server-side        → src/lib/capi.ts         (sendCapiPageView / sendCapi
 UTMs / constantes       → src/lib/constants.ts    (UTM, CAMPAIGN_SLUG)
 Estilos globais         → src/styles/global.css
 Pixel / nonce           → src/components/TrackingPixel.astro
+OpenAI Ads Pixel        → PUBLIC_OPENAI_PIXEL_ID (publico, client-side)
 ```
 
 ────────────────────────────────────────
@@ -92,6 +93,7 @@ Events = {
 }
 track({ event: Events.X, ...params }): void   → fbq trackCustom
 trackMeta(eventName: string, params?): void   → fbq track (padrão Meta)
+trackOpenAI(eventName, props?, options?): void → oaiq measure
 
 ▓▓▓ src/content/
 ────────────────────────────────────────
@@ -132,6 +134,9 @@ Nomeação: kebab-case, sem versão no nome do arquivo
 → Meta Events Manager → Test events
 → Confirmar: evento aparece com origem Pixel E CAPI
 → Confirmar: event_id igual nos dois (dedup ativo)
+→ OpenAI Ads: confirmar `page_viewed`, `contents_viewed`,
+  `lead_created` e `registration_completed` quando
+  `PUBLIC_OPENAI_PIXEL_ID` estiver configurado
 
 ▓▓▓ MOBILE
 ────────────────────────────────────────
