@@ -35,6 +35,7 @@ Aqui vivem site, APIs de follow-up, webhooks e escrita de estado operacional.
 - `POST /api/followup/email-dispatch`
 - `POST /api/followup/resend-webhook`
 - `POST /api/whatsapp/webhook`
+- `POST /api/sheets/webhook`
 
 ## Variáveis críticas
 
@@ -43,9 +44,12 @@ Aqui vivem site, APIs de follow-up, webhooks e escrita de estado operacional.
 - `RESEND_API_KEY`
 - `FOLLOWUP_DISPATCH_SECRET`
 - `RESEND_WEBHOOK_SECRET`
+- `SHEETS_WEBHOOK_SECRET`
 
 ## Regras
 
 - Não vazar secrets em logs
 - Não mover regras de estado para dashboard
 - Não acoplar web a arquivos locais para evento de produção
+- Sync Google Sheets usa Apps Script com Script properties;
+  ver `docs/SHEETS_WEBHOOK_SETUP.md`

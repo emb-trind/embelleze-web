@@ -24,11 +24,18 @@ Função : decisões para evitar regressão
 - Planilha oficial operacional fica online no Google Sheets: `1Qs54aeCLBgt1yPU6_L9ZTx0vTLEvLVD0bimMFzhsUv0`.
 - Snapshots locais de 2026-05-28 ficam fora da raiz, em pasta ignorada: `private/lead-snapshots/2026-05-28/`.
 - Operação atual: atualização de cadastro e reenvio de mensagem para checar intenção; dashboard deve consumir estado/eventos por sync ou webhook, sem virar fonte de regra.
+- Sync Google Sheets -> `embelleze-web` usa `POST /api/sheets/webhook`.
+  O secret não fica no código: Railway usa `SHEETS_WEBHOOK_SECRET` e
+  Apps Script usa Script property de mesmo nome. Guia:
+  `docs/SHEETS_WEBHOOK_SETUP.md`.
+- `/sw.js` existe só como cleanup para clientes antigos com service worker
+  registrado. O app atual não usa cache/offline/push.
 
 ## Guardrails
 
 - Sem logs com tokens, secrets ou payload completo sensível.
 - Sem fallback que mascare erro estrutural de produção sem sinalizar.
+- Não colocar secret do Sheets no `docs/sheets-apps-script.js`.
 
 ---
 

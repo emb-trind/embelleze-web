@@ -32,3 +32,8 @@ Ser o núcleo de estado operacional de captação e follow-up:
 - `PUBLIC_OPENAI_PIXEL_ID` é identificador público de pixel; segredos de medição server-side continuam proibidos no cliente.
 - Tabela oficial de operação/cadastro é o Google Sheets compartilhado; CSVs locais são snapshots auditáveis, não fonte definitiva depois de exportados.
 - Conexão com `embelleze-dashboard` deve ser latente por leitura/sync ou webhook de eventos, mantendo escrita operacional no `embelleze-web`.
+- Sync Google Sheets -> Postgres entra por `POST /api/sheets/webhook`,
+  autenticado por `SHEETS_WEBHOOK_SECRET`; instruções de subida em
+  `docs/SHEETS_WEBHOOK_SETUP.md`.
+- `/sw.js` é apenas cleanup de service worker antigo; não há estratégia PWA
+  ativa de cache/offline no app atual.

@@ -48,6 +48,7 @@ UTMs / constantes       → src/lib/constants.ts    (UTM, CAMPAIGN_SLUG)
 Estilos globais         → src/styles/global.css
 Pixel / nonce           → src/components/TrackingPixel.astro
 OpenAI Ads Pixel        → PUBLIC_OPENAI_PIXEL_ID (publico, client-side)
+Sheets webhook setup    → docs/SHEETS_WEBHOOK_SETUP.md
 ```
 
 ────────────────────────────────────────
@@ -100,6 +101,14 @@ trackOpenAI(eventName, props?, options?): void → oaiq measure
 Formato: JSON ou Markdown com frontmatter
 Não importar lógica nesses arquivos — só dados
 Nomeação: kebab-case, sem versão no nome do arquivo
+
+▓▓▓ Google Sheets sync
+────────────────────────────────────────
+Endpoint: POST /api/sheets/webhook
+Script: docs/sheets-apps-script.js
+Setup: docs/SHEETS_WEBHOOK_SETUP.md
+Secret: SHEETS_WEBHOOK_SECRET no Railway e em Apps Script Script properties
+Não salvar secret no Git nem no código do script.
 ```
 
 ────────────────────────────────────────
