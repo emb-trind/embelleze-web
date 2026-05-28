@@ -37,8 +37,21 @@ export function trackMeta(eventName: string, params?: Record<string, unknown>): 
   }
 }
 
+// Eventos OpenAI Ads Pixel
+export function trackOpenAI(
+  eventName: string,
+  eventProps?: Record<string, unknown>,
+  eventOptions?: Record<string, unknown>,
+): void {
+  if (typeof window === 'undefined') return;
+  if (typeof window.oaiq === 'function') {
+    window.oaiq('measure', eventName, eventProps ?? {}, eventOptions ?? {});
+  }
+}
+
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
+    oaiq?: (...args: unknown[]) => void;
   }
 }

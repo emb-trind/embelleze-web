@@ -13,6 +13,8 @@ export interface CapiPageViewData {
   eventSourceUrl: string;
   ip?: string;
   userAgent?: string;
+  fbc?: string;
+  fbp?: string;
 }
 
 export async function sendCapiPageView(data: CapiPageViewData): Promise<void> {
@@ -21,6 +23,8 @@ export async function sendCapiPageView(data: CapiPageViewData): Promise<void> {
   const userData: Record<string, unknown> = {};
   if (data.ip) userData['client_ip_address'] = data.ip;
   if (data.userAgent) userData['client_user_agent'] = data.userAgent;
+  if (data.fbc) userData['fbc'] = data.fbc;
+  if (data.fbp) userData['fbp'] = data.fbp;
 
   const payload = {
     data: [{
@@ -54,6 +58,9 @@ export interface CapiLeadData {
   phone?: string;
   ip?: string;
   userAgent?: string;
+  fbc?: string;
+  fbp?: string;
+  externalId?: string;
   customData?: Record<string, unknown>;
 }
 
@@ -64,6 +71,9 @@ export async function sendCapiLead(data: CapiLeadData): Promise<void> {
   if (data.phone) userData['ph'] = [sha256(data.phone)];
   if (data.ip) userData['client_ip_address'] = data.ip;
   if (data.userAgent) userData['client_user_agent'] = data.userAgent;
+  if (data.fbc) userData['fbc'] = data.fbc;
+  if (data.fbp) userData['fbp'] = data.fbp;
+  if (data.externalId) userData['external_id'] = [sha256(data.externalId)];
 
   const payload = {
     data: [{

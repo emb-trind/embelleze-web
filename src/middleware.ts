@@ -70,11 +70,23 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
       ?? undefined;
     const userAgent = context.request.headers.get("user-agent") ?? undefined;
 
+    const cookieHeader = context.request.headers.get("cookie") ?? "";
+    const parseCookie = (name: string) =>
+      cookieHeader.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`))?.[1];
+
+    const fbc = parseCookie("_fbc")
+      ?? (context.url.searchParams.get("fbclid")
+        ? `fb.1.${Date.now()}.${context.url.searchParams.get("fbclid")}`
+        : undefined);
+    const fbp = parseCookie("_fbp");
+
     void sendCapiPageView({
       eventId: pageViewEventId,
       eventSourceUrl: context.url.href,
       ip,
       userAgent,
+      fbc,
+      fbp,
     });
 
     const html = await response.text();

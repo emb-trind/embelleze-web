@@ -1,5 +1,6 @@
 ---
 const META_PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID ?? '';
+const OPENAI_PIXEL_ID = import.meta.env.PUBLIC_OPENAI_PIXEL_ID ?? '';
 const { cspNonce, pageViewEventId } = Astro.locals;
 ---
 
@@ -11,4 +12,12 @@ const { cspNonce, pageViewEventId } = Astro.locals;
 </script>
 <noscript><img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`} /></noscript>
 </Fragment>
+)}
+
+{OPENAI_PIXEL_ID && (
+<script is:inline define:vars={{ OPENAI_PIXEL_ID }} nonce={cspNonce}>
+(function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var js=d.createElement(s);js.async=true;js.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(js,f)})(window,document,'script','https://bzrcdn.openai.com/sdk/oaiq.min.js');
+oaiq('init',{pixelId:OPENAI_PIXEL_ID});
+oaiq('measure','page_viewed',{type:'contents',contents:[{id:window.location.pathname,name:document.title,content_type:'page'}]});
+</script>
 )}

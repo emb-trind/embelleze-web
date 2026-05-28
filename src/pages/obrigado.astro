@@ -48,7 +48,10 @@ Voltar para a Home
 
 <script>
 if (typeof window.fbq === 'function') {
-window.fbq('track', 'Lead');
+  window.fbq('track', 'Lead');
+}
+if (typeof window.oaiq === 'function') {
+  window.oaiq('measure', 'registration_completed', { type: 'customer_action' });
 }
 </script>
 

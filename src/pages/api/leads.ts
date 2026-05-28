@@ -47,12 +47,19 @@ if (parsed.data.status === 'QUALIFICADO') {
   const userAgent = request.headers.get('user-agent') ?? undefined;
   const origin = request.headers.get('origin') ?? 'https://embelleze-bella.online';
 
+  const cookieHeader = request.headers.get('cookie') ?? '';
+  const parseCookie = (name: string) =>
+    cookieHeader.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`))?.[1];
+
   sendCapiLead({
     eventId,
     eventSourceUrl: `${origin}/`,
     phone: parsed.data.phone,
     ip,
     userAgent,
+    fbc: parseCookie('_fbc'),
+    fbp: parseCookie('_fbp'),
+    externalId: String(leadId),
     customData: {
       content_name: parsed.data.course_interest ?? 'Curso Profissional',
       content_category: 'education',
