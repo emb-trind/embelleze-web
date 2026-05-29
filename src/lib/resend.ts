@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-const FROM = "Andreia · Instituto Embelleze <andreia@embelleze-bella.online>";
+const FROM = "Bella · Instituto Embelleze <cursos@embelleze-bella.online>";
 
 function getClient(): Resend | null {
   const apiKey = process.env.RESEND_API_KEY || import.meta.env.RESEND_API_KEY;

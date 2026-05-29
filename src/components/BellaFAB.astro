@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { getWhatsAppLink } from '../lib/whatsapp';
+import avatar from '../assets/brand/avatar_e-trindade.png';
 
 const waLink = getWhatsAppLink({ origin: 'bella-fab' });
 
@@ -11,7 +13,7 @@ const GREETING = `Oi`;
   <div id="bella-panel" class="bella-panel" aria-hidden="true" role="dialog" aria-label="Chat com a Vitória">
     <div class="bella-panel__header">
       <div class="bella-avatar-wrap">
-        <img class="bella-avatar" src="/brand/avatar_e-trindade.png" alt="Vitória" />
+        <Image src={avatar} alt="Vitória" width={42} height={42} class="bella-avatar" />
         <span class="bella-online-dot"></span>
       </div>
       <div class="bella-panel__info">
@@ -56,7 +58,7 @@ const GREETING = `Oi`;
   </div>
 
   <button id="bella-fab-btn" class="bella-fab-btn" aria-label="Conversar com a Vitória" aria-expanded="false">
-    <img class="bella-fab-avatar" src="/brand/avatar_e-trindade.png" alt="Vitória" />
+    <Image src={avatar} alt="Vitória" width={36} height={36} class="bella-fab-avatar" />
     <span class="bella-fab-dot" aria-hidden="true"></span>
   </button>
 

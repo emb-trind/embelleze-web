@@ -17,7 +17,7 @@ export const BRAND_LOGO_URL = new URL(
 
 export const INSTITUTE_NAME = 'Instituto Embelleze Trindade';
 export const INSTITUTE_ADDRESS = 'Av. Manoel Monteiro, 1691 — Vila Padre Eterno, Trindade/GO';
-export const INSTITUTE_EMAIL = 'bellaembelleze.inteligencia@gmail.com';
+export const INSTITUTE_EMAIL = 'cursos@embelleze-bella.online';
 export const INSTITUTE_INSTAGRAM = '@institutoembellezetrindadego';
 export const INSTITUTE_INSTAGRAM_URL = 'https://www.instagram.com/institutoembellezetrindadego/';
 

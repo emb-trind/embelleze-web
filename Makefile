@@ -4,22 +4,22 @@
 NODE := $(shell mise which node 2>/dev/null || which node)
 PNPM := PATH="$(dir $(NODE)):$$PATH" pnpm
 
-HOST     ?= 127.0.0.1
-APP_PORT ?= 4321
-URL      ?= http://$(HOST):$(APP_PORT)
-PROD_URL ?= https://embelleze-trindade.up.railway.app
+HOST     ?= 0.0.0.0
+PORT     ?= 4321
+URL      ?= http://$(HOST):$(PORT)
+PROD_URL ?= https://embelleze-bella.online
 
 help:
 	@echo ""
 	@echo "  embelleze-web"
 	@echo ""
 	@echo "  install    instala dependências via pnpm"
-	@echo "  dev        sobe Astro dev server       [HOST=$(HOST)] [APP_PORT=$(APP_PORT)]"
+	@echo "  dev        sobe Astro dev server       [HOST=$(HOST)] [PORT=$(PORT)]"
 	@echo "  check      roda astro check"
 	@echo "  build      gera build SSR em dist/"
 	@echo "  validate   check + build"
-	@echo "  start      inicia servidor compilado   [HOST=$(HOST)] [APP_PORT=$(APP_PORT)]"
-	@echo "  preview    preview do último build     [HOST=$(HOST)] [APP_PORT=$(APP_PORT)]"
+	@echo "  start      inicia servidor compilado   [HOST=$(HOST)] [PORT=$(PORT)]"
+	@echo "  preview    preview do último build     [HOST=$(HOST)] [PORT=$(PORT)]"
 	@echo ""
 	@echo "  health     chama /api/health           [URL=$(URL)]"
 	@echo "  smoke      testa / e /api/health       [URL=$(URL)]"
@@ -33,7 +33,7 @@ install:
 	$(PNPM) install
 
 dev:
-	$(PNPM) dev -- --host $(HOST) --port $(APP_PORT)
+	$(PNPM) dev -- --host $(HOST) --port $(PORT)
 
 check:
 	$(PNPM) check
@@ -46,10 +46,10 @@ build:
 validate: check build
 
 start:
-	HOST=$(HOST) PORT=$(APP_PORT) node ./dist/server/entry.mjs
+	HOST=$(HOST) PORT=$(PORT) node ./dist/server/entry.mjs
 
 preview:
-	$(PNPM) preview -- --host $(HOST) --port $(APP_PORT)
+	$(PNPM) preview -- --host $(HOST) --port $(PORT)
 
 health:
 	@curl -fsS "$(URL)/api/health" | python3 -m json.tool 2>/dev/null || curl -fsS "$(URL)/api/health"

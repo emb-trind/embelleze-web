@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-embelleze.png';
-import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, INSTITUTE_ADDRESS, INSTITUTE_INSTAGRAM_URL } from '../lib/constants';
+import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, INSTITUTE_ADDRESS, INSTITUTE_INSTAGRAM_URL, INSTITUTE_EMAIL } from '../lib/constants';
 import { getWhatsAppLink } from '../lib/whatsapp';
 ---
 <footer class="footer">
@@ -38,6 +38,7 @@ import { getWhatsAppLink } from '../lib/whatsapp';
 <ul>
   <li>{INSTITUTE_ADDRESS}</li>
   <li><a href={`tel:${WHATSAPP_NUMBER}`} class="footer__contact-link">{WHATSAPP_DISPLAY}</a></li>
+  <li><a href={`mailto:${INSTITUTE_EMAIL}`} class="footer__contact-link">{INSTITUTE_EMAIL}</a></li>
 </ul>
 </div>
 </div>

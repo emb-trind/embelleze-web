@@ -22,7 +22,14 @@ function openPanel() {
 panel.classList.add('open');
 panel.setAttribute('aria-hidden', 'false');
 btn.setAttribute('aria-expanded', 'true');
-input.focus();
+
+// Delay focus to prevent visual blocking (improves INP)
+requestAnimationFrame(() => {
+  setTimeout(() => {
+    input.focus();
+  }, 50);
+});
+
 if (!greeted) {
 greeted = true;
 setTimeout(() => appendBella(GREETING), 400);

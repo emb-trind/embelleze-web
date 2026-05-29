@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import symbol from '../../public/brand/e2.png';
+import bellaPhoto from '../assets/bella/bella-2.png';
 ---
 
 <section class="hero">
@@ -13,7 +14,7 @@ import symbol from '../../public/brand/e2.png';
 
 <!-- Foto da Bella -->
 <div class="hero__photo" aria-hidden="true">
-<Image src="/bella/bella-2.png" alt="Bella — Consultora Embelleze" width={600} height={800} loading="eager" />
+<Image src={bellaPhoto} alt="Bella — Consultora Embelleze" width={600} height={800} loading="eager" fetchpriority="high" />
 </div>
 
 <!-- UI — Copy e Botões -->
