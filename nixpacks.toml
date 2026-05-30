@@ -1,0 +1,12 @@
+# nixpacks.toml — embelleze-web
+#
+# Garante que pnpm esteja disponível na fase de install do Nixpacks.
+# Build e start commands são delegados ao railway.toml:
+#   buildCommand = "pnpm install && pnpm run build"
+#   startCommand = "pnpm run start"
+#
+# Sem este arquivo, o Railpack auto-detect pode não encontrar pnpm no PATH,
+# causando falha de build (como ocorreu em 2 deploys anteriores).
+
+[phases.install]
+cmds = ["pnpm install --no-frozen-lockfile"]
