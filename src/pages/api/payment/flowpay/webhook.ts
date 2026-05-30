@@ -98,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
       const confirmMessage =
         `Pagamento confirmado! 🎉 Sua vaga está pré-reservada.\n\n` +
         `Vou passar seu contato para nossa consultora finalizar sua matrícula. ` +
-        `Ela vai te chamar do número (62) 99481-3565. 😊`;
+        `Ela vai te chamar do número (62) 99478-9032. 😊`;
       await sendGatewayMessage(leadPhone, confirmMessage);
     } catch (sendError) {
       console.error("[FlowPay Webhook] Erro ao enviar confirmação WhatsApp (silenciado):", sendError);

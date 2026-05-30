@@ -42,7 +42,7 @@ export async function sendPaymentConfirmationToLead(params: {
             <p>Seu pagamento foi <strong style="color:#de583d;">confirmado</strong> e sua vaga no curso
             <strong>${course}</strong> está pré-reservada.</p>
             <p>Nossa consultora vai entrar em contato pelo WhatsApp no número
-            <strong>(62) 99481-3565</strong> para finalizar sua matrícula.</p>
+            <strong>(62) 99478-9032</strong> para finalizar sua matrícula.</p>
             <div style="background:#f9f4ff;border-left:4px solid #5f3080;padding:12px 16px;border-radius:4px;margin:24px 0;">
               <p style="margin:0;font-size:13px;color:#5f3080;">
                 <strong>ID da transação:</strong> ${params.transactionId}

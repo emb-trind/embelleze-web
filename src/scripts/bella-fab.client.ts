@@ -87,7 +87,7 @@ scrollBottom();
 function appendBella(content: string) {
 chatHistory.push({ role: 'assistant', content });
 appendMessage(content, 'bella');
-if (/99481-3565|wa\.me|consultora agora|encaminhar|botão verde|pra consultora|pelo whatsapp/i.test(content)) {
+if (/99478-9032|wa\.me|consultora agora|encaminhar|botão verde|pra consultora|pelo whatsapp/i.test(content)) {
 waCta.style.display = 'flex';
 }
 }

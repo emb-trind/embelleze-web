@@ -1,5 +1,5 @@
-export const WHATSAPP_NUMBER = '5562994813565';
-export const WHATSAPP_DISPLAY = '(62) 99481-3565';
+export const WHATSAPP_NUMBER = '5562994789032';
+export const WHATSAPP_DISPLAY = '(62) 99478-9032';
 
 // ─── SEO / Canonical URLs ───────────────────────────────────────────────────
 // Single source of truth for public domain + social preview assets.

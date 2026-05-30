@@ -29,7 +29,7 @@ LPs de campanha (embelleze-lp-*) são satélites deste core.
 ┃ CLIENTE       Instituto Embelleze Trindade
 ┃ CNPJ          19.367.067/0001-97
 ┃ CIDADE        Trindade/GO
-┃ WHATSAPP      62 994813565
+┃ WHATSAPP      62 994789032
 ┃ DOMÍNIO       embelleze-bella.online
 ┃ DEPLOY        Railway
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

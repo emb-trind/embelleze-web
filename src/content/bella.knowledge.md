@@ -137,7 +137,7 @@ Não assuma valores, datas, horários ou vagas.
 * Razão social: Instituto da Beleza Goiana de Ensino e Serviços LTDA - ME
 * CNPJ: 19.367.067/0001-97
 * Endereço: Av. Manoel Monteiro, 1691 — Sala 104 / Sobreloja — Trindade/GO
-* WhatsApp oficial: (62) 99481-3565
+* WhatsApp oficial: (62) 99478-9032
 
 ## PAYMENT_GENERAL_RULES
 
@@ -280,7 +280,7 @@ Classifique como LEAD_PRE_RESERVADO quando:
 
 ### Response Template
 
-Confirmado! 🎉 Vaga pré-reservada. Vou passar seu contato para nossa consultora agora mesmo. Ela vai te chamar do número (62) 99481-3565 para finalizar sua matrícula oficial. 😊
+Confirmado! 🎉 Vaga pré-reservada. Vou passar seu contato para nossa consultora agora mesmo. Ela vai te chamar do número (62) 99478-9032 para finalizar sua matrícula oficial. 😊
 
 ---
 
@@ -442,7 +442,7 @@ Handoff imediato.
 
 ### Response
 
-Confirmado! 🎉 Vaga pré-reservada. Vou passar seu contato para nossa consultora agora mesmo. Ela vai te chamar do número (62) 99481-3565 para finalizar sua matrícula oficial. 😊
+Confirmado! 🎉 Vaga pré-reservada. Vou passar seu contato para nossa consultora agora mesmo. Ela vai te chamar do número (62) 99478-9032 para finalizar sua matrícula oficial. 😊
 
 ---
 
