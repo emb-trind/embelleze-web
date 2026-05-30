@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { INSTITUTE_ADDRESS, WHATSAPP_DISPLAY, INSTITUTE_EMAIL } from '../lib/constants';
+---
+
+<BaseLayout title="Exclusão de Dados — Instituto Embelleze Trindade">
+  <main class="legal">
+    <div class="legal__bg"></div>
+
+    <div class="legal__container">
+      <article class="legal__content">
+        <h1 class="legal__title">Exclusão de Dados Pessoais</h1>
+        <p class="legal__updated">Última atualização: maio de 2026</p>
+
+        <p>
+          O Instituto Embelleze Trindade respeita o seu direito à privacidade e ao controle
+          sobre os seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados
+          Pessoais — LGPD (Lei nº 13.709/2018).
+        </p>
+
+        <p>
+          Se você utilizou algum de nossos serviços digitais — incluindo o atendimento via
+          WhatsApp com nossa assistente Bella, formulários de contato ou landing pages —
+          e deseja solicitar a exclusão dos seus dados pessoais, siga as instruções abaixo.
+        </p>
+
+        <h2>Como solicitar a exclusão</h2>
+        <p>Você pode solicitar a exclusão dos seus dados por qualquer um dos canais abaixo:</p>
+
+        <ul>
+          <li>
+            <strong>E-mail:</strong>{' '}
+            <a href={`mailto:${INSTITUTE_EMAIL}`}>{INSTITUTE_EMAIL}</a>
+            — envie um e-mail com o assunto <em>"Exclusão de dados"</em> e inclua
+            o número de telefone ou e-mail associado ao seu cadastro.
+          </li>
+          <li>
+            <strong>WhatsApp:</strong> {WHATSAPP_DISPLAY}
+            — envie uma mensagem informando que deseja excluir seus dados pessoais.
+          </li>
+          <li>
+            <strong>Presencialmente:</strong> {INSTITUTE_ADDRESS}.
+          </li>
+        </ul>
+
+        <h2>O que será excluído</h2>
+        <p>Ao confirmarmos sua identidade, excluiremos:</p>
+        <ul>
+          <li>Nome, telefone e e-mail cadastrados</li>
+          <li>Histórico de conversas com a Bella (assistente virtual)</li>
+          <li>Dados de interesse em cursos e status de atendimento</li>
+          <li>Qualquer outra informação pessoal associada ao seu contato</li>
+        </ul>
+
+        <h2>Prazo de resposta</h2>
+        <p>
+          Atenderemos sua solicitação em até <strong>15 dias úteis</strong> a contar
+          do recebimento do pedido. Você receberá uma confirmação após a exclusão ser concluída.
+        </p>
+
+        <h2>Dados que não podem ser excluídos imediatamente</h2>
+        <p>
+          Em alguns casos, podemos manter determinadas informações pelo prazo exigido por lei
+          (ex.: obrigações fiscais, contratuais ou regulatórias). Nesses casos, informaremos
+          o motivo e o prazo de retenção.
+        </p>
+
+        <h2>Contato do Responsável pelo Tratamento de Dados (DPO)</h2>
+        <p>
+          Nosso encarregado de dados pode ser contatado pelo e-mail:{' '}
+          <a href={`mailto:${INSTITUTE_EMAIL}`}>{INSTITUTE_EMAIL}</a>.
+        </p>
+
+        <div class="legal__back">
+          <a href="/">← Voltar para o site</a>
+        </div>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+.legal {
+  min-height: 100vh;
+  padding: clamp(6rem, 12vw, 9rem) var(--spacing-md) var(--spacing-xl);
+  background: #12071f;
+  position: relative;
+}
+
+.legal__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(95, 48, 128, 0.18), transparent 40%),
+    radial-gradient(circle at 10% 80%, rgba(222, 88, 61, 0.10), transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.legal__container {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.legal__content {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.legal__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.legal__updated {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 2.5rem;
+}
+
+.legal__content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 2.5rem 0 0.75rem;
+}
+
+.legal__content p {
+  margin-bottom: 1rem;
+}
+
+.legal__content ul {
+  margin: 0 0 1rem 1.5rem;
+}
+
+.legal__content li {
+  margin-bottom: 0.5rem;
+}
+
+.legal__content a {
+  color: #de583d;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal__content a:hover {
+  color: #ff7a5c;
+}
+
+.legal__back {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.legal__back a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.legal__back a:hover {
+  color: #fff;
+}
+</style>
