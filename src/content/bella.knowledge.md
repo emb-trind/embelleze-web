@@ -483,7 +483,7 @@ Que ótimo! Para o curso de [COURSE_NAME], o investimento total é parcelado con
 
 Acessa o link abaixo, paga em menos de 1 minuto e sua vaga já fica reservada no sistema:
 
-👉 [https://app.flowpay.cash/checkout/1a775f1057cf59c7](https://app.flowpay.cash/checkout/1a775f1057cf59c7)
+👉* Link de reserva: [https://www.userede.com.br/pagamentos/c2p/pt/gxdg4hod](https://www.userede.com.br/pagamentos/c2p/pt/gxdg4hod)
 
 Só lembrando: o curso inteiro não custa R$ 19,90 — essa é a taxa de reserva de vaga. As parcelas você combina com a consultora ao assinar o contrato presencialmente.
 
