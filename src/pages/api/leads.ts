@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro';
-import { upsertLead } from '../../lib/db';
+import { upsertLead, claimProbeltecSync, updateProbeltecId } from '../../lib/db';
 import { enforceRateLimit } from '../../lib/rate-limit';
 import { LeadSchema } from '../../lib/schemas';
 import { sendCapiLead } from '../../lib/capi';
+import { createLead } from '../../lib/probeltec';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -61,6 +62,27 @@ if (parsed.data.event) {
     });
   } else {
     console.warn('[API-LEADS] SDR_URL não configurado. Evento ignorado:', parsed.data.event);
+  }
+}
+
+// Sincronização com Probeltec CRM
+if (parsed.data.name && parsed.data.name !== 'Cliente') {
+  try {
+    const claimed = await claimProbeltecSync(parsed.data.phone);
+    if (claimed) {
+      const crmRes = await createLead({
+        name: parsed.data.name,
+        phone: parsed.data.phone,
+        email: parsed.data.email,
+        origin: parsed.data.origin || 'landing'
+      });
+      if (crmRes.id) {
+        await updateProbeltecId(parsed.data.phone, crmRes.id);
+      }
+      console.log(`[API-LEADS] Lead integrado no CRM Probeltec (ID: ${crmRes.id ?? 'unknown'})`);
+    }
+  } catch (crmError) {
+    console.error("[API-LEADS] Erro ao sincronizar com Probeltec (silenciado):", crmError);
   }
 }
 

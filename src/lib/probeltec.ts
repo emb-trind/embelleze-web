@@ -114,3 +114,36 @@ export async function createLead(params: ProbeltecLeadParams): Promise<Probeltec
   }
 }
 
+export async function fetchLeadStatus(idLead: string | number): Promise<string | null> {
+  const token = await getToken();
+
+  try {
+    const res = await fetch(`https://api.probeltec.com/api/v1/lead/${idLead}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) {
+      console.warn(`[Probeltec] Erro ao buscar status do lead ${idLead}: HTTP ${res.status}`);
+      return null;
+    }
+
+    const json = await res.json() as any;
+    
+    // Tenta extrair o status de forma defensiva, já que não temos a doc exata do payload
+    const status = json?.status?.name || json?.status || json?.data?.status?.name || json?.data?.status;
+    
+    if (typeof status === 'string') {
+      return status;
+    }
+    
+    return null;
+  } catch (e) {
+    console.error(`[Probeltec] Erro de rede ao buscar status do lead ${idLead}:`, e);
+    return null;
+  }
+}
+

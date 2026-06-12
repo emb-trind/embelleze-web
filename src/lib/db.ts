@@ -27,7 +27,7 @@ export interface LeadData {
   origin?: string;
   course_interest?: string;
   objective?: string;
-  status?: "NOVO" | "QUALIFICADO" | "INTERESSADO" | "PIX_GERADO" | "PIX_PAGO";
+  status?: "NOVO" | "QUALIFICADO" | "INTERESSADO" | "CHECKOUT_ENVIADO" | "CHECKOUT_PAGO";
   last_message?: string;
   assigned_to?: string;
   // Atribuição de tráfego pago — first-touch, nunca sobrescreve
@@ -71,9 +71,9 @@ export async function upsertLead(data: LeadData) {
          objective        = COALESCE(EXCLUDED.objective,       leads.objective),
          status           = CASE
                               -- Máquina de estados: nunca retrocede
-                              -- PIX_PAGO > PIX_GERADO > INTERESSADO > QUALIFICADO > NOVO
-                              WHEN leads.status = 'PIX_PAGO'   THEN 'PIX_PAGO'
-                              WHEN leads.status = 'PIX_GERADO' AND EXCLUDED.status != 'PIX_PAGO' THEN 'PIX_GERADO'
+                              -- CHECKOUT_PAGO > CHECKOUT_ENVIADO > INTERESSADO > QUALIFICADO > NOVO
+                              WHEN leads.status = 'CHECKOUT_PAGO'   THEN 'CHECKOUT_PAGO'
+                              WHEN leads.status = 'CHECKOUT_ENVIADO' AND EXCLUDED.status != 'CHECKOUT_PAGO' THEN 'CHECKOUT_ENVIADO'
                               WHEN leads.status = 'INTERESSADO' AND EXCLUDED.status IN ('NOVO','QUALIFICADO') THEN 'INTERESSADO'
                               ELSE COALESCE(EXCLUDED.status, leads.status)
                             END,
@@ -106,7 +106,7 @@ export async function upsertLead(data: LeadData) {
     const leadId = res.rows[0].id as string;
 
     // Disparo Assíncrono do CAPI
-    if (data.status === "PIX_PAGO") {
+    if (data.status === "CHECKOUT_PAGO") {
       claimAndSendMetaCAPI(cleanPhone, data).catch(err => 
         console.error("[DB] Falha não bloqueante no CAPI async:", err)
       );
@@ -147,6 +147,7 @@ async function ensureSchema(client: pg.PoolClient): Promise<void> {
       probeltec_synced_at TIMESTAMPTZ,
       meta_capi_purchase_sent_at TIMESTAMPTZ,
       probeltec_id     TEXT,
+      probeltec_status TEXT,
       created_at       TIMESTAMPTZ DEFAULT NOW(),
       updated_at       TIMESTAMPTZ DEFAULT NOW()
     )
@@ -163,6 +164,7 @@ async function ensureSchema(client: pg.PoolClient): Promise<void> {
       ADD COLUMN IF NOT EXISTS probeltec_synced_at TIMESTAMPTZ,
       ADD COLUMN IF NOT EXISTS meta_capi_purchase_sent_at TIMESTAMPTZ,
       ADD COLUMN IF NOT EXISTS probeltec_id       TEXT,
+      ADD COLUMN IF NOT EXISTS probeltec_status   TEXT,
       ADD COLUMN IF NOT EXISTS email              TEXT
   `);
 
@@ -238,6 +240,43 @@ export async function updateProbeltecId(phone: string, probeltecId: string | num
     );
   } catch (err) {
     console.error("[DB] Erro ao salvar probeltec_id:", err);
+  } finally {
+    if (client) client.release();
+  }
+}
+
+export async function getLeadsWithProbeltecId(): Promise<{phone: string, probeltec_id: string}[]> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl) return [];
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureSchema(client);
+    const res = await client.query(`SELECT phone, probeltec_id FROM leads WHERE probeltec_id IS NOT NULL`);
+    return res.rows;
+  } catch (err) {
+    console.error("[DB] Erro ao buscar leads com probeltec_id:", err);
+    return [];
+  } finally {
+    if (client) client.release();
+  }
+}
+
+export async function updateProbeltecStatus(phone: string, status: string): Promise<void> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl) return;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureSchema(client);
+    await client.query(
+      `UPDATE leads SET probeltec_status = $1 WHERE phone = $2`,
+      [status, phone]
+    );
+  } catch (err) {
+    console.error("[DB] Erro ao atualizar probeltec_status:", err);
   } finally {
     if (client) client.release();
   }

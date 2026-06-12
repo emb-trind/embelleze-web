@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { generateBellaReply } from "../../../lib/bella";
-import { upsertLead, claimProbeltecSync } from "../../../lib/db";
+import { upsertLead, claimProbeltecSync, updateProbeltecId } from "../../../lib/db";
 import { createLead } from "../../../lib/probeltec";
 import { maskPhone } from "../../../lib/phone";
 import { sendGatewayMessage } from "../../../lib/whatsapp-gateway";
@@ -88,8 +88,11 @@ if (phone && hasRealName && leadId) {
 try {
 const claimed = await claimProbeltecSync(phone);
 if (claimed) {
-  await createLead({ name: senderName, phone });
-  console.log(`[Probeltec] Lead criado no CRM: ${maskedPhone}`);
+  const crmRes = await createLead({ name: senderName, phone });
+  if (crmRes.id) {
+    await updateProbeltecId(phone, crmRes.id);
+  }
+  console.log(`[Probeltec] Lead criado no CRM: ${maskedPhone} (ID: ${crmRes.id ?? 'unknown'})`);
 }
 } catch (crmError) {
 console.error("[Probeltec] Erro ao sincronizar lead (silenciado):", (crmError as Error).message);
@@ -109,15 +112,15 @@ console.error("[WhatsApp Webhook] Erro ao gerar resposta Bella:", bellaError);
 reply = `Olá ${senderName}! Tivemos um probleminha técnico em nosso sistema. Um consultor já vai te atender em breve.`;
 }
 
-// 5b. Registrar status PIX_GERADO quando Bella enviar link de checkout
+// 5b. Registrar status CHECKOUT_ENVIADO quando Bella enviar link de checkout
 // Confirmação de pagamento é feita via Google Apps Script que ouve o Gmail
 // do vendedor e chama /api/payment/flowpay/webhook ao receber email da FlowPay.
-if (phone && reply.includes("flowpay.cash/checkout/")) {
+if (phone && reply.includes("userede.com.br/pagamentos")) {
 try {
-await upsertLead({ phone, status: "PIX_GERADO", last_message: "Link de reserva enviado pela Bella" });
-console.log(`[WhatsApp Webhook] Status PIX_GERADO registrado para ${maskedPhone}`);
+await upsertLead({ phone, status: "CHECKOUT_ENVIADO", last_message: "Link de reserva enviado pela Bella" });
+console.log(`[WhatsApp Webhook] Status CHECKOUT_ENVIADO registrado para ${maskedPhone}`);
 } catch (pixError) {
-console.error("[WhatsApp Webhook] Erro ao registrar PIX_GERADO (silenciado):", pixError);
+console.error("[WhatsApp Webhook] Erro ao registrar CHECKOUT_ENVIADO (silenciado):", pixError);
 }
 }
 
