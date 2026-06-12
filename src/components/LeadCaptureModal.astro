@@ -116,7 +116,7 @@ const { cspNonce } = Astro.locals;
       phone: phone,
       name:  name || undefined,
       origin: _pendingOrigin || 'direct-wa',
-      status: 'INTERESSADO',
+      event: 'lead.whatsapp.clicked',
       last_message: 'Clique direto no WhatsApp (modal de captura)',
     }, getUtms());
 

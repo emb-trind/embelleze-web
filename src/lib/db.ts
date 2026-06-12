@@ -1,4 +1,5 @@
 import pg from "pg";
+import { sendPurchaseEvent } from "./meta-capi";
 const { Pool } = pg;
 
 // Conexão resiliente: se não houver DATABASE_URL, o sistema não quebra
@@ -102,7 +103,16 @@ export async function upsertLead(data: LeadData) {
       ],
     );
 
-    return res.rows[0].id as string;
+    const leadId = res.rows[0].id as string;
+
+    // Disparo Assíncrono do CAPI
+    if (data.status === "PIX_PAGO") {
+      claimAndSendMetaCAPI(cleanPhone, data).catch(err => 
+        console.error("[DB] Falha não bloqueante no CAPI async:", err)
+      );
+    }
+
+    return leadId;
   } catch (err) {
     console.error("[DB] Erro ao salvar lead:", err);
     return null;
@@ -135,6 +145,8 @@ async function ensureSchema(client: pg.PoolClient): Promise<void> {
       utm_content      TEXT,
       utm_term         TEXT,
       probeltec_synced_at TIMESTAMPTZ,
+      meta_capi_purchase_sent_at TIMESTAMPTZ,
+      probeltec_id     TEXT,
       created_at       TIMESTAMPTZ DEFAULT NOW(),
       updated_at       TIMESTAMPTZ DEFAULT NOW()
     )
@@ -149,6 +161,8 @@ async function ensureSchema(client: pg.PoolClient): Promise<void> {
       ADD COLUMN IF NOT EXISTS utm_content        TEXT,
       ADD COLUMN IF NOT EXISTS utm_term           TEXT,
       ADD COLUMN IF NOT EXISTS probeltec_synced_at TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS meta_capi_purchase_sent_at TIMESTAMPTZ,
+      ADD COLUMN IF NOT EXISTS probeltec_id       TEXT,
       ADD COLUMN IF NOT EXISTS email              TEXT
   `);
 
@@ -205,6 +219,59 @@ export async function claimProbeltecSync(phone: string): Promise<boolean> {
   } catch (err) {
     console.error("[DB] Erro ao reservar sync Probeltec:", err);
     return false;
+  } finally {
+    if (client) client.release();
+  }
+}
+
+export async function updateProbeltecId(phone: string, probeltecId: string | number): Promise<void> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl) return;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureProbeltecColumn(client);
+    await client.query(
+      `UPDATE leads SET probeltec_id = $1 WHERE phone = $2`,
+      [String(probeltecId), phone]
+    );
+  } catch (err) {
+    console.error("[DB] Erro ao salvar probeltec_id:", err);
+  } finally {
+    if (client) client.release();
+  }
+}
+
+/**
+ * Operação atômica para disparo único do CAPI.
+ */
+async function claimAndSendMetaCAPI(phone: string, data: LeadData): Promise<void> {
+  const dbUrl = process.env.DATABASE_URL || import.meta.env.DATABASE_URL;
+  if (!dbUrl) return;
+
+  let client;
+  try {
+    client = await pool.connect();
+    await ensureSchema(client);
+
+    const res = await client.query(
+      `UPDATE leads
+       SET meta_capi_purchase_sent_at = NOW()
+       WHERE phone = $1 AND meta_capi_purchase_sent_at IS NULL
+       RETURNING phone`,
+      [phone]
+    );
+
+    if ((res.rowCount ?? 0) > 0) {
+      await sendPurchaseEvent({
+        phone,
+        name: data.name,
+        email: data.email
+      });
+    }
+  } catch (err) {
+    console.error("[DB] Erro ao claimar/enviar Meta CAPI:", err);
   } finally {
     if (client) client.release();
   }

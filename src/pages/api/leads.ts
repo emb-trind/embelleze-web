@@ -38,6 +38,32 @@ headers: { 'Content-Type': 'application/json' }
 });
 }
 
+if (parsed.data.event) {
+  const sdrUrl = import.meta.env.SDR_URL || process.env.SDR_URL;
+  const sdrAuth = import.meta.env.SDR_AUTH_TOKEN || process.env.SDR_AUTH_TOKEN;
+  
+  if (sdrUrl) {
+    fetch(`${sdrUrl}/events/inbound`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(sdrAuth ? { 'Authorization': `Bearer ${sdrAuth}` } : {})
+      },
+      body: JSON.stringify({
+        event_type: parsed.data.event,
+        source: 'embelleze-web',
+        channel: 'whatsapp',
+        lead_identifier: parsed.data.phone,
+        payload: parsed.data
+      })
+    }).catch(err => {
+      console.error('[API-LEADS] Falha ao notificar SDR:', err);
+    });
+  } else {
+    console.warn('[API-LEADS] SDR_URL não configurado. Evento ignorado:', parsed.data.event);
+  }
+}
+
 const eventId = crypto.randomUUID();
 
 if (parsed.data.status === 'QUALIFICADO') {

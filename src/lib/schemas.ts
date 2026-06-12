@@ -13,6 +13,7 @@ export const LeadSchema = z.object({
   course_interest: z.string().max(120).optional(),
   objective: z.string().max(200).optional(),
   status: z.enum(["NOVO", "QUALIFICADO", "INTERESSADO", "PIX_GERADO", "PIX_PAGO"]).optional(),
+  event: z.string().max(100).optional(),
   last_message: z.string().max(500).optional(),
   // Atribuição de canal — first-touch
   utm_source:   z.string().max(100).optional(),
