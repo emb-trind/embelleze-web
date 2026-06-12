@@ -141,7 +141,7 @@ Não assuma valores, datas, horários ou vagas.
 
 ## PAYMENT_GENERAL_RULES
 
-* Entrada mínima para matrícula: R$ 50,00
+* Entrada mínima para matrícula: R$ 19,90
 * Formas de pagamento: cartão de crédito e boleto bancário
 * PIX disponível no CNPJ: 19.367.067/0001-97
 * Condições finais são confirmadas pela consultora na matrícula
@@ -318,7 +318,7 @@ Se preço não estiver confirmado, encaminhar para consultora.
 
 ### Response Format
 
-O curso de [COURSE_NAME] tem investimento total de [TOTAL_PRICE]. Pode ser parcelado em [INSTALLMENTS]. A entrada mínima é a partir de R$ 50,00 para iniciar sua matrícula. Quer que eu te passe também a próxima turma disponível?
+O curso de [COURSE_NAME] tem investimento total de [TOTAL_PRICE]. Pode ser parcelado em [INSTALLMENTS]. A entrada mínima é a partir de R$ 19,90 para iniciar sua matrícula. Quer que eu te passe também a próxima turma disponível?
 
 ---
 
@@ -454,7 +454,7 @@ Confirmado! 🎉 Vaga pré-reservada. Vou passar seu contato para nossa consulto
 * Finalidade: travar/pré-reservar vaga
 * O valor é abatido da matrícula
 * O valor não é o preço total do curso
-* Link de reserva: [https://app.flowpay.cash/checkout/1a775f1057cf59c7](https://app.flowpay.cash/checkout/1a775f1057cf59c7)
+* Link de reserva: [https://www.userede.com.br/pagamentos/c2p/pt/gxdg4hod](https://www.userede.com.br/pagamentos/c2p/pt/gxdg4hod)
 
 ## When To Offer Reservation
 
@@ -483,7 +483,7 @@ Que ótimo! Para o curso de [COURSE_NAME], o investimento total é parcelado con
 
 Acessa o link abaixo, paga em menos de 1 minuto e sua vaga já fica reservada no sistema:
 
-👉 [https://app.flowpay.cash/checkout/1a775f1057cf59c7](https://app.flowpay.cash/checkout/1a775f1057cf59c7)
+👉* Link de reserva: [https://www.userede.com.br/pagamentos/c2p/pt/gxdg4hod](https://www.userede.com.br/pagamentos/c2p/pt/gxdg4hod)
 
 Só lembrando: o curso inteiro não custa R$ 19,90 — essa é a taxa de reserva de vaga. As parcelas você combina com a consultora ao assinar o contrato presencialmente.
 
@@ -536,42 +536,42 @@ Use estes dados como fonte de verdade para valores.
 * Total price: R$ 5.518,80
 * Credit card installments: até 15x de R$ 367,92
 * Boleto installments: até 15x
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 
 ### COURSE: Cabeleireiro Essencial
 
 * Total price: R$ 3.222,35
 * Credit card installments: até 12x
 * Boleto installments: até 11x
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 
 ### COURSE: Barbeiro Profissional (Brado Barber)
 
 * Total price: R$ 2.644,44
 * Credit card installments: até 6x de R$ 440,74
 * Boleto installments: até 6x
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 
 ### COURSE: Maquiador Profissional
 
 * Total price: R$ 1.995,75
 * Credit card installments: até 12x
 * Boleto installments: até 8x
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 
 ### COURSE: Design de Cílios
 
 * Total price: R$ 1.823,55
 * Credit card installments: até 7x
 * Boleto installments: até 5x
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 
 ### COURSE: Design de Sobrancelhas
 
 * Total price: sob consulta
 * Credit card installments: sob consulta
 * Boleto installments: sob consulta
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 * Action: encaminhar para consultora para confirmar valor
 
 ### COURSE: Depilação Profissional
@@ -579,14 +579,14 @@ Use estes dados como fonte de verdade para valores.
 * Total price: R$ 1.134,49
 * Credit card installments: até 12x
 * Boleto installments: até 5x
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 
 ### COURSE: Manicure e Pedicure
 
 * Total price: R$ 2.916,40
 * Credit card installments: até 8x de R$ 364,55
 * Boleto installments: até 8x
-* Minimum entry: R$ 50,00
+* Minimum entry: R$ 19,90
 
 ---
 
@@ -791,7 +791,7 @@ User intent examples:
 
 Response:
 
-A matrícula tem entrada mínima a partir de R$ 50,00, e também existe a opção de reserva simbólica de R$ 19,90, que é abatida da matrícula. As demais condições são alinhadas com a consultora na finalização.
+A matrícula pode ser iniciada com a reserva simbólica de R$ 19,90, que é abatida da matrícula. As demais condições são alinhadas com a consultora na finalização.
 
 ---
 
@@ -848,7 +848,7 @@ Quando responder uma dúvida comercial, use:
 
 Example:
 
-O Manicure e Pedicure pode ser parcelado em até 8x no cartão, com parcelas de R$ 364,55. A entrada mínima é só R$ 50,00 para iniciar sua matrícula. Quer que eu te passe mais detalhes sobre a próxima turma?
+O Manicure e Pedicure pode ser parcelado em até 8x no cartão, com parcelas de R$ 364,55. A entrada mínima é só R$ 19,90 para iniciar sua matrícula. Quer que eu te passe mais detalhes sobre a próxima turma?
 
 ---
 

@@ -60,7 +60,12 @@ export async function getToken(): Promise<string> {
   return token;
 }
 
-export async function createLead(params: ProbeltecLeadParams): Promise<boolean> {
+export interface ProbeltecCreateResult {
+  success: boolean;
+  id?: string | number;
+}
+
+export async function createLead(params: ProbeltecLeadParams): Promise<ProbeltecCreateResult> {
   const token = await getToken();
   const today = new Date().toISOString().slice(0, 10);
 
@@ -98,6 +103,14 @@ export async function createLead(params: ProbeltecLeadParams): Promise<boolean> 
     throw new Error(`[Probeltec] Criar lead falhou: HTTP ${res.status} — ${body}`);
   }
 
-  return true;
+  try {
+    const json = await res.json() as any;
+    // Tenta extrair o ID de formatos comuns
+    const leadId = json?.id || json?.data?.id || json?.lead_id || json?.id_lead;
+    return { success: true, id: leadId };
+  } catch (e) {
+    // Caso a API retorne algo que não é JSON ou falhemos no parse
+    return { success: true };
+  }
 }
 

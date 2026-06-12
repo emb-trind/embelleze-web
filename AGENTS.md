@@ -17,6 +17,8 @@ Deploy : Railway
 Backend funcional do ecossistema Embelleze.
 Aqui vivem site, APIs de follow-up, webhooks e escrita de estado operacional.
 
+checar https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users para entender o processo de onboarding de aplicativos empresariais no WhatsApp, que é relevante para a fase atual de scaffold do projeto.
+
 ## Dono de responsabilidades
 
 - Follow-up state e eventos (email/whatsapp/sms)

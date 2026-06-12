@@ -9,14 +9,18 @@ const buildCSP = (nonce: string): string => {
     // O middleware injeta o nonce em todos os <script> inline do HTML renderizado,
     // incluindo os gerados pelo Astro (type="module" inline). Sem 'unsafe-inline'.
     `script-src 'self' 'nonce-${nonce}'`
-      + " https://connect.facebook.net",
+      + " https://connect.facebook.net"
+      + " https://widget.manychat.com"
+      + " https://mccdn.me",
 
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
 
     "img-src 'self' data:"
       + " https://www.google.com"
-      + " https://www.facebook.com",
+      + " https://www.facebook.com"
+      + " https://widget.manychat.com"
+      + " https://mccdn.me",
 
     "connect-src 'self'"
       + " https://www.facebook.com"
@@ -24,7 +28,9 @@ const buildCSP = (nonce: string): string => {
       + " https://connect.facebook.net"
       + " https://*.ecs.us-east-2.on.aws"
       + " https://api-auth.probeltec.com"
-      + " https://api.probeltec.com",
+      + " https://api.probeltec.com"
+      + " https://widget.manychat.com"
+      + " https://mccdn.me",
 
     "frame-src 'self' https://www.google.com https://www.facebook.com https://m.facebook.com",
     "object-src 'none'",

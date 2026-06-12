@@ -63,6 +63,10 @@ const { cspNonce } = Astro.locals;
 <BellaFAB />
 <LeadCaptureModal />
 
+<!-- ManyChat Widget -->
+<script src="https://widget.manychat.com/4919188_65bf4.js" defer="defer"></script>
+<script src="https://mccdn.me/assets/js/widget.js" defer="defer"></script>
+
 <script>
 import '../scripts/events.client';
 </script>
@@ -86,7 +90,7 @@ if (v && !sessionStorage.getItem(k)) {
 
 // ── Global Lead Capture Interceptor ─────────────────────────────────────
 // Intercepta todos os cliques em wa.me.
-// · Lead que passou pelo simulador (sim_phone existe) → atualiza status para INTERESSADO.
+// · Lead que passou pelo simulador (sim_phone existe) → emite fato de clique.
 // · Lead sem simulador → abre modal de captura (LeadCaptureModal) antes de redirecionar.
 window.addEventListener('click', async function(e) {
 var target = e.target.closest('a[href*="wa.me"]');
@@ -104,10 +108,10 @@ if (!phone) {
   return;
 }
 
-// Já tem telefone — apenas atualiza status
+// Já tem telefone — emite fato de clique para a SDR decidir a evolução
 var body = {
 phone: phone,
-status: 'INTERESSADO',
+event: 'lead.whatsapp.clicked',
 last_message: 'Conversão via clique: ' + (target.innerText || 'Botão WhatsApp'),
 utm_source:   sessionStorage.getItem('utm_source')   || undefined,
 utm_medium:   sessionStorage.getItem('utm_medium')   || undefined,
