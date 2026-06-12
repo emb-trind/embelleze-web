@@ -22,6 +22,7 @@ Ser o núcleo de estado operacional de captação e follow-up:
 - Dashboard: visualização, sem escrita de regra de negócio
 - Neo WhatsApp Connect: transporte de mensagens
 - Resend: provedor externo de entrega de email
+- Vitória (FAB Web): Responde localmente em `/api/bella/chat` para triagem no site. Não confundir com a Bella (SDR / PWA).
 
 ## Estado crítico
 

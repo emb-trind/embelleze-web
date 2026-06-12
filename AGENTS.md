@@ -38,6 +38,7 @@ checar https://developers.facebook.com/documentation/business-messaging/whatsapp
 - `POST /api/followup/resend-webhook`
 - `POST /api/whatsapp/webhook`
 - `POST /api/sheets/webhook`
+- `POST /api/bella/chat` (Endpoint exclusivo da Vitória - FAB do site. NUNCA usar como proxy para a Bella no PWA)
 
 ## Variáveis críticas
 
