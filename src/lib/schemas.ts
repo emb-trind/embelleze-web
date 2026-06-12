@@ -9,10 +9,11 @@ export const LeadSchema = z.object({
       message: "Telefone deve ter entre 10 e 13 dígitos",
     }),
   name: z.string().max(120).optional(),
+  email: z.string().max(120).optional().or(z.literal("")),
   origin: z.string().max(80).optional(),
   course_interest: z.string().max(120).optional(),
   objective: z.string().max(200).optional(),
-  status: z.enum(["NOVO", "QUALIFICADO", "INTERESSADO", "PIX_GERADO", "PIX_PAGO"]).optional(),
+  status: z.enum(["NOVO", "QUALIFICADO", "INTERESSADO", "CHECKOUT_ENVIADO", "CHECKOUT_PAGO"]).optional(),
   event: z.string().max(100).optional(),
   last_message: z.string().max(500).optional(),
   // Atribuição de canal — first-touch

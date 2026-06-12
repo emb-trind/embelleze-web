@@ -37,6 +37,14 @@ Targets Makefile canônicos: `dev` · `build` · `check` · `clean` · `install`
 4. Webhook atualiza eventos/estado de email
 5. Dashboard consome estado atualizado (leitura)
 
+## Fluxo de Checkout & Probeltec & Meta CAPI
+
+1. SDR envia link da UseRede -> Status muda para `CHECKOUT_ENVIADO`
+2. Vendedora faz verificação humana e dá baixa no CRM Probeltec como `Matriculado`
+3. Robô vigilante (`/api/probeltec/sync`) via CRON percebe mudança na Probeltec
+4. `sync.ts` evolui status para `CHECKOUT_PAGO` (Matrícula)
+5. O trigger local em `db.ts` dispara o envio Server-side (Deduplicado) do evento `Purchase` para a Meta CAPI
+
 ## Variáveis de ambiente principais
 
 - `DATABASE_URL`
@@ -46,6 +54,11 @@ Targets Makefile canônicos: `dev` · `build` · `check` · `clean` · `install`
 - `RESEND_WEBHOOK_SECRET`
 - `AZURE_OPENAI_*`
 - `WHATSAPP_GATEWAY_*`
+- `PROBELTEC_API_URL`
+- `PROBELTEC_API_TOKEN`
+- `CRON_SECRET`
+- `CAPI_ACCESS_TOKEN`
+- `PUBLIC_META_PIXEL_ID`
 
 ## Nota importante
 
