@@ -272,7 +272,7 @@ export async function updateProbeltecStatus(phone: string, status: string): Prom
     client = await pool.connect();
     await ensureSchema(client);
     await client.query(
-      `UPDATE leads SET probeltec_status = $1 WHERE phone = $2`,
+      `UPDATE leads SET probeltec_status = $1, updated_at = NOW() WHERE phone = $2`,
       [status, phone]
     );
   } catch (err) {
