@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ request }) => {
     // Como é um MVP, vamos apenas executar o sync.
     const authHeader = request.headers.get("authorization");
     if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      // return new Response("Unauthorized", { status: 401 }); // Comentado para facilitar o teste inicial
+      return new Response("Unauthorized", { status: 401 });
     }
 
     const leads = await getLeadsWithProbeltecId();
