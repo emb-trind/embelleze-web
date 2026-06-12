@@ -84,6 +84,32 @@ LPs de campanha (embelleze-lp-*) são satélites deste core.
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+```diagram
+sequenceDiagram
+  actor Cron
+  participant ProbeltecSyncAPI as api_probeltec_sync
+  participant DB as db_ts
+  participant ProbeltecAPI as probeltec_ts
+  participant MetaCAPI as meta_capi
+
+  Cron->>ProbeltecSyncAPI: GET /api/probeltec/sync
+  ProbeltecSyncAPI->>DB: getLeadsWithProbeltecId()
+  DB-->>ProbeltecSyncAPI: leads
+
+  loop for each lead
+    ProbeltecSyncAPI->>ProbeltecAPI: fetchLeadStatus(probeltec_id)
+    ProbeltecAPI-->>ProbeltecSyncAPI: status
+
+    alt [status]
+      ProbeltecSyncAPI->>DB: updateProbeltecStatus(phone, status)
+      alt [status == Matriculado]
+        ProbeltecSyncAPI->>DB: upsertLead({ phone, status: CHECKOUT_PAGO })
+        DB-->>MetaCAPI: claimAndSendMetaCAPI(phone, data)
+      end
+    end
+  end
+```
+
 ────────────────────────────────────────
 
 ## ⍟ Regras Críticas
